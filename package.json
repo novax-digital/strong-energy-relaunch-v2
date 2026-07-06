@@ -1,0 +1,39 @@
+{
+  "name": "strong-energy-next",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "crawl:live": "node scripts/crawl-live-site.mjs",
+    "sync:live": "node scripts/sync-live-content.mjs",
+    "supabase:seed": "node scripts/generate-supabase-seed.mjs",
+    "supabase:setup": "node scripts/setup-new-supabase.mjs",
+    "supabase:create-admin": "node scripts/create-admin-user.mjs",
+    "supabase:grant-admin": "node scripts/grant-admin.mjs"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.108.2",
+    "lucide-react": "^0.468.0",
+    "next": "16.2.6",
+    "react": "19.2.6",
+    "react-dom": "19.2.6"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.57.0",
+    "@types/node": "^24.10.1",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "autoprefixer": "^10.5.0",
+    "cheerio": "^1.1.2",
+    "eslint": "^9.39.4",
+    "eslint-config-next": "^16.2.6",
+    "postcss": "^8.5.15",
+    "tailwindcss": "^3.4.19",
+    "tailwindcss-animate": "^1.0.7",
+    "typescript": "^6.0.3"
+  }
+}

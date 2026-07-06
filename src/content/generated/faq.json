@@ -1,0 +1,181 @@
+[
+  {
+    "category": "Downloads",
+    "items": [
+      {
+        "question": "Wo finde ich Data Sheets, Zertifikate und Anleitungen zu den Strong Energy Produkten?",
+        "answer": "Sie finden alle Data Sheets, Anleitungen und Zertifikate frei zum Download auf den jeweiligen Produktseiten im unteren Bereich."
+      }
+    ]
+  },
+  {
+    "category": "Solarwechselrichter",
+    "items": [
+      {
+        "question": "Was ist ein Solarwechselrichter?",
+        "answer": "Der Solarwechselrichter wird gebraucht, um die von den PV-Modulen erzeugte Energie so aufzubereiten, dass sie genutzt werden kann. PV-Module erzeugen Gleichspannung (DC), das Stromnetz und die Verbraucher operieren mit Wechselspannung (AC)."
+      },
+      {
+        "question": "Welche verschiedenen Arten von Solarwechselrichtern gibt es?",
+        "answer": "Man unterscheidet 2 Arten von Solarwechselrichtern: 1-phasig operierende (230V) und 3-phasig operierende (400V) Systeme. Soll der Solarwechselrichter zudem noch über eine Anschluss-Möglichkeit für eine Speicherbatterie verfügen, wird ein sogenannter Hybrid-Wechselrichter benötigt."
+      },
+      {
+        "question": "Wie wähle ich den richtigen Solarwechselrichter für meine Bedürfnisse aus?",
+        "answer": "Diese Frage sollte mit einem professionellen Installateur geklärt werden, weil hier viele Faktoren berücksichtigt werden müssen. Kernfragen sind u.a.:\n– Wie hoch ist der zu erwartende Energieverbrauch?\n– Wie sieht das Lastprofil aus bzw. wann im Laufe des Tages wird Energie benötigt und wieviel?\n– Wie groß ist die zur Verfügung stehende Dachfläche?\n– Soll zusätzlich ein Batterie-Speichersystem installiert werden?\n– Soll das System modifizierbar sein, um auf Veränderungen in der Zukunft vorbereitet zu sein?"
+      }
+    ]
+  },
+  {
+    "category": "Solarbatterie",
+    "items": [
+      {
+        "question": "Was ist eine Solarbatterie?",
+        "answer": "Eine Solarbatterie ist ein Speichersystem, das die im Laufe des Tages von der Photovoltaik-Anlage (PV-Anlage) produzierte Energie speichert, um sie dann in den Abend- und Nachtstunden nutzen zu können. Eine Solarbatterie trägt somit dazu bei, einen höheren Grad an Autarkie zu gewährleisten."
+      },
+      {
+        "question": "Welche verschiedenen Arten von Solarbatterien gibt es?",
+        "answer": "Mittlerweile existiert eine unüberschaubare Vielzahl von Solarbatterien, z.B. unterschiedliche Zellchemien, Größe und Leistungsfähigkeit. Strong Energy verwendet ausschließlich LFP-Technologie (Lithium-Eisen-Phosphat), welche als die sicherste Batterietechnik gilt."
+      },
+      {
+        "question": "Wie wähle ich die richtige Solarbatterie für meine Bedürfnisse aus?",
+        "answer": "Diese Frage sollte mit einem professionellen Installateur geklärt werden. Kernfragen sind u.a.:\n– Wie groß muss die Leistungsfähigkeit in W/kW sein?\n– Wie groß soll die zur Verfügung stehende Kapazität in kWh sein?\n– Soll das System skalierbar/modifizierbar sein?\n– Wie groß ist die PV-Anlage?"
+      },
+      {
+        "question": "Warum wird Energie aus dem Netz bezogen, obwohl die Batterie noch geladen ist?",
+        "answer": "1. Bei kleinem Verbrauch (<100W) wird die benötigte Energie immer aus dem Netz bezogen, da die Verluste der Anlage unverhältnismäßig hoch wären. Die Schaltschwelle zum Start der Entladung liegt bei ca. 100W.\n2. Wenn es zu schnellen Änderungen im Verbrauch kommt (z.B. ein Fön oder Wasserkocher wird eingeschaltet), dauert es mehrere Sekunden, bis der Algorithmus für die richtige Entladung umgesetzt werden kann.\n3. Wenn die Batterie entladen wird, muss verhindert werden, dass die gespeicherte Energie ins Netz zurückfließen kann (VDE-Vorgabe). In der Regel ist ein Bezug von ca. 30W voreingestellt.\nZusammenfassend ist ein Bezug von täglich 1,0 kWh bis 1,5 kWh durchaus normal und stellt keinen Mangel dar."
+      }
+    ]
+  },
+  {
+    "category": "Tragbares Kraftwerk",
+    "items": [
+      {
+        "question": "Was ist ein tragbares Kraftwerk?",
+        "answer": "Ein tragbares Kraftwerk ist ein mobiler Energie-Speicher."
+      },
+      {
+        "question": "Wie benutze ich ein tragbares Kraftwerk?",
+        "answer": "Im Prinzip unterscheidet sich die Nutzung nicht von den Gewohnheiten innerhalb des Hauses. Unsere Systeme sind mit den gewöhnlichen Steckdosen (Schuko-Steckdose) ausgestattet. Zudem verfügen sie über eine Zigarettenanzünder-Steckdose sowie USB-A und USB-C Ports, sodass Sie Endgeräte wie Handys oder Tablets direkt aufladen können."
+      },
+      {
+        "question": "Was sind die Vorteile der Verwendung eines tragbaren Kraftwerks?",
+        "answer": "Ein tragbares Kraftwerk macht Sie unabhängig vom öffentlichen Stromnetz und ist hervorragend geeignet für Outdoor-Aktivitäten / Camping. Je nach Größe, Leistung und Kapazität können alle erdenklichen Verbraucher wie z.B. ein Kühlschrank, Beleuchtung, eine elektrische Kochstelle oder ein Wasserkocher betrieben werden."
+      }
+    ]
+  },
+  {
+    "category": "Panel",
+    "items": [
+      {
+        "question": "Was ist ein tragbares Panel?",
+        "answer": "Als tragbares Panel wird ein mobiles Photovoltaik-Modul bezeichnet. Es eignet sich dazu, ein tragbares Kraftwerk aufzuladen. Das Modell CS03ST-160W ist ein solches tragbares PV-Modul. Es wiegt ca. 6 kg und ist faltbar, sodass es auch leicht zu transportieren ist."
+      },
+      {
+        "question": "Wie benutze ich ein tragbares Panel?",
+        "answer": "Die Nutzung ist denkbar einfach und absolut ungefährlich. Das Panel wird über die genormten MC-4-Stecker an das tragbare Kraftwerk angeschlossen, um es aufzuladen."
+      },
+      {
+        "question": "Was sind die Vorteile der Verwendung eines tragbaren Panels?",
+        "answer": "Ein tragbares Panel ermöglicht Ihnen in Verbindung mit einem tragbaren Kraftwerk, bei Outdoor-Aktivitäten auch über einen längeren Zeitraum unabhängig vom öffentlichen Stromnetz zu sein."
+      }
+    ]
+  },
+  {
+    "category": "Solar-PV-Anlage",
+    "items": [
+      {
+        "question": "Wie installiere ich eine Solar-PV-Anlage?",
+        "answer": "Diese Frage sollte mit einem professionellen Installateur geklärt werden. Kernfragen sind u.a.:\n– Eignet sich mein Hausdach für eine Installation?\n– Welche Unter-Konstruktion sollte verwendet werden (Winddruck, Schneelast, etc.)?\n– Wie viele Photovoltaik-Panels sind sinnvoll/notwendig und wie muss der Anschluss an den PV-Wechselrichter erfolgen?"
+      },
+      {
+        "question": "Wie hoch sind die Kosten für die Installation einer Solar-PV-Anlage?",
+        "answer": "Das lässt sich leider pauschal nicht beantworten. Es gibt z.B. große Unterschiede bei der Leistungsfähigkeit und Langlebigkeit sowie dem Aufbau der PV-Module. Es empfiehlt sich, mehrere Angebote von Fachfirmen/Installateuren einzuholen."
+      },
+      {
+        "question": "Was sind die Vorteile der Installation einer Solar-PV-Anlage?",
+        "answer": "– Umweltschutz / Klimaschutz\n– Autarkie\n– Prognostizierbarkeit / Kalkulierbarkeit von Energiekosten"
+      },
+      {
+        "question": "Wie warte ich meine Solar-PV-Anlage?",
+        "answer": "Eine Wartung im technischen Sinne ist nicht notwendig. Die PV-Module sollten bei Bedarf gereinigt werden, da Verschmutzung den Ertrag mindert. Der PV-Wechselrichter sollte bei Bedarf gereinigt werden; ggf. sollten die Filtermatten bei Geräten mit aktiver Kühlung gereinigt/ausgetauscht werden."
+      },
+      {
+        "question": "Wie lange ist die Lebensdauer einer Solar-PV-Anlage?",
+        "answer": "1. Der PV-Wechselrichter hat eine Lebensdauer von mindestens 10 Jahren. Die Geräte von Strong Energy haben eine Vollgarantie von 10 Jahren.\n2. Die PV-Module sind mit unterschiedlichen Garantieleistungen ausgestattet (zwischen 2 und 10 Jahren). Zudem garantieren viele Hersteller die Leistungsfähigkeit für einen Zeitraum von bis zu 30 Jahren."
+      },
+      {
+        "question": "Welche staatlichen Anreize gibt es für Solar-PV-Anlagen?",
+        "answer": "Die Anreize variieren von Bundesland zu Bundesland. Es gibt immer wieder neu aufgelegte Förderprogramme der KFW-Bank für zinsgünstige Darlehen oder Zuschüsse (auch für Speichersysteme). Momentan sind die Produkte von der Mehrwertsteuer befreit."
+      },
+      {
+        "question": "Wie wähle ich einen Solarinstallateur aus?",
+        "answer": "– Informieren Sie sich auf Portalen wie Trustpilot über die Zuverlässigkeit der Installations-Unternehmen\n– Wählen Sie regionale Fachfirmen aus\n– Fragen Sie im Freundes- und Bekanntenkreis nach deren Erfahrungen"
+      },
+      {
+        "question": "Was ist der Unterschied zwischen einer netzgebundenen und einer netzunabhängigen Solaranlage?",
+        "answer": "Eine netzgebundene Solaranlage funktioniert ggf. nur dann, wenn das Netz die benötigte Versorgungsspannung liefert. Der produzierte Überschuss kann ins Netz zurückgespeist und ggf. vergütet werden.\nEine netzunabhängige Solaranlage (Inselsystem) produziert auch dann Energie, wenn keine Netzspannung vorhanden ist."
+      },
+      {
+        "question": "Wie kann ich meinen Energieverbrauch reduzieren?",
+        "answer": "– Beachten Sie bei Neuanschaffung von Geräten die Energie-Effizienzklasse\n– Schalten Sie die Heizung ab, wenn Sie Fenster öffnen\n– Verwenden Sie Energiesparlampen oder LEDs\n– Steuern Sie die Beleuchtung mit Bewegungsmeldern\n– Vermeiden Sie Standby-Modus bei elektrischen Geräten\n– Verwenden Sie abschaltbare Steckdosenleisten"
+      },
+      {
+        "question": "Wie ist die beste Ausrichtung von Solarpanelen?",
+        "answer": "Eine \"beste\" Ausrichtung gibt es nicht! Es kommt auf viele Faktoren an: Platz auf dem Dach, Dachneigung, Azimut-Ausrichtung, Lastprofil und ob ein Batterie-Speicher verwendet wird.\nAus Erfahrung empfiehlt sich für 1-Familien-Häuser eine Aufteilung Ost (40%) und West (60%) bei einem Aufstellwinkel von ca. 15°, da so in den meisten Fällen der durchschnittliche Ertrag am besten ist."
+      },
+      {
+        "question": "Was ist der Unterschied zwischen monokristallinen und polykristallinen Solarpanelen?",
+        "answer": "Beide Typen bestehen aus Silizium. Monokristalline Panele besitzen eine Ein-Kristall-Struktur, polykristalline eine Mehr-Kristall-Struktur. Monokristalline Module sind teurer, weisen aber einen besseren Wirkungsgrad auf."
+      },
+      {
+        "question": "Was ist der Unterschied zwischen Dünnschicht- und kristallinen Solarpanelen?",
+        "answer": "Dünnschicht-Module sind leichter und kosten weniger, weisen aber auch einen schlechteren Wirkungsgrad auf als gleich große monokristalline Module."
+      },
+      {
+        "question": "Was ist der Unterschied zwischen Lithium-Ionen- und Blei-Säure-Solarbatterien?",
+        "answer": "Der Unterschied besteht in der verwendeten Zellchemie und der Energiedichte (Verhältnis vom Volumen zur gespeicherten Energie). Lithium-Batterien sind wartungsfrei und langlebiger als Blei-Säure-Batterien."
+      },
+      {
+        "question": "Was ist der Unterschied zwischen MPPT- und PWM-Ladereglern?",
+        "answer": "Der MPPT-Regler eines PV-Wechselrichters optimiert durch Einstellung der DC-Spannung den Ertrag einer PV-Anlage. Ein PWM-Laderegler passt die gelieferte DC-Spannung des PV-Systems an, um eine Batterie direkt zu laden (DC-DC-Transformator)."
+      },
+      {
+        "question": "Was ist der Unterschied zwischen netzgekoppelten und netzunabhängigen Wechselrichtern?",
+        "answer": "Ein netzgekoppelter Wechselrichter funktioniert nur mit vorhandener Netzspannung. Der Überschuss kann ins Netz eingespeist und vergütet werden.\nEin netzunabhängiger Wechselrichter (Inselsystem) produziert auch ohne Netzspannung Energie."
+      },
+      {
+        "question": "Was sind die Vorteile der Nutzung von Solarenergie für gewerbliche und industrielle Anwendungen?",
+        "answer": "1. Wenn die erzeugte Energie den Bedarf deckt, sinken die Energiekosten und sind langfristig kalkulierbar.\n2. Auch bei Teildeckung können Energiekosten durch Lastspitzen-Kappung (Peak-Shaving) gesenkt werden.\n3. Große Batteriespeicher finden zunehmend Anwendung in PPAs, Direkt-Vermarktung oder Netz-Stabilisierung – zusätzliche Einnahmequellen."
+      },
+      {
+        "question": "Was sind die Vorteile der Nutzung von Solarenergie für landwirtschaftliche Anwendungen?",
+        "answer": "Prinzipiell gelten die gleichen Vorteile wie für Privathaushalte oder Industrie. Zudem können Erträge von landwirtschaftlich nutzbaren Flächen durch die Kombination von Anbau und Photovoltaik erheblich gesteigert werden (SolarFarming), z.B. durch reduzierten Wasserbedarf dank Teil-Verschattung."
+      }
+    ]
+  },
+  {
+    "category": "Unternehmen",
+    "items": [
+      {
+        "question": "Wo ist der Vorteil von Strong Energy gegenüber anderen Anbietern?",
+        "answer": "Strong Energy hat sehr hohe Qualitätsanforderungen. Wir bieten 360° Premium Qualität in Design und Technik. In Deutschland geprüft, getestet und TÜV zertifiziert. Unsere maßgeschneiderten und sauberen Energielösungen und umfassenden Dienstleistungen bieten wir aus einer Hand an."
+      },
+      {
+        "question": "Welche Erfahrungen hat Strong Energy?",
+        "answer": "Als Teil der Strong Group sind wir seit 1986 tief im europäischen Markt verwurzelt und betreuen mehr als 20 Millionen europäische Familien. Wir sind ein wachsender Konzern mit mehr als 5 GW Erfahrung der Muttergesellschaft Skyworth im Photovoltaikbau."
+      },
+      {
+        "question": "Welche Kapazität hat Strong Energy?",
+        "answer": "Unsere Produktionskapazitäten lassen es zu, in einem einzigen Monat über 20.000 Photovoltaikanlagen zu fertigen."
+      },
+      {
+        "question": "Sind die Strong Energy Produkte outdoor geeignet?",
+        "answer": "Ja, all unsere Produkte sind outdoor geeignet. Wir haben u.a. je eine Hoch- und Niedervolt Batterie mit der am Markt höchsten Schutzart IP66 im Angebot."
+      },
+      {
+        "question": "Welche Garantie gibt Strong Energy auf die Solaranlagen?",
+        "answer": "Wir geben auf all unsere Hoch- und Niedervolt Batterien und Inverter eine 10 Jahre Vollgarantie."
+      }
+    ]
+  }
+]

@@ -1,0 +1,4 @@
+project_id = "strong-energy"
+
+[functions.send-notification-email]
+verify_jwt = false

@@ -1,0 +1,1 @@
+ALTER FUNCTION public.validate_notification_recipient() SET search_path = public;

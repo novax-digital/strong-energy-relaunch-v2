@@ -1,0 +1,715 @@
+[
+  {
+    "id": "1eb9fa8a-0dfe-4b5b-8629-c062ec4cad8e",
+    "title_de": "GPSR Richtlinie",
+    "title_en": "",
+    "description_de": null,
+    "description_en": null,
+    "category": "Sonstiges",
+    "file_url_de": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/de/1772651153575-GPSR-STRONG-ENERGY.pdf",
+    "file_url_en": null,
+    "product_slugs": [],
+    "is_published": true,
+    "sort_order": 0,
+    "created_at": "2026-03-04T19:06:13.028641+00:00",
+    "updated_at": "2026-03-04T19:06:12.881+00:00",
+    "local_file_url_de": "/assets/downloads/1772651153575-gpsr-strong-energy-9ebffc8e.pdf",
+    "local_file_url_en": null
+  },
+  {
+    "id": "fca9b03b-f7b3-49e9-a00e-6615c412186d",
+    "title_de": "Alfred-10 Datenblatt",
+    "title_en": "Alfred-10 Datasheet",
+    "description_de": null,
+    "description_en": null,
+    "category": "Datenblatt",
+    "file_url_de": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/de/1773071382647-Datenblatt_StrongEnergy_Alfred_de_20250903-1%20(1).pdf",
+    "file_url_en": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/en/1773071409645-Datasheet_StrongEnergy_Alfred_en_20250903-1.pdf",
+    "product_slugs": [
+      "alfred-10"
+    ],
+    "is_published": true,
+    "sort_order": 0,
+    "created_at": "2026-03-09T15:50:33.779494+00:00",
+    "updated_at": "2026-03-09T15:50:33.616+00:00",
+    "local_file_url_de": "/assets/downloads/1773071382647-datenblatt-strongenergy-alfred-de-20250903-1-1-32b3cbf8.pdf",
+    "local_file_url_en": "/assets/downloads/1773071409645-datasheet-strongenergy-alfred-en-20250903-1-7ad1b2ec.pdf"
+  },
+  {
+    "id": "a271df93-d491-4654-a7f8-4e530fcfee32",
+    "title_de": "Alfred-10 Installationsanleitung",
+    "title_en": "",
+    "description_de": null,
+    "description_en": null,
+    "category": "Installationsanleitung",
+    "file_url_de": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/de/1773071703835-Manual_STRONG_ALFRED_de_v1.3_20251014.pdf",
+    "file_url_en": null,
+    "product_slugs": [
+      "alfred-10"
+    ],
+    "is_published": true,
+    "sort_order": 0,
+    "created_at": "2026-03-09T15:55:15.628841+00:00",
+    "updated_at": "2026-03-09T15:55:15.497+00:00",
+    "local_file_url_de": "/assets/downloads/1773071703835-manual-strong-alfred-de-v1.3-20251014-a336027c.pdf",
+    "local_file_url_en": null
+  },
+  {
+    "id": "50997b4e-aadf-422f-9f5a-c2b57ca3f5b6",
+    "title_de": "Alfred-10 Firmware Update",
+    "title_en": "",
+    "description_de": null,
+    "description_en": null,
+    "category": "Software",
+    "file_url_de": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/de/1773071753230-FirmwareUpdate_STRONG_ALFRED_20241202.pdf",
+    "file_url_en": null,
+    "product_slugs": [
+      "alfred-10"
+    ],
+    "is_published": true,
+    "sort_order": 0,
+    "created_at": "2026-03-09T15:55:57.784824+00:00",
+    "updated_at": "2026-03-09T15:55:57.711+00:00",
+    "local_file_url_de": "/assets/downloads/1773071753230-firmwareupdate-strong-alfred-20241202-2a96742c.pdf",
+    "local_file_url_en": null
+  },
+  {
+    "id": "b55e30bd-5271-435b-a22a-bb27ca1dd440",
+    "title_de": "Alfred-10 Konformitätserklärung",
+    "title_en": "",
+    "description_de": null,
+    "description_en": null,
+    "category": "Zertifikat",
+    "file_url_de": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/de/1773071822131-Konformitaet_FNN_Batteriespeicher_STRONG_ALFRED_20250203.pdf",
+    "file_url_en": null,
+    "product_slugs": [
+      "alfred-10"
+    ],
+    "is_published": true,
+    "sort_order": 0,
+    "created_at": "2026-03-09T15:57:06.969631+00:00",
+    "updated_at": "2026-03-09T15:57:06.884+00:00",
+    "local_file_url_de": "/assets/downloads/1773071822131-konformitaet-fnn-batteriespeicher-strong-alfred-20250203-5605cd89.pdf",
+    "local_file_url_en": null
+  },
+  {
+    "id": "6b0a8bd6-550c-4fb1-ad4e-a53a2c24e2cb",
+    "title_de": "Alfred-10 Einheitenzertifikat",
+    "title_en": "",
+    "description_de": null,
+    "description_en": null,
+    "category": "Zertifikat",
+    "file_url_de": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/de/1773071889831-Alfred_Wechselrichter_Einheiten-Zertifikat_NAS-Zertifikat_20240524.pdf",
+    "file_url_en": null,
+    "product_slugs": [
+      "alfred-10"
+    ],
+    "is_published": true,
+    "sort_order": 0,
+    "created_at": "2026-03-09T15:58:12.408853+00:00",
+    "updated_at": "2026-03-09T15:58:12.21+00:00",
+    "local_file_url_de": "/assets/downloads/1773071889831-alfred-wechselrichter-einheiten-zertifikat-nas-zertifikat-20240524-dfe15de1.pdf",
+    "local_file_url_en": null
+  },
+  {
+    "id": "f1573c8a-09e3-44da-b165-688c80a37543",
+    "title_de": "AGB",
+    "title_en": "",
+    "description_de": null,
+    "description_en": null,
+    "category": "Sonstiges",
+    "file_url_de": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/de/1773072187540-AGB_StrongEnergy.pdf",
+    "file_url_en": null,
+    "product_slugs": [],
+    "is_published": true,
+    "sort_order": 0,
+    "created_at": "2026-03-09T16:03:10.396933+00:00",
+    "updated_at": "2026-03-09T16:03:10.316+00:00",
+    "local_file_url_de": "/assets/downloads/1773072187540-agb-strongenergy-84b9952a.pdf",
+    "local_file_url_en": null
+  },
+  {
+    "id": "11667020-0ccb-4282-b99b-5949297a9441",
+    "title_de": "CE-Zertifikat (Smartmeter Chint DTSU666)",
+    "title_en": "CE-Certificate (Smartmeter Chint DTSU666)",
+    "description_de": null,
+    "description_en": null,
+    "category": "Zertifikat",
+    "file_url_de": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/de/1773348097009-CE-ZERTIFIKAT-Smartmeter-Chint-DTSU666.pdf",
+    "file_url_en": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/en/1773348099603-CE-ZERTIFIKAT-Smartmeter-Chint-DTSU666.pdf",
+    "product_slugs": [
+      "hochvolt-bundle"
+    ],
+    "is_published": true,
+    "sort_order": 0,
+    "created_at": "2026-03-12T20:41:45.219354+00:00",
+    "updated_at": "2026-03-12T20:41:44.643+00:00",
+    "local_file_url_de": "/assets/downloads/1773348097009-ce-zertifikat-smartmeter-chint-dtsu666-35d02062.pdf",
+    "local_file_url_en": "/assets/downloads/1773348099603-ce-zertifikat-smartmeter-chint-dtsu666-0692631a.pdf"
+  },
+  {
+    "id": "a593b66a-3bab-4f3d-bafa-3ac958052339",
+    "title_de": "CE-Zertifikat (CVST-08K3P & CVT5ST-15K3P)",
+    "title_en": "CE-Certificate (CVST-08K3P & CVT5ST-15K3P)",
+    "description_de": null,
+    "description_en": null,
+    "category": "Zertifikat",
+    "file_url_de": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/de/1773348148183-CVTxST_520K3P-Inverter-multilanguage-DoC.pdf",
+    "file_url_en": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/en/1773348152661-CVTxST_520K3P-Inverter-multilanguage-DoC.pdf",
+    "product_slugs": [
+      "hochvolt-bundle"
+    ],
+    "is_published": true,
+    "sort_order": 0,
+    "created_at": "2026-03-12T20:42:36.592489+00:00",
+    "updated_at": "2026-03-12T20:42:36.452+00:00",
+    "local_file_url_de": "/assets/downloads/1773348148183-cvtxst-520k3p-inverter-multilanguage-doc-4b75d938.pdf",
+    "local_file_url_en": "/assets/downloads/1773348152661-cvtxst-520k3p-inverter-multilanguage-doc-dd00c279.pdf"
+  },
+  {
+    "id": "7da62462-b984-4b2c-91f7-5b646bea8ced",
+    "title_de": "Einheitenzertifikat",
+    "title_en": "Unit certificate",
+    "description_de": null,
+    "description_en": null,
+    "category": "Zertifikat",
+    "file_url_de": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/de/1773348180756-VDE4105-EZE-CERT-CVTxST-5-20K3P.pdf",
+    "file_url_en": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/en/1773348185166-VDE4105-EZE-CERT-CVTxST-5-20K3P.pdf",
+    "product_slugs": [
+      "hochvolt-bundle"
+    ],
+    "is_published": true,
+    "sort_order": 0,
+    "created_at": "2026-03-12T20:43:09.361747+00:00",
+    "updated_at": "2026-03-12T20:44:17.091+00:00",
+    "local_file_url_de": "/assets/downloads/1773348180756-vde4105-eze-cert-cvtxst-5-20k3p-c2b7de45.pdf",
+    "local_file_url_en": "/assets/downloads/1773348185166-vde4105-eze-cert-cvtxst-5-20k3p-4dd47399.pdf"
+  },
+  {
+    "id": "71f6a68a-debf-48cc-9374-1bd137b2e213",
+    "title_de": "Zertifikat für den Netz- und Anlagenschutz",
+    "title_en": "Certificate of NS protection",
+    "description_de": null,
+    "description_en": null,
+    "category": "Zertifikat",
+    "file_url_de": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/de/1773348238299-VDE4105-NAS-CER-CVTxST-5-20K3P.pdf",
+    "file_url_en": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/en/1773348240788-VDE4105-NAS-CER-CVTxST-5-20K3P.pdf",
+    "product_slugs": [
+      "hochvolt-bundle"
+    ],
+    "is_published": true,
+    "sort_order": 0,
+    "created_at": "2026-03-12T20:44:04.346645+00:00",
+    "updated_at": "2026-03-12T20:44:23.795+00:00",
+    "local_file_url_de": "/assets/downloads/1773348238299-vde4105-nas-cer-cvtxst-5-20k3p-d7d11984.pdf",
+    "local_file_url_en": "/assets/downloads/1773348240788-vde4105-nas-cer-cvtxst-5-20k3p-f973dba6.pdf"
+  },
+  {
+    "id": "318bc20e-3f60-4a6e-914e-d8164a9eef0d",
+    "title_de": "Datenblatt (CVT3ST-08K3P & CVT5ST-15K3P)",
+    "title_en": "",
+    "description_de": null,
+    "description_en": null,
+    "category": "Datenblatt",
+    "file_url_de": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/de/1773348301962-Datenblatt-CVST-08K3P-CVT5ST-15K3P-200424-oktober-24.pdf",
+    "file_url_en": null,
+    "product_slugs": [
+      "hochvolt-bundle"
+    ],
+    "is_published": true,
+    "sort_order": 0,
+    "created_at": "2026-03-12T20:45:05.012826+00:00",
+    "updated_at": "2026-03-12T20:45:04.912+00:00",
+    "local_file_url_de": "/assets/downloads/1773348301962-datenblatt-cvst-08k3p-cvt5st-15k3p-200424-oktober-24-bac1b646.pdf",
+    "local_file_url_en": null
+  },
+  {
+    "id": "ad4a4215-634b-4c04-b21d-d1b6cb0b6ff8",
+    "title_de": "CE-Zertifikat (CRN*ST)",
+    "title_en": "CE-Certificate (CRN*ST)",
+    "description_de": null,
+    "description_en": null,
+    "category": "Zertifikat",
+    "file_url_de": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/de/1773348407075-CR03ST_4.7kWh-HESS-Battery-multilanguage-DoC-issue-1.pdf",
+    "file_url_en": null,
+    "product_slugs": [
+      "hochvolt-bundle"
+    ],
+    "is_published": true,
+    "sort_order": 0,
+    "created_at": "2026-03-12T20:46:51.284673+00:00",
+    "updated_at": "2026-03-12T20:46:51.19+00:00",
+    "local_file_url_de": "/assets/downloads/1773348407075-cr03st-4.7kwh-hess-battery-multilanguage-doc-issue-1-16dc1b67.pdf",
+    "local_file_url_en": null
+  },
+  {
+    "id": "289a0cb9-bef6-40b0-ad43-c4d135653b72",
+    "title_de": "Datenblatt (CRNxST)",
+    "title_en": "",
+    "description_de": null,
+    "description_en": null,
+    "category": "Datenblatt",
+    "file_url_de": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/de/1773348459061-Datenblatt-HV-CRNxST-200424.pdf",
+    "file_url_en": null,
+    "product_slugs": [
+      "hochvolt-bundle"
+    ],
+    "is_published": true,
+    "sort_order": 0,
+    "created_at": "2026-03-12T20:47:42.767628+00:00",
+    "updated_at": "2026-03-12T20:47:42.671+00:00",
+    "local_file_url_de": "/assets/downloads/1773348459061-datenblatt-hv-crnxst-200424-05eab29f.pdf",
+    "local_file_url_en": null
+  },
+  {
+    "id": "3e568e7f-a2e9-4fdb-88ae-886c7c9fb347",
+    "title_de": "Star H Datenblatt",
+    "title_en": "",
+    "description_de": null,
+    "description_en": null,
+    "category": "Datenblatt",
+    "file_url_de": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/de/Datenblatt_Star_H_1_Front_neu_300326.pdf",
+    "file_url_en": null,
+    "product_slugs": [
+      "star-h"
+    ],
+    "is_published": true,
+    "sort_order": 0,
+    "created_at": "2026-03-12T19:47:19.644463+00:00",
+    "updated_at": "2026-03-30T11:48:32.157222+00:00",
+    "local_file_url_de": "/assets/downloads/datenblatt-star-h-1-front-neu-300326-62eba05e.pdf",
+    "local_file_url_en": null
+  },
+  {
+    "id": "e5698030-38c4-4696-a837-4e6163425859",
+    "title_de": "Anleitung (CRN2ST-9.4KWH, CRN3ST-14KWH, CRN4ST-18.8KWH & CRN5ST-23.5KWH)",
+    "title_en": "",
+    "description_de": null,
+    "description_en": null,
+    "category": "Installationsanleitung",
+    "file_url_de": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/de/1773389387818-Anleitung_Deutsch_STRONG_CRNxST_HV-Batterie_v1.3.pdf",
+    "file_url_en": null,
+    "product_slugs": [
+      "hochvolt-bundle"
+    ],
+    "is_published": true,
+    "sort_order": 0,
+    "created_at": "2026-03-12T20:47:17.554033+00:00",
+    "updated_at": "2026-03-13T08:09:51.772+00:00",
+    "local_file_url_de": "/assets/downloads/1773389387818-anleitung-deutsch-strong-crnxst-hv-batterie-v1.3-d03bf594.pdf",
+    "local_file_url_en": null
+  },
+  {
+    "id": "f744e056-a9c7-4bf8-932c-c13d791b39d4",
+    "title_de": "Anleitung (CVST-08K3P & CVT5ST-15K3P)",
+    "title_en": "",
+    "description_de": null,
+    "description_en": null,
+    "category": "Installationsanleitung",
+    "file_url_de": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/de/1773389403117-Anleitung_Deutsch_STRONG_CVTxST-xxK3P_v1.4.pdf",
+    "file_url_en": null,
+    "product_slugs": [
+      "hochvolt-bundle"
+    ],
+    "is_published": true,
+    "sort_order": 0,
+    "created_at": "2026-03-12T20:45:36.358752+00:00",
+    "updated_at": "2026-03-13T08:10:07.665+00:00",
+    "local_file_url_de": "/assets/downloads/1773389403117-anleitung-deutsch-strong-cvtxst-xxk3p-v1.4-02bf411b.pdf",
+    "local_file_url_en": null
+  },
+  {
+    "id": "af36b8f8-4fd2-42b4-85d0-3bb3f9695072",
+    "title_de": "Hochvolt Bundle Datenblatt",
+    "title_en": "",
+    "description_de": null,
+    "description_en": null,
+    "category": "Datenblatt",
+    "file_url_de": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/de/1773389423501-Datenblatt_StrongEnergy_HV-Bundle_de_20250903.pdf",
+    "file_url_en": null,
+    "product_slugs": [
+      "hochvolt-bundle"
+    ],
+    "is_published": true,
+    "sort_order": 0,
+    "created_at": "2026-03-12T20:38:47.198516+00:00",
+    "updated_at": "2026-03-13T08:10:30.661+00:00",
+    "local_file_url_de": "/assets/downloads/1773389423501-datenblatt-strongenergy-hv-bundle-de-20250903-d81e2c78.pdf",
+    "local_file_url_en": null
+  },
+  {
+    "id": "16d4376f-4135-4f26-81e6-19ca7efcb327",
+    "title_de": "Star Q Datenblatt",
+    "title_en": "",
+    "description_de": null,
+    "description_en": null,
+    "category": "Datenblatt",
+    "file_url_de": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/de/Datenblatt_Star_Q_1_Front_neu_300326.pdf",
+    "file_url_en": null,
+    "product_slugs": [
+      "star-q"
+    ],
+    "is_published": true,
+    "sort_order": 0,
+    "created_at": "2026-03-12T19:47:31.624835+00:00",
+    "updated_at": "2026-03-30T11:45:48.680407+00:00",
+    "local_file_url_de": "/assets/downloads/datenblatt-star-q-1-front-neu-300326-79a475ce.pdf",
+    "local_file_url_en": null
+  },
+  {
+    "id": "5e49dace-f8da-4fca-a0cd-b2413eae4c03",
+    "title_de": "Garantiebedingungen Portable Powerstations",
+    "title_en": "Warranty Terms Portable Power Stations",
+    "description_de": null,
+    "description_en": null,
+    "category": "Garantie",
+    "file_url_de": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/de/Garantiebedingungen-Portables-GER-Maerz-2025.pdf",
+    "file_url_en": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/en/Warranty-Portable-Products-ENG-March-2025.pdf",
+    "product_slugs": [],
+    "is_published": true,
+    "sort_order": 0,
+    "created_at": "2026-04-15T13:49:43.095472+00:00",
+    "updated_at": "2026-04-15T13:49:43.095472+00:00",
+    "local_file_url_de": "/assets/downloads/garantiebedingungen-portables-ger-maerz-2025-680a0cd6.pdf",
+    "local_file_url_en": "/assets/downloads/warranty-portable-products-eng-march-2025-55f1b0b5.pdf"
+  },
+  {
+    "id": "b6230b0d-ab42-409b-ad7c-50cdea0b5b18",
+    "title_de": "Garantiebedingungen",
+    "title_en": "",
+    "description_de": null,
+    "description_en": null,
+    "category": "Garantie",
+    "file_url_de": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/de/1773072135060-Garantiebedingungen-Solaranlagen-01-25.pdf",
+    "file_url_en": null,
+    "product_slugs": [],
+    "is_published": true,
+    "sort_order": 0,
+    "created_at": "2026-03-09T16:02:19.156089+00:00",
+    "updated_at": "2026-03-09T16:02:18.955+00:00",
+    "local_file_url_de": "/assets/downloads/1773072135060-garantiebedingungen-solaranlagen-01-25-6d3e5e69.pdf",
+    "local_file_url_en": null
+  },
+  {
+    "id": "733717da-e8f5-44ea-9bd5-56132f92f33c",
+    "title_de": "CP05ST-3000W - Benutzerhandbuch",
+    "title_en": "CP05ST-3000W - User Manual",
+    "description_de": null,
+    "description_en": null,
+    "category": "Installationsanleitung",
+    "file_url_de": null,
+    "file_url_en": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/en/STRONG_CP05ST-3000W_PES-USER_MANUAL.pdf",
+    "product_slugs": [
+      "cp05st-3000w"
+    ],
+    "is_published": true,
+    "sort_order": 0,
+    "created_at": "2026-04-15T15:35:26.744199+00:00",
+    "updated_at": "2026-04-15T15:35:26.744199+00:00",
+    "local_file_url_de": null,
+    "local_file_url_en": "/assets/downloads/strong-cp05st-3000w-pes-user-manual-7f606650.pdf"
+  },
+  {
+    "id": "e65f4e59-cb68-46c7-89a2-da7a3f093e24",
+    "title_de": "Portable Power Stations - Betriebsanleitung",
+    "title_en": "Portable Power Stations - User Manual",
+    "description_de": null,
+    "description_en": null,
+    "category": "Installationsanleitung",
+    "file_url_de": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/de/Portable-Power-Stations-Betriebsanleitung.pdf",
+    "file_url_en": null,
+    "product_slugs": [
+      "cp01st-300w",
+      "cp02st-500w",
+      "cp03st-800w",
+      "cp05st-3000w"
+    ],
+    "is_published": true,
+    "sort_order": 0,
+    "created_at": "2026-04-15T15:47:46.8675+00:00",
+    "updated_at": "2026-04-15T15:47:46.8675+00:00",
+    "local_file_url_de": "/assets/downloads/portable-power-stations-betriebsanleitung-85b6ba20.pdf",
+    "local_file_url_en": null
+  },
+  {
+    "id": "9cfff071-ab42-4c56-8acc-23f66dc327f8",
+    "title_de": "Alfred-10 Produktbroschüre",
+    "title_en": "Alfred-10 Product Brochure",
+    "description_de": null,
+    "description_en": null,
+    "category": "Broschüre",
+    "file_url_de": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/de/1781273901186-ALFRED%20Product%20Brochure%20(GER)_251128.pdf",
+    "file_url_en": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/en/1773071542278-ALFRED-Product-Brochure-ENG_0425.pdf",
+    "product_slugs": [
+      "alfred-10"
+    ],
+    "is_published": true,
+    "sort_order": 0,
+    "created_at": "2026-03-09T15:52:30.57189+00:00",
+    "updated_at": "2026-06-12T14:18:24.849+00:00",
+    "local_file_url_de": "/assets/downloads/1773071539349-alfred-product-brochure-ger-250320-a4-3mm-9c17bfae.pdf",
+    "local_file_url_en": "/assets/downloads/1773071542278-alfred-product-brochure-eng-0425-ed12fc07.pdf"
+  },
+  {
+    "id": "9c492a6d-3ea8-4fc0-9bbe-b3f4fd781161",
+    "title_de": "STRONG Energy Residential & Portable Brochure 2026 (International)",
+    "title_en": "STRONG Energy Residential & Portable Brochure 2026 (International)",
+    "description_de": null,
+    "description_en": null,
+    "category": "Strong Energy Products 2026 - International",
+    "file_url_de": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/de/1781872929910-STRONG%20Energy%20Residential%20&%20Portable%20Brochure%202026%20(International).pdf",
+    "file_url_en": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/de/1781872929910-STRONG%20Energy%20Residential%20&%20Portable%20Brochure%202026%20(International).pdf",
+    "product_slugs": [],
+    "is_published": true,
+    "sort_order": 0,
+    "created_at": "2026-06-19T12:43:57.102303+00:00",
+    "updated_at": "2026-06-19T12:43:56.589+00:00",
+    "local_file_url_de": "/assets/downloads/strong-energy-residential-portable-brochure-2026-international-e743b6bf.pdf",
+    "local_file_url_en": "/assets/downloads/strong-energy-residential-portable-brochure-2026-international-e743b6bf.pdf"
+  },
+  {
+    "id": "5449b12a-6d63-47f2-9d61-4cc3d9e50032",
+    "title_de": "STRONG Energy C&I Product Brochure 2026 (Intermational)",
+    "title_en": "STRONG Energy C&I Product Brochure 2026 (Intermational)",
+    "description_de": null,
+    "description_en": null,
+    "category": "Strong Energy Products 2026 - International",
+    "file_url_de": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/de/1781873042631-STRONG%20Energy%20C&I%20Product%20Brochure%202026%20(Intermational).pdf",
+    "file_url_en": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/de/1781873042631-STRONG%20Energy%20C&I%20Product%20Brochure%202026%20(Intermational).pdf",
+    "product_slugs": [],
+    "is_published": true,
+    "sort_order": 0,
+    "created_at": "2026-06-19T12:46:09.986718+00:00",
+    "updated_at": "2026-06-19T12:46:09.565+00:00",
+    "local_file_url_de": "/assets/downloads/strong-energy-c-i-product-brochure-2026-intermational-c7852ff5.pdf",
+    "local_file_url_en": "/assets/downloads/strong-energy-c-i-product-brochure-2026-intermational-c7852ff5.pdf"
+  },
+  {
+    "id": "8a1d0df7-bfbe-48c0-942f-5064ed9fb84a",
+    "title_de": "Portable Power Stations Produktkatalog",
+    "title_en": "Portable Power Stations Product Catalog",
+    "description_de": "Portable Power Stations Produktkatalog",
+    "description_en": "Portable Power Stations Product Catalog",
+    "category": "Broschüre",
+    "file_url_de": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/de/CP05ST-3000W-Produktkatalog.pdf",
+    "file_url_en": null,
+    "product_slugs": [
+      "cs03st-160w"
+    ],
+    "is_published": true,
+    "sort_order": 10,
+    "created_at": "2026-04-15T10:49:52.393742+00:00",
+    "updated_at": "2026-04-15T10:49:52.393742+00:00",
+    "local_file_url_de": "/assets/downloads/cp05st-3000w-produktkatalog-58a481c2.pdf",
+    "local_file_url_en": null
+  },
+  {
+    "id": "a3ce6fbc-8ad0-46f3-b2e0-89cd3ce794f6",
+    "title_de": "Portable Power Stations Produktkatalog",
+    "title_en": "Portable Power Stations Product Catalog",
+    "description_de": "Portable Power Stations Produktkatalog",
+    "description_en": "Portable Power Stations Product Catalog",
+    "category": "Broschüre",
+    "file_url_de": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/de/CP05ST-3000W-Produktkatalog.pdf",
+    "file_url_en": null,
+    "product_slugs": [
+      "cp03st-800w"
+    ],
+    "is_published": true,
+    "sort_order": 10,
+    "created_at": "2026-04-15T10:40:52.060413+00:00",
+    "updated_at": "2026-04-15T10:40:52.060413+00:00",
+    "local_file_url_de": "/assets/downloads/cp05st-3000w-produktkatalog-58a481c2.pdf",
+    "local_file_url_en": null
+  },
+  {
+    "id": "3f97de10-1497-48f2-b931-c751e979f9c7",
+    "title_de": "Portable Power Stations Produktkatalog",
+    "title_en": "Portable Power Stations Product Catalog",
+    "description_de": "Portable Power Stations Produktkatalog",
+    "description_en": "Portable Power Stations Product Catalog",
+    "category": "Broschüre",
+    "file_url_de": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/de/CP05ST-3000W-Produktkatalog.pdf",
+    "file_url_en": null,
+    "product_slugs": [
+      "cs02st-100w"
+    ],
+    "is_published": true,
+    "sort_order": 10,
+    "created_at": "2026-04-15T10:49:52.393742+00:00",
+    "updated_at": "2026-04-15T10:49:52.393742+00:00",
+    "local_file_url_de": "/assets/downloads/cp05st-3000w-produktkatalog-58a481c2.pdf",
+    "local_file_url_en": null
+  },
+  {
+    "id": "97a42275-5947-455f-9b28-31ffac2a4bb6",
+    "title_de": "Portable Power Stations Produktkatalog",
+    "title_en": "Portable Power Stations Product Catalog",
+    "description_de": "Portable Power Stations Produktkatalog",
+    "description_en": "Portable Power Stations Product Catalog",
+    "category": "Broschüre",
+    "file_url_de": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/de/CP05ST-3000W-Produktkatalog.pdf",
+    "file_url_en": null,
+    "product_slugs": [
+      "cp02st-500w"
+    ],
+    "is_published": true,
+    "sort_order": 10,
+    "created_at": "2026-04-15T10:44:31.72771+00:00",
+    "updated_at": "2026-04-15T10:44:31.72771+00:00",
+    "local_file_url_de": "/assets/downloads/cp05st-3000w-produktkatalog-58a481c2.pdf",
+    "local_file_url_en": null
+  },
+  {
+    "id": "282402bd-57de-4e98-9af0-eb8564d6a1f8",
+    "title_de": "CP05ST-3000W Produktkatalog",
+    "title_en": "CP05ST-3000W Product Catalog",
+    "description_de": "Portable Power Stations Produktkatalog",
+    "description_en": "Portable Power Stations Product Catalog",
+    "category": "Broschüre",
+    "file_url_de": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/de/CP05ST-3000W-Produktkatalog.pdf",
+    "file_url_en": null,
+    "product_slugs": [
+      "cp05st-3000w"
+    ],
+    "is_published": true,
+    "sort_order": 10,
+    "created_at": "2026-04-15T09:57:54.665397+00:00",
+    "updated_at": "2026-04-15T09:57:54.665397+00:00",
+    "local_file_url_de": "/assets/downloads/cp05st-3000w-produktkatalog-58a481c2.pdf",
+    "local_file_url_en": null
+  },
+  {
+    "id": "bbe7573d-f260-425b-a912-d420b1433860",
+    "title_de": "Portable Power Stations Produktkatalog",
+    "title_en": "Portable Power Stations Product Catalog",
+    "description_de": "Portable Power Stations Produktkatalog",
+    "description_en": "Portable Power Stations Product Catalog",
+    "category": "Broschüre",
+    "file_url_de": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/de/CP05ST-3000W-Produktkatalog.pdf",
+    "file_url_en": null,
+    "product_slugs": [
+      "cp01st-300w"
+    ],
+    "is_published": true,
+    "sort_order": 10,
+    "created_at": "2026-04-15T10:46:04.76648+00:00",
+    "updated_at": "2026-04-15T10:46:04.76648+00:00",
+    "local_file_url_de": "/assets/downloads/cp05st-3000w-produktkatalog-58a481c2.pdf",
+    "local_file_url_en": null
+  },
+  {
+    "id": "967311ec-22d5-4ce1-9f7d-aee6bee46cfa",
+    "title_de": "CP05ST-3000W Konformitätserklärung",
+    "title_en": "CP05ST-3000W Declaration of Conformity",
+    "description_de": "EU-Konformitätserklärung (DoC)",
+    "description_en": "EU Declaration of Conformity (DoC)",
+    "category": "Zertifikat",
+    "file_url_de": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/de/CP05ST-3000W-DoC.pdf",
+    "file_url_en": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/de/CP05ST-3000W-DoC.pdf",
+    "product_slugs": [
+      "cp05st-3000w"
+    ],
+    "is_published": true,
+    "sort_order": 11,
+    "created_at": "2026-04-15T09:57:54.665397+00:00",
+    "updated_at": "2026-04-15T09:57:54.665397+00:00",
+    "local_file_url_de": "/assets/downloads/cp05st-3000w-doc-aa7f9c20.pdf",
+    "local_file_url_en": "/assets/downloads/cp05st-3000w-doc-aa7f9c20.pdf"
+  },
+  {
+    "id": "53acbafc-299c-4fad-96f2-db36912caee0",
+    "title_de": "Solarpanel Konformitätserklärung",
+    "title_en": "Solar Panel Declaration of Conformity",
+    "description_de": "EU-Konformitätserklärung (DoC) für CS02ST-100W & CS03ST-160W",
+    "description_en": "EU Declaration of Conformity (DoC) for CS02ST-100W & CS03ST-160W",
+    "category": "Zertifikat",
+    "file_url_de": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/de/CS02ST-CS03ST-DoC.pdf",
+    "file_url_en": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/de/CS02ST-CS03ST-DoC.pdf",
+    "product_slugs": [
+      "cs02st-100w"
+    ],
+    "is_published": true,
+    "sort_order": 11,
+    "created_at": "2026-04-15T10:49:52.393742+00:00",
+    "updated_at": "2026-04-15T10:49:52.393742+00:00",
+    "local_file_url_de": "/assets/downloads/cs02st-cs03st-doc-973bbf72.pdf",
+    "local_file_url_en": "/assets/downloads/cs02st-cs03st-doc-973bbf72.pdf"
+  },
+  {
+    "id": "c35b6550-d75d-426f-930d-5f09855b2104",
+    "title_de": "Solarpanel Konformitätserklärung",
+    "title_en": "Solar Panel Declaration of Conformity",
+    "description_de": "EU-Konformitätserklärung (DoC) für CS02ST-100W & CS03ST-160W",
+    "description_en": "EU Declaration of Conformity (DoC) for CS02ST-100W & CS03ST-160W",
+    "category": "Zertifikat",
+    "file_url_de": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/de/CS02ST-CS03ST-DoC.pdf",
+    "file_url_en": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/de/CS02ST-CS03ST-DoC.pdf",
+    "product_slugs": [
+      "cs03st-160w"
+    ],
+    "is_published": true,
+    "sort_order": 11,
+    "created_at": "2026-04-15T10:49:52.393742+00:00",
+    "updated_at": "2026-04-15T10:49:52.393742+00:00",
+    "local_file_url_de": "/assets/downloads/cs02st-cs03st-doc-973bbf72.pdf",
+    "local_file_url_en": "/assets/downloads/cs02st-cs03st-doc-973bbf72.pdf"
+  },
+  {
+    "id": "7b12676e-acff-493b-bae4-04e5a9b877af",
+    "title_de": "CP01ST-300W Konformitätserklärung",
+    "title_en": "CP01ST-300W Declaration of Conformity",
+    "description_de": "EU-Konformitätserklärung (DoC)",
+    "description_en": "EU Declaration of Conformity (DoC)",
+    "category": "Zertifikat",
+    "file_url_de": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/de/CP01ST-300W-DoC.pdf",
+    "file_url_en": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/de/CP01ST-300W-DoC.pdf",
+    "product_slugs": [
+      "cp01st-300w"
+    ],
+    "is_published": true,
+    "sort_order": 11,
+    "created_at": "2026-04-15T10:46:04.76648+00:00",
+    "updated_at": "2026-04-15T10:46:04.76648+00:00",
+    "local_file_url_de": "/assets/downloads/cp01st-300w-doc-10a96381.pdf",
+    "local_file_url_en": "/assets/downloads/cp01st-300w-doc-10a96381.pdf"
+  },
+  {
+    "id": "e23a9c5d-dbd8-4e8e-aa30-388b83dcb973",
+    "title_de": "CP03ST-800W Konformitätserklärung",
+    "title_en": "CP03ST-800W Declaration of Conformity",
+    "description_de": "EU-Konformitätserklärung (DoC)",
+    "description_en": "EU Declaration of Conformity (DoC)",
+    "category": "Zertifikat",
+    "file_url_de": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/de/CP03ST-800W-DoC.pdf",
+    "file_url_en": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/de/CP03ST-800W-DoC.pdf",
+    "product_slugs": [
+      "cp03st-800w"
+    ],
+    "is_published": true,
+    "sort_order": 11,
+    "created_at": "2026-04-15T10:40:52.060413+00:00",
+    "updated_at": "2026-04-15T10:40:52.060413+00:00",
+    "local_file_url_de": "/assets/downloads/cp03st-800w-doc-ed74a2b7.pdf",
+    "local_file_url_en": "/assets/downloads/cp03st-800w-doc-ed74a2b7.pdf"
+  },
+  {
+    "id": "2e61f0bd-9df5-4ec6-9bda-7ccd0760111f",
+    "title_de": "CP02ST-500W Konformitätserklärung",
+    "title_en": "CP02ST-500W Declaration of Conformity",
+    "description_de": "EU-Konformitätserklärung (DoC)",
+    "description_en": "EU Declaration of Conformity (DoC)",
+    "category": "Zertifikat",
+    "file_url_de": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/de/CP02ST-500W-DoC.pdf",
+    "file_url_en": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/de/CP02ST-500W-DoC.pdf",
+    "product_slugs": [
+      "cp02st-500w"
+    ],
+    "is_published": true,
+    "sort_order": 11,
+    "created_at": "2026-04-15T10:44:31.72771+00:00",
+    "updated_at": "2026-04-15T10:44:31.72771+00:00",
+    "local_file_url_de": "/assets/downloads/cp02st-500w-doc-769fc8a4.pdf",
+    "local_file_url_en": "/assets/downloads/cp02st-500w-doc-769fc8a4.pdf"
+  }
+]

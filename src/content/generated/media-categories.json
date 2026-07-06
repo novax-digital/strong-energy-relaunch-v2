@@ -1,0 +1,122 @@
+[
+  {
+    "id": "c1e017e6-c9f3-4414-b80c-421e93bdb0b8",
+    "name_de": "Alfred-10",
+    "name_en": "Alfred-10",
+    "sort_order": 0,
+    "created_at": "2026-03-12T20:10:47.986604+00:00",
+    "parent_id": "6550e969-ee30-41ce-b6a7-6b23fb0c1ba9"
+  },
+  {
+    "id": "447a5ca7-a145-4a1f-ad61-f7961aae4fa3",
+    "name_de": "Intersolar 2025",
+    "name_en": "Intersolar 2025",
+    "sort_order": 0,
+    "created_at": "2026-03-12T20:09:33.623741+00:00",
+    "parent_id": "f3d07314-fe64-4a83-9e52-deb4e807b95c"
+  },
+  {
+    "id": "849a050b-c76e-4141-8952-cddbf4516241",
+    "name_de": "T&S Solar Installation ALFRED",
+    "name_en": "T&S Solar Installation ALFRED",
+    "sort_order": 0,
+    "created_at": "2026-03-12T19:57:00.245341+00:00",
+    "parent_id": "f4e0b8f9-97e1-48de-be2c-41fc84eb796f"
+  },
+  {
+    "id": "76919dbb-6972-4822-acf2-7f38fafdf70c",
+    "name_de": "Videos",
+    "name_en": "Videos",
+    "sort_order": 0,
+    "created_at": "2026-03-12T20:08:56.768077+00:00",
+    "parent_id": null
+  },
+  {
+    "id": "c4ed887e-8599-45db-85b8-8d75597fa3c3",
+    "name_de": "Endkunde ALFRED 10 (24kWh)",
+    "name_en": "Customer ALFRED 10 (24kWh)",
+    "sort_order": 1,
+    "created_at": "2026-03-12T19:58:20.978647+00:00",
+    "parent_id": "f4e0b8f9-97e1-48de-be2c-41fc84eb796f"
+  },
+  {
+    "id": "f4e0b8f9-97e1-48de-be2c-41fc84eb796f",
+    "name_de": "Installationen",
+    "name_en": "Installations",
+    "sort_order": 1,
+    "created_at": "2026-03-12T20:05:15.371144+00:00",
+    "parent_id": null
+  },
+  {
+    "id": "caea32cc-4892-411f-a3d2-f2700c90c1f4",
+    "name_de": "Intersolar 2024",
+    "name_en": "Intersolar 2024",
+    "sort_order": 1,
+    "created_at": "2026-03-12T20:09:43.23801+00:00",
+    "parent_id": "f3d07314-fe64-4a83-9e52-deb4e807b95c"
+  },
+  {
+    "id": "ffaf4654-e6b0-4335-9fd9-13c3b17e8473",
+    "name_de": "Endkunde mit ALFRED 24 kWh und IDM Wärmepumpe",
+    "name_en": "End customer with ALFRED 24 kWh and IDM heat pump",
+    "sort_order": 2,
+    "created_at": "2026-03-20T10:17:38.483224+00:00",
+    "parent_id": "f4e0b8f9-97e1-48de-be2c-41fc84eb796f"
+  },
+  {
+    "id": "11a04997-b7f6-4af7-9329-3d54fda15d41",
+    "name_de": "Schulungen",
+    "name_en": "Workshops",
+    "sort_order": 2,
+    "created_at": "2026-03-12T20:09:56.416425+00:00",
+    "parent_id": "f3d07314-fe64-4a83-9e52-deb4e807b95c"
+  },
+  {
+    "id": "38c686d2-122e-4f93-af55-9f5cbeeeb13b",
+    "name_de": "Test Center",
+    "name_en": "Test Center",
+    "sort_order": 2,
+    "created_at": "2026-03-12T20:09:05.233082+00:00",
+    "parent_id": null
+  },
+  {
+    "id": "f3d07314-fe64-4a83-9e52-deb4e807b95c",
+    "name_de": "Events",
+    "name_en": "Events",
+    "sort_order": 3,
+    "created_at": "2026-03-12T20:09:17.764655+00:00",
+    "parent_id": null
+  },
+  {
+    "id": "0b93258a-855d-4008-bf04-21b274e9f8fd",
+    "name_de": "Team Meetings",
+    "name_en": "Team Meetings",
+    "sort_order": 3,
+    "created_at": "2026-03-12T20:10:06.448664+00:00",
+    "parent_id": "f3d07314-fe64-4a83-9e52-deb4e807b95c"
+  },
+  {
+    "id": "100bcb78-5a09-4ad7-9ab5-40b38cc72782",
+    "name_de": "Weitere Installationen",
+    "name_en": "Further installations",
+    "sort_order": 3,
+    "created_at": "2026-03-12T20:01:03.032077+00:00",
+    "parent_id": "f4e0b8f9-97e1-48de-be2c-41fc84eb796f"
+  },
+  {
+    "id": "e5c90f87-f377-484d-9a7e-dcb5dd45fd3c",
+    "name_de": "Presse Artikel",
+    "name_en": "Press Articles",
+    "sort_order": 4,
+    "created_at": "2026-03-12T20:10:23.104462+00:00",
+    "parent_id": null
+  },
+  {
+    "id": "6550e969-ee30-41ce-b6a7-6b23fb0c1ba9",
+    "name_de": "Produktbilder",
+    "name_en": "Product Pictures",
+    "sort_order": 5,
+    "created_at": "2026-03-12T20:10:39.063183+00:00",
+    "parent_id": null
+  }
+]

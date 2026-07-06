@@ -1,0 +1,30 @@
+[
+  {
+    "slug": "solaranlagen",
+    "label_de": "Solaranlagen",
+    "label_en": "Solar Systems",
+    "is_visible": true,
+    "sort_order": 1
+  },
+  {
+    "slug": "gewerbespeicher-aio",
+    "label_de": "All-in-One Gewerbespeicher",
+    "label_en": "All-in-One Commercial Storage",
+    "is_visible": true,
+    "sort_order": 2
+  },
+  {
+    "slug": "gewerbespeicher-container",
+    "label_de": "Container Gewerbespeicher",
+    "label_en": "Container Commercial Storage",
+    "is_visible": false,
+    "sort_order": 3
+  },
+  {
+    "slug": "mobile-charging",
+    "label_de": "Mobile Charging",
+    "label_en": "Mobile Charging",
+    "is_visible": true,
+    "sort_order": 5
+  }
+]

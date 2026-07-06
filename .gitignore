@@ -1,0 +1,15 @@
+.next/
+node_modules/
+old-site/
+out/
+dist/
+coverage/
+*.tsbuildinfo
+.env
+.env*
+!.env.example
+.DS_Store
+playwright-report/
+test-results/
+.cache/
+supabase/.temp/

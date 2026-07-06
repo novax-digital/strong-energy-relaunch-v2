@@ -1,0 +1,1 @@
+ALTER TABLE public.media_categories ADD COLUMN parent_id uuid REFERENCES public.media_categories(id) ON DELETE SET NULL DEFAULT NULL;
