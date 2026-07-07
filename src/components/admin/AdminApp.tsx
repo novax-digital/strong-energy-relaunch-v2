@@ -90,6 +90,14 @@ type BlogAuthor = {
   is_default: boolean;
 };
 
+type BlogTopic = {
+  id: string;
+  topic: string;
+  description: string | null;
+  used_at: string | null;
+  used_in_post_id: string | null;
+};
+
 type BlogPost = {
   id: string;
   title: string;
@@ -109,6 +117,32 @@ type BlogPost = {
   created_at: string;
   updated_at: string;
   language: string | null;
+  translation_group_id: string | null;
+};
+
+type GeneratedBlogPost = {
+  title: string;
+  slug: string;
+  excerpt: string | null;
+  content: string;
+  category: string | null;
+  author?: string | null;
+  author_id?: string | null;
+  tags: string[] | null;
+  cover_image_url?: string | null;
+  is_published?: boolean;
+  is_featured?: boolean;
+  published_at?: string | null;
+  scheduled_at?: string | null;
+  reading_time_minutes: number | null;
+  language: "de" | "en";
+  translation_group_id: string;
+};
+
+type GeneratedBlogResponse = {
+  postDe: GeneratedBlogPost;
+  postEn: GeneratedBlogPost;
+  topicId?: string | null;
 };
 
 type DownloadEntry = {
@@ -201,7 +235,8 @@ const sectionTitles: Record<AdminSection, string> = {
 
 const categoryOptions = ["Datenblatt", "Installationsanleitung", "Broschüre", "Zertifikat", "Garantie", "Software", "Strong Energy Products 2026 - International", "Sonstiges"].map((value) => ({ label: value, value }));
 const productOptions = products.map((product) => ({ label: product.name, value: product.slug }));
-const blogCategoryOptions = ["Neuigkeiten", "Produkte", "Energie", "Nachhaltigkeit", "Tipps", "Technologie", "Unternehmen"];
+const blogGeneratorCategoryOptions = ["Neuigkeiten", "Produkte", "Energie", "Nachhaltigkeit", "Tipps", "Technologie", "Unternehmen"];
+const blogCategoryOptions = [...blogGeneratorCategoryOptions, "News", "Products", "Energy", "Sustainability", "Tips", "Technology", "Company"];
 const blogCategoryColors: Record<string, string> = {
   Neuigkeiten: "border-primary/20 bg-primary/10 text-primary",
   Produkte: "border-emerald-500/20 bg-emerald-500/10 text-emerald-600",
@@ -209,8 +244,16 @@ const blogCategoryColors: Record<string, string> = {
   Nachhaltigkeit: "border-green-500/20 bg-green-500/10 text-green-600",
   Tipps: "border-blue-500/20 bg-blue-500/10 text-blue-600",
   Technologie: "border-sky-500/20 bg-sky-500/10 text-sky-600",
-  Unternehmen: "border-slate-500/20 bg-slate-500/10 text-slate-600"
+  Unternehmen: "border-slate-500/20 bg-slate-500/10 text-slate-600",
+  News: "border-primary/20 bg-primary/10 text-primary",
+  Products: "border-emerald-500/20 bg-emerald-500/10 text-emerald-600",
+  Energy: "border-amber-500/20 bg-amber-500/10 text-amber-600",
+  Sustainability: "border-green-500/20 bg-green-500/10 text-green-600",
+  Tips: "border-blue-500/20 bg-blue-500/10 text-blue-600",
+  Technology: "border-sky-500/20 bg-sky-500/10 text-sky-600",
+  Company: "border-slate-500/20 bg-slate-500/10 text-slate-600"
 };
+const blogLanguageOptions = [{ label: "🇩🇪 Deutsch", value: "de" }, { label: "🇬🇧 English", value: "en" }];
 
 const inputClass = "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm outline-none transition-colors placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-primary/40 disabled:cursor-not-allowed disabled:opacity-50";
 const textareaClass = "flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm outline-none transition-colors placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-primary/40 disabled:cursor-not-allowed disabled:opacity-50";
@@ -1544,7 +1587,9 @@ function DownloadsSection() {
 function BlogSection() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [authors, setAuthors] = useState<BlogAuthor[]>([]);
+  const [topics, setTopics] = useState<BlogTopic[]>([]);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [aiDialogOpen, setAiDialogOpen] = useState(false);
   const [editing, setEditing] = useState<BlogPost | null>(null);
   const [error, setError] = useState("");
   const emptyForm = {
@@ -1559,19 +1604,22 @@ function BlogSection() {
     cover_image_url: "",
     is_published: false,
     is_featured: false,
-    language: "de"
+    language: "de",
+    translation_group_id: ""
   };
   const [form, setForm] = useState(emptyForm);
 
   const load = useCallback(async () => {
     const supabase = getSupabaseBrowserClient();
-    const [{ data: postData, error: postError }, { data: authorData }] = await Promise.all([
+    const [{ data: postData, error: postError }, { data: authorData }, { data: topicData }] = await Promise.all([
       supabase.from("blog_posts").select("*").order("created_at", { ascending: false }),
-      supabase.from("blog_authors").select("*").order("is_default", { ascending: false }).order("name", { ascending: true })
+      supabase.from("blog_authors").select("*").order("is_default", { ascending: false }).order("name", { ascending: true }),
+      supabase.from("blog_topics").select("id, topic, description, used_at, used_in_post_id").order("created_at", { ascending: false })
     ]);
     if (postError) setError(postError.message);
     else setPosts((postData || []) as BlogPost[]);
     setAuthors((authorData || []) as BlogAuthor[]);
+    setTopics((topicData || []) as BlogTopic[]);
   }, []);
 
   useEffect(() => {
@@ -1585,7 +1633,7 @@ function BlogSection() {
   function openCreate() {
     const author = defaultAuthor();
     setEditing(null);
-    setForm({ ...emptyForm, author: author?.name || "", author_id: author?.id || "" });
+    setForm({ ...emptyForm, author: author?.name || "", author_id: author?.id || "", translation_group_id: crypto.randomUUID() });
     setError("");
     setDialogOpen(true);
   }
@@ -1604,7 +1652,8 @@ function BlogSection() {
       cover_image_url: post.cover_image_url || "",
       is_published: post.is_published,
       is_featured: post.is_featured,
-      language: post.language || "de"
+      language: post.language || "de",
+      translation_group_id: post.translation_group_id || ""
     });
     setError("");
     setDialogOpen(true);
@@ -1621,7 +1670,7 @@ function BlogSection() {
       setError("Titel, Slug und Inhalt sind erforderlich.");
       return;
     }
-    const payload = {
+    const payload: Record<string, string | boolean | number | string[] | null> = {
       title: form.title.trim(),
       slug: form.slug.trim(),
       excerpt: form.excerpt.trim() || null,
@@ -1638,6 +1687,7 @@ function BlogSection() {
       language: form.language,
       updated_at: new Date().toISOString()
     };
+    if (form.translation_group_id) payload.translation_group_id = form.translation_group_id;
     const supabase = getSupabaseBrowserClient();
     const result = editing ? await supabase.from("blog_posts").update(payload).eq("id", editing.id) : await supabase.from("blog_posts").insert(payload);
     if (result.error) {
@@ -1655,6 +1705,66 @@ function BlogSection() {
     else await load();
   }
 
+  function languageLabel(language: string | null | undefined) {
+    return language === "en" ? "EN" : "DE";
+  }
+
+  function languagePath(post: BlogPost) {
+    return `/${post.language === "en" ? "en" : "de"}/blog/${post.slug}`;
+  }
+
+  function pairedLanguages(post: BlogPost) {
+    if (!post.translation_group_id) return [post.language || "de"];
+    return Array.from(new Set(posts.filter((entry) => entry.translation_group_id === post.translation_group_id).map((entry) => entry.language || "de"))).sort();
+  }
+
+  async function saveGeneratedPosts(data: GeneratedBlogResponse) {
+    setError("");
+    const author = authors.find((entry) => entry.id === (data.postDe.author_id || data.postEn.author_id)) || defaultAuthor();
+    const now = new Date().toISOString();
+    const rows = [data.postDe, data.postEn].map((post) => ({
+      title: post.title,
+      slug: post.slug,
+      excerpt: post.excerpt,
+      content: post.content,
+      category: post.category,
+      author: post.author || author?.name || null,
+      author_id: post.author_id || author?.id || null,
+      tags: post.tags,
+      cover_image_url: post.cover_image_url || null,
+      is_published: post.is_published || false,
+      is_featured: post.is_featured || false,
+      published_at: post.published_at || null,
+      scheduled_at: post.scheduled_at || null,
+      reading_time_minutes: post.reading_time_minutes || calculateReadingTime(post.content),
+      language: post.language,
+      translation_group_id: post.translation_group_id,
+      updated_at: now
+    }));
+
+    const supabase = getSupabaseBrowserClient();
+    const { data: inserted, error: insertError } = await supabase.from("blog_posts").insert(rows).select("id, slug, language");
+    if (insertError) {
+      setError(insertError.message);
+      throw insertError;
+    }
+
+    if (data.topicId) {
+      const dePost = inserted?.find((post) => post.language === "de") || inserted?.[0];
+      const { error: topicError } = await supabase
+        .from("blog_topics")
+        .update({ used_at: now, used_in_post_id: dePost?.id || null, updated_at: now })
+        .eq("id", data.topicId);
+      if (topicError) {
+        setError(topicError.message);
+        throw topicError;
+      }
+    }
+
+    setAiDialogOpen(false);
+    await load();
+  }
+
   return (
     <SectionCard className="p-6">
       <div className="mb-6 flex items-center justify-between">
@@ -1663,7 +1773,7 @@ function BlogSection() {
           <p className="mt-1.5 text-sm text-muted-foreground">Verwalte Blog-Beiträge für die öffentliche Seite</p>
         </div>
         <div className="flex gap-2">
-          <button className={buttonClass("outline")} type="button">
+          <button className={buttonClass("outline")} onClick={() => setAiDialogOpen(true)} type="button">
             <Sparkles className="h-4 w-4" />
             KI-Generator
           </button>
@@ -1678,7 +1788,7 @@ function BlogSection() {
         <table className={cx(tableClass, "min-w-[980px]")}>
           <thead>
             <tr className="border-b border-border">
-              {["Titel", "Kategorie", "Status", "Featured", "Erstellt", "Aktionen"].map((label) => (
+              {["Titel", "Sprachen", "Kategorie", "Status", "Featured", "Erstellt", "Aktionen"].map((label) => (
                 <th className={cx(tableHeadClass, label === "Aktionen" && "text-right")} key={label}>{label}</th>
               ))}
             </tr>
@@ -1688,7 +1798,20 @@ function BlogSection() {
               <tr className="border-b border-border" key={post.id}>
                 <td className={tableCellClass}>
                   <p className="font-medium">{post.title}</p>
-                  <p className="text-sm text-muted-foreground">/blog/{post.slug}</p>
+                  <p className="text-sm text-muted-foreground">{languagePath(post)}</p>
+                </td>
+                <td className={tableCellClass}>
+                  <div className="flex flex-wrap gap-1.5">
+                    {["de", "en"].map((language) => {
+                      const active = pairedLanguages(post).includes(language);
+                      return (
+                        <span className={cx("rounded-full border px-2 py-0.5 text-[11px] font-bold", active ? "border-primary/20 bg-primary/10 text-primary" : "border-border bg-secondary text-muted-foreground")} key={language}>
+                          {language.toUpperCase()}
+                        </span>
+                      );
+                    })}
+                  </div>
+                  <p className="mt-1 text-[11px] text-muted-foreground">aktuell: {languageLabel(post.language)}</p>
                 </td>
                 <td className={tableCellClass}>
                   {post.category ? <span className={cx("rounded-full border px-2.5 py-1 text-xs font-semibold", blogCategoryColors[post.category] || "border-border bg-secondary text-foreground")}>{post.category}</span> : "-"}
@@ -1704,7 +1827,7 @@ function BlogSection() {
                 </td>
               </tr>
             )) : (
-              <tr><td className="p-8 text-center text-muted-foreground" colSpan={6}>Noch keine Blog-Beiträge vorhanden.</td></tr>
+              <tr><td className="p-8 text-center text-muted-foreground" colSpan={7}>Noch keine Blog-Beiträge vorhanden.</td></tr>
             )}
           </tbody>
         </table>
@@ -1722,8 +1845,9 @@ function BlogSection() {
             <TextAreaField label="Inhalt (Markdown)" value={form.content} onChange={(value) => setForm((previous) => ({ ...previous, content: value }))} placeholder={"# Überschrift\n\nDein Inhalt hier...\n\n- Listenpunkt 1\n- Listenpunkt 2"} rows={12} mono />
             <div className="grid gap-4 md:grid-cols-2">
               <SelectField label="Kategorie" value={form.category} onChange={(value) => setForm((previous) => ({ ...previous, category: value }))} placeholder="Kategorie wählen" options={blogCategoryOptions.map((value) => ({ label: value, value }))} />
-              <SelectField label="Sprache" value={form.language} onChange={(value) => setForm((previous) => ({ ...previous, language: value }))} options={[{ label: "🇩🇪 Deutsch", value: "de" }, { label: "🇬🇧 English", value: "en" }]} />
+              <SelectField label="Sprache" value={form.language} onChange={(value) => setForm((previous) => ({ ...previous, language: value }))} options={blogLanguageOptions} />
             </div>
+            <TextField label="Übersetzungsgruppe" value={form.translation_group_id} onChange={(value) => setForm((previous) => ({ ...previous, translation_group_id: value }))} placeholder="Automatisch für DE/EN-Paare" />
             <SelectField
               label="Autor"
               value={form.author_id}
@@ -1749,7 +1873,152 @@ function BlogSection() {
           </form>
         </FormDialog>
       ) : null}
+
+      {aiDialogOpen ? (
+        <BlogAIGeneratorDialog
+          authors={authors}
+          categories={blogGeneratorCategoryOptions}
+          onClose={() => setAiDialogOpen(false)}
+          onGenerated={saveGeneratedPosts}
+          topics={topics}
+        />
+      ) : null}
     </SectionCard>
+  );
+}
+
+function BlogAIGeneratorDialog({
+  authors,
+  categories,
+  onClose,
+  onGenerated,
+  topics
+}: {
+  authors: BlogAuthor[];
+  categories: string[];
+  onClose: () => void;
+  onGenerated: (data: GeneratedBlogResponse) => Promise<void>;
+  topics: BlogTopic[];
+}) {
+  const [topicMode, setTopicMode] = useState<"manual" | "list">("manual");
+  const [topic, setTopic] = useState("");
+  const [selectedTopicId, setSelectedTopicId] = useState("");
+  const [category, setCategory] = useState("Neuigkeiten");
+  const [authorId, setAuthorId] = useState(authors.find((author) => author.is_default)?.id || authors[0]?.id || "");
+  const [generating, setGenerating] = useState(false);
+  const [localError, setLocalError] = useState("");
+  const unusedTopics = topics.filter((entry) => !entry.used_at);
+  const selectedTopic = unusedTopics.find((entry) => entry.id === selectedTopicId);
+  const effectiveTopic = topicMode === "list" ? selectedTopic?.topic || "" : topic;
+
+  async function generate() {
+    if (!effectiveTopic.trim()) {
+      setLocalError("Bitte gib ein Thema ein oder wähle eines aus der Themenliste.");
+      return;
+    }
+
+    setGenerating(true);
+    setLocalError("");
+
+    const { data, error } = await getSupabaseBrowserClient().functions.invoke<GeneratedBlogResponse | { error: string }>("generate-blog-post", {
+      body: {
+        topic: effectiveTopic.trim(),
+        category,
+        topicId: topicMode === "list" ? selectedTopicId : null,
+        authorId: authorId || null
+      }
+    });
+
+    if (error) {
+      setLocalError(error.message || "Die Generierung ist fehlgeschlagen.");
+      setGenerating(false);
+      return;
+    }
+
+    if (!data || "error" in data) {
+      setLocalError(data?.error || "Die Generierung ist fehlgeschlagen.");
+      setGenerating(false);
+      return;
+    }
+
+    try {
+      await onGenerated(data);
+    } catch {
+      setGenerating(false);
+      return;
+    }
+  }
+
+  return (
+    <FormDialog title="KI-Blog-Generator" onClose={generating ? () => undefined : onClose}>
+      <div className="space-y-5">
+        <p className="text-sm text-muted-foreground">Generiert automatisch einen Beitrag auf Deutsch und Englisch als zusammengehöriges Übersetzungspaar.</p>
+
+        <div className="flex flex-wrap gap-4">
+          <label className="flex cursor-pointer items-center gap-2 text-sm font-semibold text-foreground">
+            <input checked={topicMode === "manual"} className="h-4 w-4 accent-[hsl(var(--primary))]" name="topicMode" onChange={() => setTopicMode("manual")} type="radio" />
+            Eigenes Thema
+          </label>
+          <label className="flex cursor-pointer items-center gap-2 text-sm font-semibold text-foreground">
+            <input checked={topicMode === "list"} className="h-4 w-4 accent-[hsl(var(--primary))]" name="topicMode" onChange={() => setTopicMode("list")} type="radio" />
+            <Lightbulb className="h-4 w-4" />
+            Aus Themenliste
+            {unusedTopics.length ? <span className="rounded-full bg-secondary px-2 py-0.5 text-xs text-muted-foreground">{unusedTopics.length}</span> : null}
+          </label>
+        </div>
+
+        {topicMode === "manual" ? (
+          <TextField label="Thema" required value={topic} onChange={setTopic} placeholder="z.B. Warum sich ein Batteriespeicher 2026 lohnt" />
+        ) : (
+          <div className="grid gap-2">
+            <span className={labelClass}>Thema aus Liste *</span>
+            {unusedTopics.length ? (
+              <div className="max-h-56 overflow-y-auto rounded-lg border border-border">
+                {unusedTopics.map((entry) => (
+                  <label className={cx("flex cursor-pointer items-start gap-3 border-b border-border p-3 transition-colors last:border-b-0 hover:bg-secondary/60", selectedTopicId === entry.id && "bg-primary/10")} key={entry.id}>
+                    <input checked={selectedTopicId === entry.id} className="mt-1 h-4 w-4 accent-[hsl(var(--primary))]" name="selectedTopic" onChange={() => setSelectedTopicId(entry.id)} type="radio" />
+                    <span className="min-w-0">
+                      <span className="block truncate text-sm font-semibold text-foreground">{entry.topic}</span>
+                      {entry.description ? <span className="mt-1 block truncate text-xs text-muted-foreground">{entry.description}</span> : null}
+                    </span>
+                  </label>
+                ))}
+              </div>
+            ) : (
+              <div className="rounded-lg border border-border bg-secondary/40 p-5 text-center text-sm text-muted-foreground">
+                <Lightbulb className="mx-auto mb-2 h-7 w-7 opacity-50" />
+                Keine offenen Themen vorhanden. Lege zuerst ein Blog-Thema an oder nutze ein eigenes Thema.
+              </div>
+            )}
+          </div>
+        )}
+
+        <div className="grid gap-4 md:grid-cols-2">
+          <SelectField label="Kategorie" value={category} onChange={setCategory} options={categories.map((value) => ({ label: value, value }))} />
+          <SelectField
+            label="Autor"
+            value={authorId}
+            onChange={setAuthorId}
+            options={authors.map((author) => ({ label: `${author.name}${author.is_default ? " (Standard)" : ""}`, value: author.id }))}
+            placeholder="Autor wählen"
+          />
+        </div>
+
+        {localError ? <p className="rounded-lg border border-destructive/20 bg-destructive/5 px-4 py-3 text-sm text-destructive">{localError}</p> : null}
+
+        <div className="rounded-lg border border-primary/15 bg-primary/5 p-4 text-sm text-muted-foreground">
+          <strong className="text-foreground">LLM-Anbindung:</strong> Die Generierung läuft serverseitig über die Supabase Function <code className="rounded bg-white px-1">generate-blog-post</code>. Dafür muss ein Secret wie <code className="rounded bg-white px-1">LLM_API_KEY</code> gesetzt sein.
+        </div>
+
+        <div className="flex justify-end gap-2 border-t border-border pt-4">
+          <button className={buttonClass("outline")} disabled={generating} onClick={onClose} type="button">Abbrechen</button>
+          <button className={buttonClass()} disabled={generating || !effectiveTopic.trim()} onClick={generate} type="button">
+            {generating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
+            {generating ? "Generiere..." : "Generieren"}
+          </button>
+        </div>
+      </div>
+    </FormDialog>
   );
 }
 
