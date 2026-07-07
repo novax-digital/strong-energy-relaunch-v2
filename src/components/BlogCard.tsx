@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { BlogAuthorInline } from "@/components/BlogAuthorInline";
 import type { BlogPost } from "@/types/content";
 
 export function BlogCard({ post }: { post: BlogPost }) {
@@ -14,7 +15,10 @@ export function BlogCard({ post }: { post: BlogPost }) {
           {post.category ? <p className="text-xs font-semibold uppercase tracking-wide text-primary mb-2">{post.category}</p> : null}
           <h2 className="text-xl font-bold text-foreground mb-3 leading-tight">{post.title}</h2>
           {post.excerpt ? <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3">{post.excerpt}</p> : null}
-          <small className="block mt-5 text-xs font-medium text-muted-foreground">{post.reading_time_minutes || 1} Min. Lesezeit</small>
+          <div className="mt-5 flex items-center justify-between gap-3 text-xs font-medium text-muted-foreground">
+            <BlogAuthorInline author={post.author} />
+            <span className="shrink-0">{post.reading_time_minutes || 1} Min. Lesezeit</span>
+          </div>
         </div>
       </Link>
     </article>

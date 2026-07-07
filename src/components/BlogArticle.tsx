@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, Calendar, Clock, ListTree, Tag, User } from "lucide-react";
+import { ArrowLeft, Calendar, Clock, ListTree, Tag } from "lucide-react";
+import { BlogAuthorInline } from "@/components/BlogAuthorInline";
 import { BlogShareButton } from "@/components/BlogShareButton";
 import type { BlogPost, Locale } from "@/types/content";
 
@@ -260,12 +261,7 @@ export function BlogArticle({ post, lang = "de" }: { post: BlogPost; lang?: Loca
         {post.excerpt ? <p className="mb-6 text-lg leading-relaxed text-muted-foreground">{post.excerpt}</p> : null}
 
         <div className="mb-8 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-          {post.author ? (
-            <span className="flex items-center gap-1">
-              <User className="h-4 w-4" />
-              {post.author}
-            </span>
-          ) : null}
+          <BlogAuthorInline author={post.author} size="md" />
           {publishedDate ? (
             <span className="flex items-center gap-1">
               <Calendar className="h-4 w-4" />

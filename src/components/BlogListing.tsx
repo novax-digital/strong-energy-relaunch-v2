@@ -2,8 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, Clock, Search, User } from "lucide-react";
+import { Calendar, Clock, Search } from "lucide-react";
 import { useMemo, useState } from "react";
+import { BlogAuthorInline } from "@/components/BlogAuthorInline";
 import type { BlogPost } from "@/types/content";
 import { localizedPath, translations, type Language } from "@/lib/i18n";
 
@@ -84,7 +85,7 @@ export function BlogListing({ posts, lang = "de" }: { posts: BlogPost[]; lang?: 
               <h2 className="text-2xl md:text-3xl font-bold leading-tight text-foreground">{featured.title}</h2>
               {featured.excerpt ? <p className="mt-5 text-base leading-relaxed text-muted-foreground">{featured.excerpt}</p> : null}
               <div className="mt-6 flex flex-wrap items-center gap-5 text-sm text-muted-foreground">
-                <span className="inline-flex items-center gap-1.5"><User className="h-4 w-4" /> {featured.author || "Strong Energy"}</span>
+                <BlogAuthorInline author={featured.author} />
                 {featured.published_at ? <span className="inline-flex items-center gap-1.5"><Calendar className="h-4 w-4" /> {formatDate(featured.published_at, lang)}</span> : null}
                 <span className="inline-flex items-center gap-1.5"><Clock className="h-4 w-4" /> {featured.reading_time_minutes || 1} {t.readTime}</span>
               </div>
@@ -109,6 +110,10 @@ export function BlogListing({ posts, lang = "de" }: { posts: BlogPost[]; lang?: 
                   {post.category ? <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-primary">{post.category}</p> : null}
                   <h2 className="mb-3 text-xl font-bold leading-tight text-foreground">{post.title}</h2>
                   {post.excerpt ? <p className="line-clamp-3 text-sm leading-relaxed text-muted-foreground">{post.excerpt}</p> : null}
+                  <div className="mt-5 flex items-center justify-between gap-3 text-xs font-medium text-muted-foreground">
+                    <BlogAuthorInline author={post.author} />
+                    <span className="shrink-0">{post.reading_time_minutes || 1} {t.readTime}</span>
+                  </div>
                 </div>
               </Link>
             ))}

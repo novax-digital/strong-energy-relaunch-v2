@@ -42,6 +42,7 @@ import {
 import { Fragment, FormEvent, ReactNode, useCallback, useEffect, useState } from "react";
 import { site } from "@/content/site";
 import { products } from "@/content/products";
+import { getBlogAuthorProfile } from "@/content/blog-authors";
 import { getSupabaseBrowserClient } from "@/lib/supabase/client";
 
 type Inquiry = {
@@ -320,6 +321,25 @@ function StatusBadge({ active, activeText = "Aktiv", inactiveText = "Entwurf" }:
   return (
     <span className={cx("inline-flex rounded-full px-2 py-1 text-xs font-semibold", active ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700")}>
       {active ? activeText : inactiveText}
+    </span>
+  );
+}
+
+function AuthorAvatarPreview({ name, src, showName }: { name: string; src?: string | null; showName?: boolean }) {
+  const profile = getBlogAuthorProfile(name);
+  const imageSrc = src || profile?.avatar || "";
+  const displayName = name || profile?.name || "Autor";
+
+  return (
+    <span className={cx("inline-flex min-w-0 items-center gap-3", !showName && "justify-center")}>
+      <span className="relative inline-flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full border border-border bg-secondary">
+        {imageSrc ? (
+          <Image src={imageSrc} alt={`Profilbild von ${displayName}`} fill sizes="40px" className="object-cover" unoptimized />
+        ) : (
+          <UserCircle className="h-5 w-5 text-muted-foreground" />
+        )}
+      </span>
+      {showName ? <span className="truncate font-medium text-foreground">{displayName}</span> : null}
     </span>
   );
 }
@@ -762,6 +782,7 @@ function SectionRenderer({ section }: { section: AdminSection }) {
           primaryKey="id"
           order={{ column: "created_at", ascending: false }}
           columns={[
+            { key: "avatar_url", label: "Bild", render: (row) => <AuthorAvatarPreview name={valueToInput(row.name) || "Autor"} src={valueToInput(row.avatar_url)} /> },
             { key: "name", label: "Name" },
             { key: "bio", label: "Bio" },
             { key: "is_default", label: "Standard", render: (row) => (row.is_default ? "Ja" : "Nein") }
@@ -1630,6 +1651,15 @@ function BlogSection() {
     return authors.find((author) => author.is_default) || authors[0];
   }
 
+  function authorForPost(post: BlogPost) {
+    const author = authors.find((entry) => entry.id === post.author_id) || authors.find((entry) => entry.name === post.author);
+    const fallbackProfile = getBlogAuthorProfile(post.author);
+    return {
+      name: author?.name || post.author || fallbackProfile?.name || "Strong Energy",
+      avatar: author?.avatar_url || fallbackProfile?.avatar || null
+    };
+  }
+
   function openCreate() {
     const author = defaultAuthor();
     setEditing(null);
@@ -1785,49 +1815,55 @@ function BlogSection() {
       </div>
       {error ? <p className="mb-4 rounded-lg border border-destructive/20 bg-destructive/5 px-4 py-3 text-sm text-destructive">{error}</p> : null}
       <div className="overflow-x-auto">
-        <table className={cx(tableClass, "min-w-[980px]")}>
+        <table className={cx(tableClass, "min-w-[1120px]")}>
           <thead>
             <tr className="border-b border-border">
-              {["Titel", "Sprachen", "Kategorie", "Status", "Featured", "Erstellt", "Aktionen"].map((label) => (
+              {["Titel", "Sprachen", "Autor", "Kategorie", "Status", "Featured", "Erstellt", "Aktionen"].map((label) => (
                 <th className={cx(tableHeadClass, label === "Aktionen" && "text-right")} key={label}>{label}</th>
               ))}
             </tr>
           </thead>
           <tbody>
-            {posts.length ? posts.map((post) => (
-              <tr className="border-b border-border" key={post.id}>
-                <td className={tableCellClass}>
-                  <p className="font-medium">{post.title}</p>
-                  <p className="text-sm text-muted-foreground">{languagePath(post)}</p>
-                </td>
-                <td className={tableCellClass}>
-                  <div className="flex flex-wrap gap-1.5">
-                    {["de", "en"].map((language) => {
-                      const active = pairedLanguages(post).includes(language);
-                      return (
-                        <span className={cx("rounded-full border px-2 py-0.5 text-[11px] font-bold", active ? "border-primary/20 bg-primary/10 text-primary" : "border-border bg-secondary text-muted-foreground")} key={language}>
-                          {language.toUpperCase()}
-                        </span>
-                      );
-                    })}
-                  </div>
-                  <p className="mt-1 text-[11px] text-muted-foreground">aktuell: {languageLabel(post.language)}</p>
-                </td>
-                <td className={tableCellClass}>
-                  {post.category ? <span className={cx("rounded-full border px-2.5 py-1 text-xs font-semibold", blogCategoryColors[post.category] || "border-border bg-secondary text-foreground")}>{post.category}</span> : "-"}
-                </td>
-                <td className={tableCellClass}>{post.is_published ? <Eye className="h-4 w-4 text-green-600" /> : <EyeOff className="h-4 w-4 text-muted-foreground" />}</td>
-                <td className={tableCellClass}><Star className={cx("h-4 w-4", post.is_featured ? "fill-amber-500 text-amber-500" : "text-muted-foreground")} /></td>
-                <td className={tableCellClass}><span className="inline-flex items-center gap-1 text-sm text-muted-foreground"><Clock className="h-3 w-3" />{formatDate(post.created_at)}</span></td>
-                <td className={cx(tableCellClass, "text-right")}>
-                  <div className="flex justify-end gap-1">
-                    <IconButton label="Bearbeiten" onClick={() => openEdit(post)}><Pencil className="h-4 w-4" /></IconButton>
-                    <IconButton destructive label="Löschen" onClick={() => remove(post.id)}><Trash2 className="h-4 w-4" /></IconButton>
-                  </div>
-                </td>
-              </tr>
-            )) : (
-              <tr><td className="p-8 text-center text-muted-foreground" colSpan={7}>Noch keine Blog-Beiträge vorhanden.</td></tr>
+            {posts.length ? posts.map((post) => {
+              const postAuthor = authorForPost(post);
+              return (
+                <tr className="border-b border-border" key={post.id}>
+                  <td className={tableCellClass}>
+                    <p className="font-medium">{post.title}</p>
+                    <p className="text-sm text-muted-foreground">{languagePath(post)}</p>
+                  </td>
+                  <td className={tableCellClass}>
+                    <div className="flex flex-wrap gap-1.5">
+                      {["de", "en"].map((language) => {
+                        const active = pairedLanguages(post).includes(language);
+                        return (
+                          <span className={cx("rounded-full border px-2 py-0.5 text-[11px] font-bold", active ? "border-primary/20 bg-primary/10 text-primary" : "border-border bg-secondary text-muted-foreground")} key={language}>
+                            {language.toUpperCase()}
+                          </span>
+                        );
+                      })}
+                    </div>
+                    <p className="mt-1 text-[11px] text-muted-foreground">aktuell: {languageLabel(post.language)}</p>
+                  </td>
+                  <td className={tableCellClass}>
+                    <AuthorAvatarPreview name={postAuthor.name} src={postAuthor.avatar} showName />
+                  </td>
+                  <td className={tableCellClass}>
+                    {post.category ? <span className={cx("rounded-full border px-2.5 py-1 text-xs font-semibold", blogCategoryColors[post.category] || "border-border bg-secondary text-foreground")}>{post.category}</span> : "-"}
+                  </td>
+                  <td className={tableCellClass}>{post.is_published ? <Eye className="h-4 w-4 text-green-600" /> : <EyeOff className="h-4 w-4 text-muted-foreground" />}</td>
+                  <td className={tableCellClass}><Star className={cx("h-4 w-4", post.is_featured ? "fill-amber-500 text-amber-500" : "text-muted-foreground")} /></td>
+                  <td className={tableCellClass}><span className="inline-flex items-center gap-1 text-sm text-muted-foreground"><Clock className="h-3 w-3" />{formatDate(post.created_at)}</span></td>
+                  <td className={cx(tableCellClass, "text-right")}>
+                    <div className="flex justify-end gap-1">
+                      <IconButton label="Bearbeiten" onClick={() => openEdit(post)}><Pencil className="h-4 w-4" /></IconButton>
+                      <IconButton destructive label="Löschen" onClick={() => remove(post.id)}><Trash2 className="h-4 w-4" /></IconButton>
+                    </div>
+                  </td>
+                </tr>
+              );
+            }) : (
+              <tr><td className="p-8 text-center text-muted-foreground" colSpan={8}>Noch keine Blog-Beiträge vorhanden.</td></tr>
             )}
           </tbody>
         </table>
