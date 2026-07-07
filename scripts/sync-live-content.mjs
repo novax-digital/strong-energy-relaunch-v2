@@ -122,7 +122,7 @@ async function main() {
   const mediaItems = await fetchJson("media_items", "select=*&is_published=eq.true&order=sort_order.asc,title_de.asc");
   const blogPosts = await fetchJson(
     "blog_posts",
-    "select=*&is_published=eq.true&language=eq.de&order=published_at.desc.nullslast,created_at.desc"
+    "select=*&is_published=eq.true&order=published_at.desc.nullslast,created_at.desc"
   );
   const productCategories = await fetchJson("product_categories", "select=*&order=sort_order.asc");
 
