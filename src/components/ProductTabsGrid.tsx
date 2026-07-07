@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useLiveProductCategories } from "@/hooks/useLiveProductCategories";
 import type { Product, ProductCategory } from "@/types/content";
 import { translations, type Language } from "@/lib/i18n";
 import { ProductCard } from "./ProductCard";
@@ -16,13 +17,16 @@ interface ProductTabsGridProps {
 
 export function ProductTabsGrid({ products, categories, initialCategory, lang = "de" }: ProductTabsGridProps) {
   const t = translations[lang].products;
+  const liveCategories = useLiveProductCategories(categories, lang, initialCategory);
   const initialActive = initialCategory && products.some((product) => product.categorySlug === initialCategory) ? initialCategory : "all";
   const [activeCategory, setActiveCategory] = useState<ActiveCategory>(initialActive);
+  const visibleCategorySlugs = useMemo(() => new Set(liveCategories.map((category) => category.slug)), [liveCategories]);
+  const visibleProducts = useMemo(() => products.filter((product) => visibleCategorySlugs.has(product.categorySlug)), [products, visibleCategorySlugs]);
 
   const filteredProducts = useMemo(() => {
-    if (activeCategory === "all") return products;
+    if (activeCategory === "all") return visibleProducts;
     return products.filter((product) => product.categorySlug === activeCategory);
-  }, [activeCategory, products]);
+  }, [activeCategory, products, visibleProducts]);
 
   function selectCategory(category: ActiveCategory) {
     setActiveCategory(category);
@@ -43,7 +47,7 @@ export function ProductTabsGrid({ products, categories, initialCategory, lang = 
           >
             {t.all}
           </button>
-          {categories.map((category) => (
+          {liveCategories.map((category) => (
             <button
               className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold whitespace-nowrap transition-all duration-300 ${
                 activeCategory === category.slug ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground hover:bg-card/50"

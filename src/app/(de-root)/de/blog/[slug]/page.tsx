@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { BlogArticle } from "@/components/BlogArticle";
 import { SEOJsonLd } from "@/components/SEOJsonLd";
 import { getBlogPostBySlug, getBlogPosts } from "@/lib/content/getBlogPosts";
+import { getLiveBlogPostBySlug } from "@/lib/content/getLiveBlogPost";
 import { absoluteUrl, createMetadata } from "@/lib/seo";
 
 export function generateStaticParams() {
@@ -11,7 +12,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const post = getBlogPostBySlug(slug, "de");
+  const post = (await getLiveBlogPostBySlug(slug, "de")) || getBlogPostBySlug(slug, "de");
   if (!post) return {};
   return createMetadata({
     title: `${post.title} | Strong Energy Blog`,
@@ -23,7 +24,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function BlogDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const post = getBlogPostBySlug(slug, "de");
+  const post = (await getLiveBlogPostBySlug(slug, "de")) || getBlogPostBySlug(slug, "de");
   if (!post) notFound();
   const image = post.local_cover_image_url || post.cover_image_url;
   const article = {

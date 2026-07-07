@@ -25,7 +25,7 @@ export default async function ProductCategoryPage({ params }: { params: Promise<
   const { category: categorySlug } = await params;
   const category = getProductCategories().find((item) => item.slug === categorySlug);
   if (!category) notFound();
-  const products = getProducts().filter((product) => product.categorySlug !== "gewerbespeicher-container" || product.categorySlug === categorySlug);
+  const products = getProducts();
   const categories = getProductCategories().filter((item) => item.is_visible || item.slug === categorySlug);
 
   return (

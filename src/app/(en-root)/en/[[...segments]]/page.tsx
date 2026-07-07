@@ -30,11 +30,12 @@ import { legalPages, legalPagesEn } from "@/content/legal";
 import { partners } from "@/content/partners";
 import { pageSeo, site } from "@/content/site";
 import { getBlogPostBySlug, getBlogPosts } from "@/lib/content/getBlogPosts";
+import { getLiveBlogPostBySlug } from "@/lib/content/getLiveBlogPost";
 import { getDownloads, getDownloadsByProduct } from "@/lib/content/getDownloads";
 import { getMediaCategories, getMediaItems } from "@/lib/content/getMediaItems";
 import { getProductByPath } from "@/lib/content/getProductBySlug";
 import { getProductCategories, getProducts } from "@/lib/content/getProducts";
-import { localizeLegalSlug, localizedPath, normalizeLegalSlug, reverseCategorySlug, translations } from "@/lib/i18n";
+import { localizeLegalSlug, localizedPath, normalizeLegalSlug, translations } from "@/lib/i18n";
 import { absoluteUrl, breadcrumbJsonLd, createMetadata } from "@/lib/seo";
 
 const lang = "en" as const;
@@ -44,7 +45,7 @@ type EnglishPageProps = {
   params: Promise<{ segments?: string[] }>;
 };
 
-export const dynamicParams = false;
+export const dynamicParams = true;
 
 const seo: Record<string, Metadata> = {
   home: createMetadata({
@@ -177,7 +178,7 @@ export async function generateMetadata({ params }: EnglishPageProps): Promise<Me
   }
   if (section === "blog" && !second) return seo.blog;
   if (section === "blog" && second) {
-    const post = getBlogPostBySlug(second, lang);
+    const post = (await getLiveBlogPostBySlug(second, lang)) || getBlogPostBySlug(second, lang);
     if (!post) return {};
     return createMetadata({
       title: `${post.title} | Strong Energy Blog`,
@@ -297,7 +298,7 @@ function HomePageContent() {
 }
 
 function ProductsPageContent() {
-  const products = getProducts(lang).filter((product) => reverseCategorySlug(product.categorySlug) !== "gewerbespeicher-container");
+  const products = getProducts(lang);
   const categories = getProductCategories(lang).filter((category) => category.is_visible);
   return (
     <>
@@ -317,7 +318,7 @@ function ProductsPageContent() {
 function ProductCategoryPageContent({ categorySlug }: { categorySlug: string }) {
   const category = getProductCategories(lang).find((item) => item.slug === categorySlug);
   if (!category) notFound();
-  const products = getProducts(lang).filter((product) => reverseCategorySlug(product.categorySlug) !== "gewerbespeicher-container" || product.categorySlug === categorySlug);
+  const products = getProducts(lang);
   const categories = getProductCategories(lang).filter((item) => item.is_visible || item.slug === categorySlug);
   return (
     <>
@@ -436,8 +437,8 @@ function BlogPageContent() {
   );
 }
 
-function BlogDetailPageContent({ slug }: { slug: string }) {
-  const post = getBlogPostBySlug(slug, lang);
+async function BlogDetailPageContent({ slug }: { slug: string }) {
+  const post = (await getLiveBlogPostBySlug(slug, lang)) || getBlogPostBySlug(slug, lang);
   if (!post) notFound();
   const image = post.local_cover_image_url || post.cover_image_url;
   const article = {

@@ -3,12 +3,14 @@
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { ChevronLeft, ChevronRight, Play, Search, X } from "lucide-react";
+import { useLiveMedia } from "@/hooks/useLiveMedia";
 import type { MediaCategory, MediaItem } from "@/types/content";
 import { translations, type Language } from "@/lib/i18n";
 
 export function MediaGallery({ items, categories, lang = "de" }: { items: MediaItem[]; categories: MediaCategory[]; lang?: Language }) {
   const t = translations[lang].media;
-  const rootCategories = useMemo(() => categories.filter((category) => !category.parent_id).sort((a, b) => a.sort_order - b.sort_order), [categories]);
+  const liveMedia = useLiveMedia(items, categories);
+  const rootCategories = useMemo(() => liveMedia.categories.filter((category) => !category.parent_id).sort((a, b) => a.sort_order - b.sort_order), [liveMedia.categories]);
   const [activeCategory, setActiveCategory] = useState<string>("all");
   const [search, setSearch] = useState("");
   const orderedItems = useMemo(() => {
@@ -21,13 +23,13 @@ export function MediaGallery({ items, categories, lang = "de" }: { items: MediaI
       ["CNTE Gewerbespeicher powered by Strong Energy", 5],
       ["ALFRED Produktvideo", 6]
     ]);
-    return [...items].sort((a, b) => {
+    return [...liveMedia.items].sort((a, b) => {
       const ai = a.media_type === "video" ? videoOrder.get(a.title_de) ?? 100 : 100 + a.sort_order;
       const bi = b.media_type === "video" ? videoOrder.get(b.title_de) ?? 100 : 100 + b.sort_order;
       if (ai !== bi) return ai - bi;
-      return items.indexOf(a) - items.indexOf(b);
+      return liveMedia.items.indexOf(a) - liveMedia.items.indexOf(b);
     });
-  }, [items]);
+  }, [liveMedia.items]);
   const filtered = useMemo(() => {
     const query = search.trim().toLowerCase();
     const bySearch = orderedItems.filter((item) => {
@@ -35,9 +37,9 @@ export function MediaGallery({ items, categories, lang = "de" }: { items: MediaI
       return [mediaTitle(item, lang), mediaDescription(item, lang) || ""].some((value) => value.toLowerCase().includes(query));
     });
     if (activeCategory === "all") return bySearch;
-    const childIds = categories.filter((category) => category.parent_id === activeCategory).map((category) => category.id);
+    const childIds = liveMedia.categories.filter((category) => category.parent_id === activeCategory).map((category) => category.id);
     return bySearch.filter((item) => item.category_id === activeCategory || childIds.includes(item.category_id || ""));
-  }, [activeCategory, categories, lang, orderedItems, search]);
+  }, [activeCategory, lang, liveMedia.categories, orderedItems, search]);
   const openableItems = useMemo(() => filtered.filter((item) => Boolean(mediaContentSource(item))), [filtered]);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const lightboxItem = lightboxIndex === null ? null : openableItems[lightboxIndex] || null;
@@ -47,7 +49,7 @@ export function MediaGallery({ items, categories, lang = "de" }: { items: MediaI
     const selectedRoots = activeCategory === "all" ? rootCategories : rootCategories.filter((category) => category.id === activeCategory);
     return selectedRoots
       .map((category) => {
-        const children = categories.filter((item) => item.parent_id === category.id).sort((a, b) => a.sort_order - b.sort_order);
+        const children = liveMedia.categories.filter((item) => item.parent_id === category.id).sort((a, b) => a.sort_order - b.sort_order);
         return {
           category,
           directItems: filtered.filter((item) => item.category_id === category.id),
@@ -60,7 +62,7 @@ export function MediaGallery({ items, categories, lang = "de" }: { items: MediaI
         };
       })
       .filter((group) => group.directItems.length > 0 || group.childGroups.length > 0);
-  }, [activeCategory, categories, filtered, rootCategories]);
+  }, [activeCategory, filtered, liveMedia.categories, rootCategories]);
 
   useEffect(() => {
     if (!lightboxOpen) return;

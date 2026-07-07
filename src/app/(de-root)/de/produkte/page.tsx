@@ -9,7 +9,7 @@ import { createMetadata } from "@/lib/seo";
 export const metadata: Metadata = createMetadata(pageSeo.products);
 
 export default function ProductsPage() {
-  const products = getProducts().filter((product) => product.categorySlug !== "gewerbespeicher-container");
+  const products = getProducts();
   const categories = getProductCategories().filter((category) => category.is_visible);
   return (
     <>

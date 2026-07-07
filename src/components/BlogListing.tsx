@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Calendar, Clock, Search } from "lucide-react";
 import { useMemo, useState } from "react";
 import { BlogAuthorInline } from "@/components/BlogAuthorInline";
+import { useLiveBlogPosts } from "@/hooks/useLiveBlogPosts";
 import type { BlogPost } from "@/types/content";
 import { localizedPath, translations, type Language } from "@/lib/i18n";
 
@@ -15,16 +16,17 @@ function formatDate(date: string | null, lang: Language) {
 
 export function BlogListing({ posts, lang = "de" }: { posts: BlogPost[]; lang?: Language }) {
   const t = translations[lang].blog;
+  const livePosts = useLiveBlogPosts(posts, lang);
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState(t.all);
-  const categories = useMemo(() => [...new Set([...t.categories, ...(posts.map((post) => post.category).filter(Boolean) as string[])])], [posts, t.categories]);
+  const categories = useMemo(() => [...new Set([...t.categories, ...(livePosts.map((post) => post.category).filter(Boolean) as string[])])], [livePosts, t.categories]);
   const orderedPosts = useMemo(
     () =>
-      [...posts].sort((a, b) => {
+      [...livePosts].sort((a, b) => {
         if (a.is_featured !== b.is_featured) return a.is_featured ? -1 : 1;
         return new Date(b.published_at || b.created_at || 0).getTime() - new Date(a.published_at || a.created_at || 0).getTime();
       }),
-    [posts]
+    [livePosts]
   );
   const filtered = useMemo(() => {
     const query = search.trim().toLowerCase();
