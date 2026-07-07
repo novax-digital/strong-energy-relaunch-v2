@@ -245,8 +245,8 @@ export const translations = {
       customize: "Einstellungen anpassen",
       necessary: "Notwendig",
       necessaryDesc: "Für die Grundfunktion der Website erforderlich",
-      marketing: "Marketing",
-      marketingDesc: "Für optionale Marketingfunktionen vorbereitet",
+      marketing: "Analyse & Marketing",
+      marketingDesc: "Erlaubt optionale Analysefunktionen wie Heatmaps",
       acceptAll: "Alle akzeptieren",
       saveSelection: "Auswahl speichern",
       onlyNecessary: "Nur notwendige"
@@ -459,8 +459,8 @@ export const translations = {
       customize: "Customize settings",
       necessary: "Necessary",
       necessaryDesc: "Required for the basic function of the website",
-      marketing: "Marketing",
-      marketingDesc: "Prepared for optional marketing features",
+      marketing: "Analytics & Marketing",
+      marketingDesc: "Allows optional analytics features such as heatmaps",
       acceptAll: "Accept all",
       saveSelection: "Save selection",
       onlyNecessary: "Necessary only"

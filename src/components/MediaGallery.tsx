@@ -89,6 +89,26 @@ export function MediaGallery({ items, categories, lang = "de" }: { items: MediaI
     };
   }, [lightboxOpen, openableItems.length]);
 
+  useEffect(() => {
+    if (lightboxIndex === null || !openableItems.length) return;
+
+    const preloadIndexes = [-2, -1, 1, 2].map((offset) => (lightboxIndex + offset + openableItems.length) % openableItems.length);
+    const preloadedSources = new Set<string>();
+
+    preloadIndexes.forEach((index) => {
+      const item = openableItems[index];
+      if (!item || item.media_type !== "image") return;
+
+      const source = mediaContentSource(item);
+      if (!source || preloadedSources.has(source)) return;
+
+      preloadedSources.add(source);
+      const image = document.createElement("img");
+      image.decoding = "async";
+      image.src = source;
+    });
+  }, [lightboxIndex, openableItems]);
+
   function openLightbox(item: MediaItem) {
     const itemIndex = openableItems.findIndex((mediaItem) => mediaItem.id === item.id);
     if (itemIndex >= 0) {
@@ -320,38 +340,51 @@ function LightboxImage({ onNext, source, title }: { onNext?: () => void; source:
   if (onNext) {
     return (
       <button aria-label="Nächstes Medium anzeigen" className="relative h-full w-full cursor-pointer" onClick={onNext} type="button">
-        <Image src={source} alt={title} fill sizes="100vw" className="object-contain" priority />
+        <Image src={source} alt={title} fill sizes="100vw" className="object-contain" priority unoptimized />
       </button>
     );
   }
 
   return (
     <div className="relative h-full w-full">
-      <Image src={source} alt={title} fill sizes="100vw" className="object-contain" priority />
+      <Image src={source} alt={title} fill sizes="100vw" className="object-contain" priority unoptimized />
     </div>
   );
 }
 
 function LightboxVideo({ source, title }: { source: string; title: string }) {
   const wistiaId = getWistiaId(source);
+  const youtubeId = getYouTubeId(source);
 
   if (wistiaId) {
     return (
       <iframe
         allow="autoplay; fullscreen; picture-in-picture"
         allowFullScreen
-        className="h-full w-full"
-        src={`https://fast.wistia.net/embed/iframe/${wistiaId}?seo=false&videoFoam=true`}
+        className="h-full w-full bg-black"
+        src={`https://fast.wistia.net/embed/iframe/${wistiaId}?seo=false&videoFoam=true&autoPlay=true`}
+        title={title}
+      />
+    );
+  }
+
+  if (youtubeId) {
+    return (
+      <iframe
+        allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
+        allowFullScreen
+        className="h-full w-full bg-black"
+        src={`https://www.youtube-nocookie.com/embed/${youtubeId}?autoplay=1&rel=0`}
         title={title}
       />
     );
   }
 
   if (isVideoFile(source)) {
-    return <video autoPlay className="h-full w-full" controls playsInline src={source} title={title} />;
+    return <video autoPlay className="h-full w-full bg-black object-contain" controls playsInline src={source} title={title} />;
   }
 
-  return <iframe allow="autoplay; fullscreen; picture-in-picture" allowFullScreen className="h-full w-full" src={source} title={title} />;
+  return <iframe allow="autoplay; fullscreen; picture-in-picture" allowFullScreen className="h-full w-full bg-black" src={source} title={title} />;
 }
 
 function mediaContentSource(item: MediaItem) {
@@ -366,6 +399,11 @@ function getWistiaId(source: string) {
   if (/^[a-z0-9]{10}$/i.test(source)) return source;
   if (!source.includes("wistia")) return null;
   return source.match(/\/(?:medias|iframe)\/([a-z0-9]+)/i)?.[1] || null;
+}
+
+function getYouTubeId(source: string) {
+  if (!/youtu(?:be\.com|\.be)/i.test(source)) return null;
+  return source.match(/(?:v=|embed\/|youtu\.be\/|shorts\/)([a-zA-Z0-9_-]{11})/)?.[1] || null;
 }
 
 function isVideoFile(source: string) {

@@ -2,6 +2,7 @@ import { CookieBanner } from "@/components/CookieBanner";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { SEOJsonLd } from "@/components/SEOJsonLd";
+import { UmamiAnalytics } from "@/components/UmamiAnalytics";
 import { site } from "@/content/site";
 import { absoluteUrl } from "@/lib/seo";
 import type { ReactNode } from "react";
@@ -39,6 +40,7 @@ export default function GermanLayout({ children }: { children: ReactNode }) {
       <Header />
       <main>{children}</main>
       <Footer />
+      <UmamiAnalytics />
       <CookieBanner />
     </>
   );
