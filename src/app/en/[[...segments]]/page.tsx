@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { Activity, ArrowLeft, ArrowRight, Award, Battery, Building2, Factory, Globe, GraduationCap, HandHeart, Headphones, Mail, Network, Newspaper, Settings, Shield, ShieldCheck, Users, Zap } from "lucide-react";
 import { AppPhoneSlider } from "@/components/AppPhoneSlider";
 import { AppStoreButtons } from "@/components/AppStoreButtons";
+import { BlogArticle } from "@/components/BlogArticle";
 import { BlogListing } from "@/components/BlogListing";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ContactLiveForm } from "@/components/ContactLiveForm";
@@ -438,15 +439,7 @@ function BlogDetailPageContent({ slug }: { slug: string }) {
   return (
     <>
       <SEOJsonLd data={article} />
-      <article className="article-page">
-        <div className="container article-page__inner">
-          <p className="eyebrow">{post.category || "Strong Energy Blog"}</p>
-          <h1>{post.title}</h1>
-          {post.excerpt ? <p className="lead">{post.excerpt}</p> : null}
-          {image ? <Image src={image} alt={post.title} width={960} height={540} priority /> : null}
-          <MarkdownContent content={post.content} />
-        </div>
-      </article>
+      <BlogArticle post={post} lang={lang} />
     </>
   );
 }
@@ -737,17 +730,5 @@ function LegalPageContent({ slug }: { slug: string }) {
         </div>
       </article>
     </>
-  );
-}
-
-function MarkdownContent({ content }: { content: string }) {
-  return (
-    <div className="rich-text">
-      {content.split(/\n{2,}/).map((block, index) => {
-        if (block.startsWith("## ")) return <h2 key={index}>{block.replace(/^## /, "")}</h2>;
-        if (block.startsWith("# ")) return <h2 key={index}>{block.replace(/^# /, "")}</h2>;
-        return <p key={index}>{block.replace(/\*\*/g, "")}</p>;
-      })}
-    </div>
   );
 }
