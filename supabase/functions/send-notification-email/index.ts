@@ -141,8 +141,8 @@ serve(async (req) => {
     if (recErr) throw recErr;
     if (!recipients || recipients.length === 0) {
       console.log("No active recipients for type:", type);
-      return new Response(JSON.stringify({ success: true, skipped: true }), {
-        status: 200,
+      return new Response(JSON.stringify({ error: "No active recipients configured" }), {
+        status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
@@ -204,29 +204,41 @@ serve(async (req) => {
 
     const recipientEmails = recipients.map((r: { email: string }) => r.email);
 
-    const results = await Promise.allSettled([
-      resend.emails.send({
-        from: "Strong Energy <info_de@strong-energy.eu>",
-        to: recipientEmails,
-        subject: `Neue ${formLabel}: ${sanitized.firstName} ${sanitized.lastName}`,
-        html: adminHtml,
-      }),
-      resend.emails.send({
+    const adminResult = await resend.emails.send({
+      from: "Strong Energy <info_de@strong-energy.eu>",
+      to: recipientEmails,
+      subject: `Neue ${formLabel}: ${sanitized.firstName} ${sanitized.lastName}`,
+      html: adminHtml,
+    });
+
+    if (adminResult.error) {
+      console.error("Admin notification failed:", adminResult.error);
+      return new Response(JSON.stringify({ error: "Admin notification failed" }), {
+        status: 502,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    const confirmationResult = await resend.emails
+      .send({
         from: "Strong Energy <info_de@strong-energy.eu>",
         to: [sanitized.email],
         subject: isContact
           ? "Ihre Kontaktanfrage bei STRONG Energy"
           : "Ihre Produktanfrage bei STRONG Energy",
         html: confirmationHtml,
-      }),
-    ]);
+      })
+      .catch((error: unknown) => ({ data: null, error }));
 
-    const errors = results.filter((r) => r.status === "rejected");
-    if (errors.length > 0) {
-      console.error("Some emails failed:", errors);
+    if (confirmationResult.error) {
+      console.error("Confirmation email failed:", confirmationResult.error);
     }
 
-    return new Response(JSON.stringify({ success: true }), {
+    return new Response(JSON.stringify({
+      success: true,
+      adminEmailId: adminResult.data?.id || null,
+      confirmationSent: !confirmationResult.error,
+    }), {
       status: 200,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
