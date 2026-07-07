@@ -4,6 +4,7 @@ import { Download, ExternalLink, FileText, Link2, Search, X } from "lucide-react
 import { useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { DownloadItem, Product } from "@/types/content";
+import { useLiveDownloads } from "@/hooks/useLiveDownloads";
 import { localizedPath, translations, type Language } from "@/lib/i18n";
 
 const categoryOrder = [
@@ -38,13 +39,14 @@ type DownloadsInteractiveProps = {
 };
 
 export function DownloadsInteractive({ downloads, products, lang = "de", initialItemSlug }: DownloadsInteractiveProps) {
+  const liveDownloads = useLiveDownloads(downloads);
   const searchParams = useSearchParams();
   const searchParamItemSlug = searchParams.get("item")?.trim();
   const resolvedInitialItemSlug = initialItemSlug || searchParamItemSlug;
   const itemRefs = useRef<Record<string, HTMLElement | null>>({});
   const t = translations[lang].downloads;
 
-  const downloadsWithFile = useMemo(() => downloads.filter((item) => hasDownloadFile(item, lang)), [downloads, lang]);
+  const downloadsWithFile = useMemo(() => liveDownloads.filter((item) => hasDownloadFile(item, lang)), [liveDownloads, lang]);
   const initialItem = useMemo(
     () => (resolvedInitialItemSlug ? downloadsWithFile.find((download) => downloadSlug(download, lang) === resolvedInitialItemSlug) : undefined),
     [downloadsWithFile, lang, resolvedInitialItemSlug]

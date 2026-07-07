@@ -4,12 +4,15 @@ import { useId, useMemo, useState } from "react";
 import { Download } from "lucide-react";
 import { ProductFeatureIcon } from "@/components/ProductFeatureIcon";
 import type { DownloadItem, Product, SpecGroup, SpecRow, SpecSection } from "@/types/content";
+import { useLiveDownloads } from "@/hooks/useLiveDownloads";
 import { translations, type Language } from "@/lib/i18n";
 
 type ProductTab = "description" | "features" | "specs" | "downloads";
 
 export function ProductDetailTabs({ downloads, product, lang = "de" }: { downloads: DownloadItem[]; product: Product; lang?: Language }) {
   const [activeTab, setActiveTab] = useState<ProductTab>("description");
+  const liveDownloads = useLiveDownloads(downloads, product.slug);
+  const downloadsWithFile = useMemo(() => liveDownloads.filter((download) => hasDownloadFile(download, lang)), [lang, liveDownloads]);
   const baseId = useId();
   const t = translations[lang].products;
   const tabs = useMemo(() => {
@@ -59,7 +62,7 @@ export function ProductDetailTabs({ downloads, product, lang = "de" }: { downloa
         {activeTab === "description" ? <DescriptionPanel product={product} /> : null}
         {activeTab === "features" ? <FeaturesPanel product={product} /> : null}
         {activeTab === "specs" ? <TechnicalPanel product={product} lang={lang} /> : null}
-        {activeTab === "downloads" ? <DownloadsPanel downloads={downloads} lang={lang} /> : null}
+        {activeTab === "downloads" ? <DownloadsPanel downloads={downloadsWithFile} lang={lang} /> : null}
       </div>
     </section>
   );
@@ -166,6 +169,10 @@ function DownloadsPanel({ downloads, lang }: { downloads: DownloadItem[]; lang: 
       })}
     </div>
   );
+}
+
+function hasDownloadFile(item: DownloadItem, lang: Language) {
+  return Boolean(lang === "en" ? item.local_file_url_en || item.file_url_en || item.local_file_url_de || item.file_url_de : item.local_file_url_de || item.file_url_de);
 }
 
 function SpecSectionCard({ section }: { section: SpecSection }) {
