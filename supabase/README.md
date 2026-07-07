@@ -60,6 +60,7 @@ These are optional:
 - `manage-users` powers the admin user-management tab. Without it, create users manually in Supabase Authentication.
 - `send-notification-email` sends form notification emails. Without it, form entries are still saved in the database.
 - `verify-site-password` is only needed if you use the old website-password protection flow.
+- `generate-blog-post` powers the admin AI blog generator and creates German/English blog drafts.
 - `temp-upload-media` and `migrate-media-files` are admin-only helpers for media uploads and legacy media migration.
 
 ## 5. Optional: add function secrets
@@ -70,6 +71,14 @@ The notification function sends mail through Resend. Add this before setup if ne
 
 ```bash
 RESEND_API_KEY=YOUR_RESEND_API_KEY
+```
+
+The AI blog generator needs an OpenAI-compatible LLM key. Add this before setup if needed:
+
+```bash
+LLM_API_KEY=YOUR_LLM_API_KEY
+LLM_MODEL=gpt-4o-mini
+LLM_BASE_URL=https://api.openai.com/v1
 ```
 
 Supabase provides `SUPABASE_URL`, `SUPABASE_ANON_KEY` and `SUPABASE_SERVICE_ROLE_KEY` automatically to deployed edge functions. The service-role key stays inside Supabase and is never exposed to the browser or `.env.local`.

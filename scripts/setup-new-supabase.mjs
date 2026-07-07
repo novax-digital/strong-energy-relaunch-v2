@@ -41,6 +41,8 @@ function formatArgs(args) {
       const shouldMaskValue =
         previousArg === "--password" ||
         arg.startsWith("RESEND_API_KEY=") ||
+        arg.startsWith("LLM_API_KEY=") ||
+        arg.startsWith("OPENAI_API_KEY=") ||
         arg.startsWith("SUPABASE_ACCESS_TOKEN=");
 
       if (shouldMaskValue) return "********";
@@ -81,6 +83,9 @@ const nextUrl = requireValue(localEnv, "NEXT_PUBLIC_SUPABASE_URL");
 const nextKey = requireValue(localEnv, "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY");
 const deployFunctions = (localEnv.DEPLOY_SUPABASE_FUNCTIONS || process.env.DEPLOY_SUPABASE_FUNCTIONS) === "true";
 const resendApiKey = localEnv.RESEND_API_KEY || process.env.RESEND_API_KEY || "";
+const llmApiKey = localEnv.LLM_API_KEY || process.env.LLM_API_KEY || localEnv.OPENAI_API_KEY || process.env.OPENAI_API_KEY || "";
+const llmModel = localEnv.LLM_MODEL || process.env.LLM_MODEL || "";
+const llmBaseUrl = localEnv.LLM_BASE_URL || process.env.LLM_BASE_URL || "";
 
 console.log("Neues Supabase Setup");
 console.log(`Project ref: ${projectRef}`);
@@ -96,6 +101,13 @@ if (deployFunctions) {
     run("npx", ["supabase", "secrets", "set", `RESEND_API_KEY=${resendApiKey}`, "--project-ref", projectRef], cliEnv);
   }
 
+  if (llmApiKey) {
+    const llmSecrets = [`LLM_API_KEY=${llmApiKey}`];
+    if (llmModel) llmSecrets.push(`LLM_MODEL=${llmModel}`);
+    if (llmBaseUrl) llmSecrets.push(`LLM_BASE_URL=${llmBaseUrl}`);
+    run("npx", ["supabase", "secrets", "set", ...llmSecrets, "--project-ref", projectRef], cliEnv);
+  }
+
   run(
     "npx",
     [
@@ -105,6 +117,7 @@ if (deployFunctions) {
       "manage-users",
       "send-notification-email",
       "verify-site-password",
+      "generate-blog-post",
       "temp-upload-media",
       "migrate-media-files",
       "--project-ref",
