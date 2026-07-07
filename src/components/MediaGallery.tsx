@@ -305,20 +305,25 @@ function MediaLightbox({
           <ChevronLeft className="h-6 w-6" />
         </button>
       ) : null}
-      <div className="w-full max-w-6xl" onClick={(event) => event.stopPropagation()}>
-        <div className="relative flex h-[78vh] w-full items-center justify-center overflow-hidden rounded-xl bg-black/35">
-          {item.media_type === "video" ? <LightboxVideo source={source} title={title} /> : <LightboxImage source={source} title={title} onNext={showNavigation ? onNext : undefined} />}
-        </div>
-        <div className="mt-4 flex flex-col gap-2 text-white sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <h2 className="text-base font-semibold sm:text-lg">{title}</h2>
-            {description ? <p className="mt-1 max-w-3xl text-sm text-white/70">{description}</p> : null}
+      <div className="flex max-h-[86vh] max-w-[92vw] items-center justify-center" onClick={(event) => event.stopPropagation()}>
+        <h2 className="sr-only">{title}</h2>
+        {description ? <p className="sr-only">{description}</p> : null}
+        {item.media_type === "video" ? (
+          <div
+            className="relative aspect-video overflow-hidden rounded-lg shadow-2xl"
+            style={{ width: "min(92vw, 1180px, calc(82vh * 16 / 9))" }}
+          >
+            <LightboxVideo source={source} title={title} />
           </div>
-          <span className="shrink-0 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold backdrop-blur">
-            {current} / {total}
-          </span>
-        </div>
+        ) : (
+          <LightboxImage source={source} title={title} onNext={showNavigation ? onNext : undefined} />
+        )}
       </div>
+      {showNavigation ? (
+        <div className="absolute bottom-4 left-1/2 z-20 -translate-x-1/2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-white backdrop-blur">
+          {current} / {total}
+        </div>
+      ) : null}
       {showNavigation ? (
         <button
           aria-label="Nächstes Medium"
@@ -337,19 +342,18 @@ function MediaLightbox({
 }
 
 function LightboxImage({ onNext, source, title }: { onNext?: () => void; source: string; title: string }) {
+  // eslint-disable-next-line @next/next/no-img-element -- the lightbox should keep the image's natural aspect ratio.
+  const image = <img alt={title} className="max-h-[82vh] max-w-[92vw] rounded-lg object-contain shadow-2xl" decoding="async" src={source} />;
+
   if (onNext) {
     return (
-      <button aria-label="Nächstes Medium anzeigen" className="relative h-full w-full cursor-pointer" onClick={onNext} type="button">
-        <Image src={source} alt={title} fill sizes="100vw" className="object-contain" priority unoptimized />
+      <button aria-label="Nächstes Medium anzeigen" className="block cursor-pointer" onClick={onNext} type="button">
+        {image}
       </button>
     );
   }
 
-  return (
-    <div className="relative h-full w-full">
-      <Image src={source} alt={title} fill sizes="100vw" className="object-contain" priority unoptimized />
-    </div>
-  );
+  return image;
 }
 
 function LightboxVideo({ source, title }: { source: string; title: string }) {
