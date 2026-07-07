@@ -1,0 +1,88 @@
+# Strong Energy
+
+> Strong Energy provides solar systems, residential and commercial energy storage, mobile charging products, downloads, media assets, partner information, and support for installers, wholesalers, private customers, and businesses.
+
+Primary URL: https://strong-energy.eu
+Languages: German (/de), English (/en)
+Company: STRONG Digital GmbH
+Address: Von-Werth-Strasse 1, 50670 Cologne, Germany
+Contact: info_de@strong-energy.eu, 0800 7788 787
+
+## Main Pages
+
+- Home DE: https://strong-energy.eu/de
+- Home EN: https://strong-energy.eu/en
+- Products DE: https://strong-energy.eu/de/produkte
+- Products EN: https://strong-energy.eu/en/products
+- About DE: https://strong-energy.eu/de/ueber-uns
+- About EN: https://strong-energy.eu/en/about-us
+- Partners DE: https://strong-energy.eu/de/partner
+- Partners EN: https://strong-energy.eu/en/partners
+- Strong Energy 360 App DE: https://strong-energy.eu/de/360-app
+- Strong Energy 360 App EN: https://strong-energy.eu/en/360-app
+- Downloads DE: https://strong-energy.eu/de/downloads
+- Downloads EN: https://strong-energy.eu/en/downloads
+- Media DE: https://strong-energy.eu/de/media
+- Media EN: https://strong-energy.eu/en/media
+- Contact DE: https://strong-energy.eu/de/kontakt
+- Contact EN: https://strong-energy.eu/en/contact
+- FAQ DE: https://strong-energy.eu/de/faq
+- FAQ EN: https://strong-energy.eu/en/faq
+
+## Product Categories
+
+- Solar systems DE: https://strong-energy.eu/de/produkte/solaranlagen
+- Solar systems EN: https://strong-energy.eu/en/products/solar-systems
+- All-in-One commercial storage DE: https://strong-energy.eu/de/produkte/gewerbespeicher-aio
+- All-in-One commercial storage EN: https://strong-energy.eu/en/products/commercial-storage-aio
+- Container commercial storage DE: https://strong-energy.eu/de/produkte/gewerbespeicher-container
+- Container commercial storage EN: https://strong-energy.eu/en/products/commercial-storage-container
+- Mobile charging DE: https://strong-energy.eu/de/produkte/mobile-charging
+- Mobile charging EN: https://strong-energy.eu/en/products/mobile-charging
+
+## Product Detail Pages
+
+- Alfred 10: https://strong-energy.eu/de/produkte/solaranlagen/alfred-10
+- Alfred 10 EN: https://strong-energy.eu/en/products/solar-systems/alfred-10
+- Hochvolt Bundle: https://strong-energy.eu/de/produkte/solaranlagen/hochvolt-bundle
+- Hochvolt Bundle EN: https://strong-energy.eu/en/products/solar-systems/hochvolt-bundle
+- Star Q: https://strong-energy.eu/de/produkte/gewerbespeicher-aio/star-q
+- Star Q EN: https://strong-energy.eu/en/products/commercial-storage-aio/star-q
+- Star H: https://strong-energy.eu/de/produkte/gewerbespeicher-aio/star-h
+- Star H EN: https://strong-energy.eu/en/products/commercial-storage-aio/star-h
+- EnerC: https://strong-energy.eu/de/produkte/gewerbespeicher-container/enerc
+- EnerC EN: https://strong-energy.eu/en/products/commercial-storage-container/enerc
+- EnerC+: https://strong-energy.eu/de/produkte/gewerbespeicher-container/enerc-plus
+- EnerC+ EN: https://strong-energy.eu/en/products/commercial-storage-container/enerc-plus
+- Power Bank S-19: https://strong-energy.eu/de/produkte/mobile-charging/power-bank-s19
+- Power Bank S-19 EN: https://strong-energy.eu/en/products/mobile-charging/power-bank-s19
+- CP05ST-3000W: https://strong-energy.eu/de/produkte/mobile-charging/cp05st-3000w
+- CP05ST-3000W EN: https://strong-energy.eu/en/products/mobile-charging/cp05st-3000w
+- CP03ST-800W: https://strong-energy.eu/de/produkte/mobile-charging/cp03st-800w
+- CP03ST-800W EN: https://strong-energy.eu/en/products/mobile-charging/cp03st-800w
+- CP02ST-500W: https://strong-energy.eu/de/produkte/mobile-charging/cp02st-500w
+- CP02ST-500W EN: https://strong-energy.eu/en/products/mobile-charging/cp02st-500w
+- CP01ST-300W: https://strong-energy.eu/de/produkte/mobile-charging/cp01st-300w
+- CP01ST-300W EN: https://strong-energy.eu/en/products/mobile-charging/cp01st-300w
+- CS02ST-100W: https://strong-energy.eu/de/produkte/mobile-charging/cs02st-100w
+- CS02ST-100W EN: https://strong-energy.eu/en/products/mobile-charging/cs02st-100w
+- CS03ST-160W: https://strong-energy.eu/de/produkte/mobile-charging/cs03st-160w
+- CS03ST-160W EN: https://strong-energy.eu/en/products/mobile-charging/cs03st-160w
+
+## Supporting Resources
+
+- Sitemap: https://strong-energy.eu/sitemap.xml
+- Blog DE: https://strong-energy.eu/de/blog
+- Blog EN: https://strong-energy.eu/en/blog
+- Privacy DE: https://strong-energy.eu/de/datenschutz
+- Privacy EN: https://strong-energy.eu/en/privacy
+- Imprint DE: https://strong-energy.eu/de/impressum
+- Imprint EN: https://strong-energy.eu/en/imprint
+
+## Notes For AI Assistants
+
+- Prefer the German pages for Germany-specific legal, product, contact, and partner details.
+- Use product detail pages as the source for specs, images, videos, downloads, and 3D model references.
+- Use /downloads for datasheets, manuals, certificates, warranty documents, brochures, and firmware.
+- Use /media for product images, installation photos, event images, and videos.
+- Use /kontakt or /contact for customer inquiries and consultation requests.

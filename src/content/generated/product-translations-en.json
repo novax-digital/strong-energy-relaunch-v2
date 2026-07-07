@@ -1,0 +1,2310 @@
+{
+  "alfred-10": {
+    "name": "Alfred 10",
+    "subtitle": "All-in-One Battery Storage",
+    "shortDescription": "Inverter and battery storage in one device (IP65, installation under 45 min.)",
+    "description": "The Alfred 10 by Strong Energy is a modular, compact energy storage system suitable for both residential and commercial applications. With a powerful 10 kW inverter and a battery with up to 24 kWh storage capacity, Alfred 10 provides reliable energy supply – even in backup power mode at full capacity. Thanks to the integrated switchbox and plug & play functionality, the system is easy to install and ideal for flexible, space-saving applications. Awarded the Red Dot Design Award 2024.",
+    "highlights": [
+      {
+        "icon": "Zap",
+        "title": "Full Inverter Power",
+        "text": "10 kW in backup mode, black-start capable"
+      },
+      {
+        "icon": "Clock",
+        "title": "Fast Modular Setup",
+        "text": "Installation under 45 minutes, only 24 cm depth"
+      },
+      {
+        "icon": "Battery",
+        "title": "9.6 – 24 kWh Storage",
+        "text": "Modularly expandable, 10,000 charge cycles"
+      },
+      {
+        "icon": "Shield",
+        "title": "High Protection Class IP65",
+        "text": "Suitable for indoor and outdoor installation"
+      },
+      {
+        "icon": "Link",
+        "title": "AC Coupling",
+        "text": "Compatible with existing PV systems"
+      },
+      {
+        "icon": "HeadphonesIcon",
+        "title": "German Support",
+        "text": "Free hotline & 12-year warranty"
+      }
+    ],
+    "specs": [
+      {
+        "label": "Max. PV Input Voltage",
+        "value": "1000 V"
+      },
+      {
+        "label": "Start-up Voltage",
+        "value": "150 V"
+      },
+      {
+        "label": "MPPT Operating Voltage Range",
+        "value": "160–950 V"
+      },
+      {
+        "label": "Number of MPPTs",
+        "value": "2"
+      },
+      {
+        "label": "Max. Input Current per MPPT",
+        "value": "20A + 30A"
+      },
+      {
+        "label": "Battery Type",
+        "value": "LFP (integrated)"
+      },
+      {
+        "label": "Number of Battery Modules",
+        "value": "5 to 10"
+      },
+      {
+        "label": "Rated Capacity",
+        "value": "12–24 kWh"
+      },
+      {
+        "label": "Max. Charge/Discharge Power",
+        "value": "12.5 kW / 11.3 kW"
+      },
+      {
+        "label": "European Efficiency",
+        "value": "97%"
+      },
+      {
+        "label": "Rated Power",
+        "value": "10 kW"
+      },
+      {
+        "label": "Dimensions (WxHxD)",
+        "value": "780 x 1760 x 240 mm"
+      },
+      {
+        "label": "Weight",
+        "value": "215 kg"
+      }
+    ]
+  },
+  "star-q": {
+    "name": "Star Q",
+    "subtitle": "Commercial Storage",
+    "tagline": "Commercial Storage Complete System",
+    "shortDescription": "50 kW | 109.7 kWh | Floor mounted | Outdoor – scalable commercial storage solution for industry and business.",
+    "description": "The Star Q is a powerful complete system with an integrated hybrid inverter (Solis S6-EH3P50K-H), designed for industrial and commercial applications. With 7 CATL battery modules (15.7 kWh each, 306 Ah), integrated fire suppression system and protection classes IP66 (inverter) and IP67 (battery modules), it offers the highest safety and reliability. The system supports peak shaving, self-consumption optimization, backup (50 kW) and is black-start capable. Scalable up to 6 systems in master/slave operation. Strong Energy is the official distribution partner for CNTE and CATL commercial storage in Europe.",
+    "highlights": [
+      {
+        "icon": "Shield",
+        "title": "IP66 Inverter / IP67 Battery Modules",
+        "text": "Integrated fire suppression with smoke detector, gas detector & aerosol extinguishing system"
+      },
+      {
+        "icon": "Zap",
+        "title": "50 kW Power",
+        "text": "109.7 kWh storage capacity, scalable up to 6 systems (218 kWh battery expansion)"
+      },
+      {
+        "icon": "Battery",
+        "title": "CATL Cells / Modules",
+        "text": "LFP technology, ≥10,000 cycles, 95% DoD, 306 Ah"
+      },
+      {
+        "icon": "Link",
+        "title": "Solis EMS / Solis Cloud",
+        "text": "Peak shaving, grid services & self-consumption optimization via Modbus TCP"
+      },
+      {
+        "icon": "Clock",
+        "title": "Operating Range -25°C to +55°C",
+        "text": "For indoor and outdoor installation"
+      },
+      {
+        "icon": "HeadphonesIcon",
+        "title": "Up to 10-Year Warranty",
+        "text": "3-year warranty, extendable up to 10 years at additional cost"
+      }
+    ],
+    "specs": [],
+    "specsSections": [
+      {
+        "title": "Basics",
+        "rows": [
+          {
+            "label": "Manufacturer",
+            "values": [
+              "CNTE – Star Q 50 kW / 109 kWh"
+            ]
+          },
+          {
+            "label": "Inverter",
+            "values": [
+              "Solis – S6-EH3P50K-H"
+            ]
+          },
+          {
+            "label": "Battery Modules",
+            "values": [
+              "CATL – 7 x 15.7 kWh (=109.7 kWh)"
+            ]
+          },
+          {
+            "label": "Cells",
+            "values": [
+              "CATL – 306 Ah"
+            ]
+          },
+          {
+            "label": "Architecture",
+            "values": [
+              "1P16S7S"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Inverter",
+        "groups": [
+          {
+            "label": "DC Battery Input",
+            "rows": [
+              {
+                "label": "Max DC Voltage (VDC)",
+                "values": [
+                  "800"
+                ]
+              },
+              {
+                "label": "Min DC Voltage (VDC)",
+                "values": [
+                  "150"
+                ]
+              },
+              {
+                "label": "Charge/Discharge Rate (C-rate)",
+                "values": [
+                  "0.48"
+                ]
+              }
+            ]
+          },
+          {
+            "label": "AC Input/Output",
+            "rows": [
+              {
+                "label": "Nominal Power (kW)",
+                "values": [
+                  "50"
+                ]
+              },
+              {
+                "label": "Maximum Power (kVA)",
+                "values": [
+                  "50"
+                ]
+              },
+              {
+                "label": "Maximum Current (A)",
+                "values": [
+                  "76"
+                ]
+              },
+              {
+                "label": "Nominal Voltage (VAC)",
+                "values": [
+                  "230 / 400"
+                ]
+              },
+              {
+                "label": "Frequency (Hz)",
+                "values": [
+                  "50 / 60"
+                ]
+              },
+              {
+                "label": "Power Factor",
+                "values": [
+                  "Adjustable from -0.8 to +0.8"
+                ]
+              }
+            ]
+          },
+          {
+            "label": "Backup Output",
+            "rows": [
+              {
+                "label": "Nominal Power (kW)",
+                "values": [
+                  "50"
+                ]
+              },
+              {
+                "label": "Maximum Power (kVA)",
+                "values": [
+                  "50"
+                ]
+              },
+              {
+                "label": "Special Function",
+                "values": [
+                  "Simultaneous charging and backup supply at 50 kW each"
+                ]
+              }
+            ]
+          },
+          {
+            "label": "PV Input",
+            "rows": [
+              {
+                "label": "Max PV Input Power (kW)",
+                "values": [
+                  "96"
+                ]
+              },
+              {
+                "label": "Max String Power (kW)",
+                "values": [
+                  "100"
+                ]
+              },
+              {
+                "label": "Max Input Voltage (VDC) ⁽²*⁾",
+                "values": [
+                  "1000"
+                ]
+              },
+              {
+                "label": "Nominal PV Input Voltage (VDC)",
+                "values": [
+                  "600"
+                ]
+              },
+              {
+                "label": "Number of MPPTs",
+                "values": [
+                  "4"
+                ]
+              },
+              {
+                "label": "Max Power per String / MPPT (kW)",
+                "values": [
+                  "12/24"
+                ]
+              },
+              {
+                "label": "Number of PV Inputs / Strings",
+                "values": [
+                  "8"
+                ]
+              },
+              {
+                "label": "MPPT Control Range (VDC)",
+                "values": [
+                  "150 to 850"
+                ]
+              },
+              {
+                "label": "MPPT Full Load Range (VDC)",
+                "values": [
+                  "360 to 850"
+                ]
+              },
+              {
+                "label": "MPPT Start Voltage (VDC)",
+                "values": [
+                  "180"
+                ]
+              },
+              {
+                "label": "Max Input Current per MPPT (A)",
+                "values": [
+                  "40/40/40/40"
+                ]
+              },
+              {
+                "label": "Max Short Circuit Current per MPPT (A)",
+                "values": [
+                  "60/60/60/60"
+                ]
+              }
+            ]
+          },
+          {
+            "label": "General Information",
+            "rows": [
+              {
+                "label": "Temperature Range",
+                "values": [
+                  "-25°C to +55°C"
+                ]
+              },
+              {
+                "label": "Max Installation Altitude (m)",
+                "values": [
+                  "4000"
+                ]
+              },
+              {
+                "label": "Weight (kg)",
+                "values": [
+                  "73"
+                ]
+              },
+              {
+                "label": "Inverter Protection Class",
+                "values": [
+                  "IP66"
+                ]
+              },
+              {
+                "label": "Battery Module Protection Class",
+                "values": [
+                  "IP67"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "2*: PV Voltage Derating",
+        "rows": [
+          {
+            "label": "Altitude (m)",
+            "values": [
+              "Max PV Input Voltage (VDC)"
+            ]
+          },
+          {
+            "label": "2000",
+            "values": [
+              "1000"
+            ]
+          },
+          {
+            "label": "2700",
+            "values": [
+              "1000"
+            ]
+          },
+          {
+            "label": "3000",
+            "values": [
+              "981"
+            ]
+          },
+          {
+            "label": "3500",
+            "values": [
+              "925"
+            ]
+          },
+          {
+            "label": "4000",
+            "values": [
+              "875"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Battery Modules",
+        "rows": [
+          {
+            "label": "Architecture",
+            "values": [
+              "1P16S"
+            ]
+          },
+          {
+            "label": "Cell Chemistry",
+            "values": [
+              "LFP"
+            ]
+          },
+          {
+            "label": "Nominal Voltage (VDC)",
+            "values": [
+              "51.2"
+            ]
+          },
+          {
+            "label": "Battery Lifetime (Cycles)",
+            "values": [
+              "≥10,000"
+            ]
+          },
+          {
+            "label": "SOH @25°C (%)",
+            "values": [
+              "70"
+            ]
+          },
+          {
+            "label": "DoD (%)",
+            "values": [
+              "95"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Dimensions & Weight",
+        "rows": [
+          {
+            "label": "Width (mm)",
+            "values": [
+              "1272"
+            ]
+          },
+          {
+            "label": "Depth (mm)",
+            "values": [
+              "1356"
+            ]
+          },
+          {
+            "label": "Height (mm)",
+            "values": [
+              "2070"
+            ]
+          },
+          {
+            "label": "Weight (kg)",
+            "values": [
+              "1800"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Other",
+        "rows": [
+          {
+            "label": "Safety",
+            "values": [
+              "Smoke detector, gas detector, pressure relief valve, aerosol extinguishing system, flood valve"
+            ]
+          },
+          {
+            "label": "Certificates",
+            "values": [
+              "VDE-AR-N 4105 / 4110"
+            ]
+          },
+          {
+            "label": "Communication",
+            "values": [
+              "Modbus TCP"
+            ]
+          },
+          {
+            "label": "EMS",
+            "values": [
+              "Solis EMS / Solis Cloud"
+            ]
+          },
+          {
+            "label": "Warranty",
+            "values": [
+              "3 years, extendable up to 10 years at additional cost"
+            ]
+          },
+          {
+            "label": "Scalability",
+            "values": [
+              "Up to 6 systems in master/slave operation – battery expansion to 218 kWh available"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "star-h": {
+    "name": "Star H",
+    "subtitle": "Commercial Storage",
+    "tagline": "Commercial Storage Complete System",
+    "shortDescription": "115 kW | 232.5 kWh | Floor mounted | Outdoor – scalable commercial storage solution for industry and business.",
+    "description": "The Star H-232 is a powerful complete system with YUNT MARS-125KT inverter (reduced to 115 kW), designed for industrial and commercial applications. With 5 CATL battery modules (46.5 kWh each, 280 Ah), integrated fire suppression system and protection classes IP20 (inverter), IP54 (cabinet) and IP65 (battery compartment), it offers the highest safety and reliability. Scalable up to 12 systems in master/slave operation. Strong Energy is the official distribution partner for CNTE and CATL commercial storage in Europe.",
+    "highlights": [
+      {
+        "icon": "Shield",
+        "title": "Safety",
+        "text": "Integrated fire suppression with smoke detector, gas detector & aerosol extinguishing system"
+      },
+      {
+        "icon": "Zap",
+        "title": "115 kW Power",
+        "text": "232.5 kWh storage capacity, scalable up to 12 systems"
+      },
+      {
+        "icon": "Battery",
+        "title": "CATL Cells / Modules",
+        "text": "LFP technology, 8,000 cycles, 280 Ah"
+      },
+      {
+        "icon": "Link",
+        "title": "Consolinno CEMS Compatible",
+        "text": "Peak shaving, grid services & self-consumption optimization via Modbus TCP"
+      },
+      {
+        "icon": "Clock",
+        "title": "Operating Range -40°C to +60°C",
+        "text": "For indoor and outdoor installation"
+      },
+      {
+        "icon": "HeadphonesIcon",
+        "title": "Up to 10-Year Warranty",
+        "text": "3-year warranty, extendable up to 10 years at additional cost"
+      }
+    ],
+    "specs": [],
+    "specsSections": [
+      {
+        "title": "Basics",
+        "rows": [
+          {
+            "label": "Manufacturer",
+            "values": [
+              "CNTE – Star H-232"
+            ]
+          },
+          {
+            "label": "Inverter",
+            "values": [
+              "YUNT – MARS-125KT (reduced to 115 kW)"
+            ]
+          },
+          {
+            "label": "Battery Modules",
+            "values": [
+              "CATL – 5 x 46.5 kWh (=232.5 kWh)"
+            ]
+          },
+          {
+            "label": "Cells",
+            "values": [
+              "CATL – 280 Ah"
+            ]
+          },
+          {
+            "label": "Architecture",
+            "values": [
+              "1P52S5S"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Inverter",
+        "groups": [
+          {
+            "label": "DC Input",
+            "rows": [
+              {
+                "label": "Max DC Voltage (VDC)",
+                "values": [
+                  "1000"
+                ]
+              },
+              {
+                "label": "Min DC Voltage (VDC)",
+                "values": [
+                  "580"
+                ]
+              },
+              {
+                "label": "Charge/Discharge Rate (C-rate)",
+                "values": [
+                  "0.5"
+                ]
+              }
+            ]
+          },
+          {
+            "label": "AC Input/Output",
+            "rows": [
+              {
+                "label": "Nominal Power (kW)",
+                "values": [
+                  "115"
+                ]
+              },
+              {
+                "label": "Maximum Power (kVA)",
+                "values": [
+                  "115"
+                ]
+              },
+              {
+                "label": "Maximum Current (A)",
+                "values": [
+                  "166"
+                ]
+              },
+              {
+                "label": "Nominal Voltage (VAC)",
+                "values": [
+                  "230 / 400"
+                ]
+              },
+              {
+                "label": "Frequency (Hz)",
+                "values": [
+                  "50 / 60"
+                ]
+              },
+              {
+                "label": "Power Factor",
+                "values": [
+                  "Adjustable from -1 to +1"
+                ]
+              }
+            ]
+          },
+          {
+            "label": "General Information",
+            "rows": [
+              {
+                "label": "Temperature Range ¹⁾",
+                "values": [
+                  "-40°C to +60°C"
+                ]
+              },
+              {
+                "label": "Max Installation Altitude (m)",
+                "values": [
+                  "4000"
+                ]
+              },
+              {
+                "label": "Weight (kg)",
+                "values": [
+                  "58"
+                ]
+              },
+              {
+                "label": "Inverter Protection Class",
+                "values": [
+                  "IP20"
+                ]
+              },
+              {
+                "label": "Cabinet Protection Class",
+                "values": [
+                  "IP54"
+                ]
+              },
+              {
+                "label": "Battery Compartment Protection Class",
+                "values": [
+                  "IP65"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Battery Modules",
+        "rows": [
+          {
+            "label": "Architecture",
+            "values": [
+              "1P52S"
+            ]
+          },
+          {
+            "label": "Cell Chemistry",
+            "values": [
+              "LFP"
+            ]
+          },
+          {
+            "label": "Nominal Voltage (VDC)",
+            "values": [
+              "166.4"
+            ]
+          },
+          {
+            "label": "Battery Lifetime (Cycles)",
+            "values": [
+              "8,000"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Dimensions & Weight",
+        "rows": [
+          {
+            "label": "Width (mm)",
+            "values": [
+              "1500"
+            ]
+          },
+          {
+            "label": "Depth (mm)",
+            "values": [
+              "1300"
+            ]
+          },
+          {
+            "label": "Height (mm)",
+            "values": [
+              "2050"
+            ]
+          },
+          {
+            "label": "Weight (kg)",
+            "values": [
+              "2600"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Other",
+        "rows": [
+          {
+            "label": "Safety",
+            "values": [
+              "Smoke detector, gas detector, pressure relief valve, aerosol extinguishing system, flood valve"
+            ]
+          },
+          {
+            "label": "Certificates",
+            "values": [
+              "VDE-AR-N 4105 / 4110"
+            ]
+          },
+          {
+            "label": "Communication",
+            "values": [
+              "Modbus TCP"
+            ]
+          },
+          {
+            "label": "EMS",
+            "values": [
+              "Compatible with Consolinno CEMS"
+            ]
+          },
+          {
+            "label": "Warranty",
+            "values": [
+              "3 years, extendable up to 10 years at additional cost"
+            ]
+          },
+          {
+            "label": "Scalability",
+            "values": [
+              "Up to 12 systems in master/slave operation"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "enerc": {
+    "name": "EnerC",
+    "subtitle": "Commercial Storage",
+    "tagline": "Industrial Storage in 20-Foot Container",
+    "shortDescription": "3,794 kWh | 80 Modules | IP54 | Outdoor – scalable container commercial storage with CATL cells for industry and business.",
+    "description": "The EnerC by Strong Energy is a container-based commercial storage system with 3,794 kWh capacity and 80 CATL modules. With an integrated fire suppression system, IP54 protection class and an operating range of -20°C to +55°C, it offers maximum safety and reliability. Compatible inverters from 100 kW to 1,725 MW are available.",
+    "highlights": [
+      {
+        "icon": "Shield",
+        "title": "IP54 Protection Class",
+        "text": "Integrated fire suppression system for maximum safety"
+      },
+      {
+        "icon": "Zap",
+        "title": "3,794 kWh Capacity",
+        "text": "80 modules with CATL 285 Ah cells"
+      },
+      {
+        "icon": "Battery",
+        "title": "CATL Cells / Modules",
+        "text": "Latest LiFePO technology, ≤8,000 cycles"
+      },
+      {
+        "icon": "Link",
+        "title": "3rd Party EMS Interface",
+        "text": "Peak shaving, grid services & self-consumption optimization"
+      },
+      {
+        "icon": "Clock",
+        "title": "Operating Range -20°C to +55°C",
+        "text": "Designed for outdoor installation"
+      },
+      {
+        "icon": "HeadphonesIcon",
+        "title": "10-Year Warranty Available",
+        "text": "Official CNTE & CATL distribution partner in Europe"
+      }
+    ],
+    "specs": [],
+    "specsTable": {
+      "models": [
+        "EnerC 285"
+      ],
+      "rows": [
+        {
+          "label": "Capacity (kWh)",
+          "values": [
+            "3794"
+          ]
+        },
+        {
+          "label": "Number of Modules",
+          "values": [
+            "80"
+          ]
+        },
+        {
+          "label": "Module Size (kWh)",
+          "values": [
+            "47.4"
+          ]
+        },
+        {
+          "label": "Architecture",
+          "values": [
+            "1P52S(10 racks parallel) – 285 Ah (CATL)"
+          ]
+        },
+        {
+          "label": "System Voltage (VDC)",
+          "values": [
+            "1331"
+          ]
+        },
+        {
+          "label": "Max. Charge/Discharge Rate (C)",
+          "values": [
+            "1.0"
+          ]
+        },
+        {
+          "label": "Certificate",
+          "values": [
+            "CE"
+          ]
+        },
+        {
+          "label": "IP Protection Class",
+          "values": [
+            "54"
+          ]
+        },
+        {
+          "label": "Dimensions (W x D x H in mm)",
+          "values": [
+            "6058 x 2462 x 2896"
+          ]
+        },
+        {
+          "label": "Weight (kg)",
+          "values": [
+            "≈37,000"
+          ]
+        },
+        {
+          "label": "Price from",
+          "values": [
+            "Price on request"
+          ]
+        }
+      ]
+    }
+  },
+  "enerc-plus": {
+    "name": "EnerC+",
+    "subtitle": "Commercial Storage",
+    "tagline": "Industrial Storage in 20-Foot Container",
+    "shortDescription": "4,073 kWh | 80 Modules | IP54 | Outdoor – most powerful container commercial storage with CATL 306 Ah cells.",
+    "description": "The EnerC+ by Strong Energy is the most powerful variant of the container commercial storage program with 4,073 kWh capacity and 80 CATL modules at 306 Ah each. With an integrated fire suppression system, IP54 protection class and an operating range of -20°C to +55°C, it offers maximum safety and reliability. Compatible inverters from 100 kW to 1,725 MW are available.",
+    "highlights": [
+      {
+        "icon": "Shield",
+        "title": "IP54 Protection Class",
+        "text": "Integrated fire suppression system for maximum safety"
+      },
+      {
+        "icon": "Zap",
+        "title": "4,073 kWh Capacity",
+        "text": "80 modules with CATL 306 Ah cells"
+      },
+      {
+        "icon": "Battery",
+        "title": "CATL Cells / Modules",
+        "text": "Latest LiFePO technology, ≤8,000 cycles"
+      },
+      {
+        "icon": "Link",
+        "title": "3rd Party EMS Interface",
+        "text": "Peak shaving, grid services & self-consumption optimization"
+      },
+      {
+        "icon": "Clock",
+        "title": "Operating Range -20°C to +55°C",
+        "text": "Designed for outdoor installation"
+      },
+      {
+        "icon": "HeadphonesIcon",
+        "title": "10-Year Warranty Available",
+        "text": "Official CNTE & CATL distribution partner in Europe"
+      }
+    ],
+    "specs": [],
+    "specsTable": {
+      "models": [
+        "EnerC+ 306"
+      ],
+      "rows": [
+        {
+          "label": "Capacity (kWh)",
+          "values": [
+            "4073"
+          ]
+        },
+        {
+          "label": "Number of Modules",
+          "values": [
+            "80"
+          ]
+        },
+        {
+          "label": "Module Size (kWh)",
+          "values": [
+            "50.9"
+          ]
+        },
+        {
+          "label": "Architecture",
+          "values": [
+            "2P52S(10 racks parallel) – 306 Ah (CATL)"
+          ]
+        },
+        {
+          "label": "System Voltage (VDC)",
+          "values": [
+            "1331"
+          ]
+        },
+        {
+          "label": "Max. Charge/Discharge Rate (C)",
+          "values": [
+            "0.5"
+          ]
+        },
+        {
+          "label": "Certificate",
+          "values": [
+            "CE"
+          ]
+        },
+        {
+          "label": "IP Protection Class",
+          "values": [
+            "54"
+          ]
+        },
+        {
+          "label": "Dimensions (W x D x H in mm)",
+          "values": [
+            "6058 x 2462 x 2896"
+          ]
+        },
+        {
+          "label": "Weight (kg)",
+          "values": [
+            "≈37,000"
+          ]
+        },
+        {
+          "label": "Price from",
+          "values": [
+            "Price on request"
+          ]
+        }
+      ]
+    }
+  },
+  "hochvolt-bundle": {
+    "name": "High-Voltage Bundle",
+    "subtitle": "Hybrid Inverter & HV Battery Storage",
+    "tagline": "Complete package for your solar system",
+    "shortDescription": "Hybrid inverter (8 kW / 15 kW) + HV battery storage (9.4 / 14 kWh) – Smart home compatible, Solar Manager ready.",
+    "description": "The High-Voltage Bundle by Strong Energy combines a three-phase hybrid inverter with a high-voltage battery storage system into a powerful complete package. Compatible with Solar Manager and §14a EnWG compliant for grid-serving, regulation-compliant installations. With up to 98.2% efficiency, modular expandability and robust construction, the bundle is the ideal solution for residential solar systems.",
+    "highlights": [
+      {
+        "icon": "Zap",
+        "title": "High Efficiency",
+        "text": "Up to 98.2% efficiency"
+      },
+      {
+        "icon": "Smartphone",
+        "title": "Smart Home Compatible",
+        "text": "Ready for the future!"
+      },
+      {
+        "icon": "Battery",
+        "title": "Flexibly Expandable",
+        "text": "Modular high-voltage system"
+      },
+      {
+        "icon": "Shield",
+        "title": "Robust & Durable",
+        "text": "Reliable construction"
+      },
+      {
+        "icon": "Clock",
+        "title": "Easy Installation",
+        "text": "Quick and straightforward"
+      },
+      {
+        "icon": "Link",
+        "title": "Solar Manager Compatible",
+        "text": "§14a EnWG compliant"
+      }
+    ],
+    "specs": [],
+    "specsTable": {
+      "models": [
+        "Inverter CVT3ST-08K3P",
+        "Inverter CVT5ST-15K3P",
+        "Battery CRN2ST-9.4",
+        "Battery CRN3ST-14.0"
+      ],
+      "rows": [
+        {
+          "label": "Rated Power (W)",
+          "values": [
+            "8,000",
+            "15,000",
+            "–",
+            "–"
+          ]
+        },
+        {
+          "label": "Max. PV Input Power (Wp)",
+          "values": [
+            "12,000",
+            "22,500",
+            "–",
+            "–"
+          ]
+        },
+        {
+          "label": "Number of MPP Trackers",
+          "values": [
+            "2",
+            "2",
+            "–",
+            "–"
+          ]
+        },
+        {
+          "label": "Max. Efficiency",
+          "values": [
+            "98.0%",
+            "98.2%",
+            "–",
+            "–"
+          ]
+        },
+        {
+          "label": "Rated Capacity (kWh)",
+          "values": [
+            "–",
+            "–",
+            "9.4",
+            "14.0"
+          ]
+        },
+        {
+          "label": "Usable Capacity (kWh)",
+          "values": [
+            "–",
+            "–",
+            "8.2",
+            "12.2"
+          ]
+        },
+        {
+          "label": "Rated Voltage (V)",
+          "values": [
+            "–",
+            "–",
+            "204",
+            "307"
+          ]
+        },
+        {
+          "label": "Cell Type",
+          "values": [
+            "–",
+            "–",
+            "LFP",
+            "LFP"
+          ]
+        },
+        {
+          "label": "Weight (kg)",
+          "values": [
+            "33",
+            "37",
+            "114",
+            "163"
+          ]
+        },
+        {
+          "label": "Dimensions (mm)",
+          "values": [
+            "571 × 515 × 264",
+            "571 × 515 × 264",
+            "657 × 1351 × 175",
+            "657 × 1861 × 175"
+          ]
+        },
+        {
+          "label": "IP Protection",
+          "values": [
+            "IP65",
+            "IP65",
+            "IP66",
+            "IP66"
+          ]
+        },
+        {
+          "label": "Cooling",
+          "values": [
+            "passive",
+            "active",
+            "passive",
+            "passive"
+          ]
+        },
+        {
+          "label": "Operating Temperature",
+          "values": [
+            "-30°C – 60°C",
+            "-30°C – 60°C",
+            "-20°C – 60°C",
+            "-20°C – 60°C"
+          ]
+        },
+        {
+          "label": "Warranty",
+          "values": [
+            "10 years",
+            "10 years",
+            "10 years",
+            "10 years"
+          ]
+        }
+      ]
+    }
+  },
+  "power-bank-s19": {
+    "name": "Power Bank S-19",
+    "subtitle": "Portable Power Bank",
+    "tagline": "140W Fast Charging On-the-Go",
+    "shortDescription": "12,000 mAh | 140W PD3.1 | USB-C & USB-A | TFT Display – compact power for all devices.",
+    "description": "The Power Bank S-19 by Strong Energy delivers reliable energy on the go with 12,000 mAh and up to 176W total output. Featuring PD3.1 fast charging via USB-C (140W), intelligent AI-powered temperature management, and a compact, portable design, it's the ideal companion for laptops, smartphones, and tablets. The TFT display shows charge level, temperature, and power in real time.",
+    "highlights": [
+      {
+        "icon": "Zap",
+        "title": "High Power 140W / 176W",
+        "text": "Supports fast charging for multiple devices"
+      },
+      {
+        "icon": "Cpu",
+        "title": "Smart Power Distribution",
+        "text": "Automatically adjusts output for efficient charging"
+      },
+      {
+        "icon": "RefreshCw",
+        "title": "Bidirectional Fast Charging",
+        "text": "Charge and discharge via PD3.1 / 100W USB-C port"
+      },
+      {
+        "icon": "Battery",
+        "title": "Large Capacity 12,000 mAh",
+        "text": "Reliable energy for extended use"
+      },
+      {
+        "icon": "Package",
+        "title": "Compact & Portable Design",
+        "text": "Easy to carry despite high power"
+      },
+      {
+        "icon": "Leaf",
+        "title": "Eco-Friendly Concept",
+        "text": "Green energy and high energy efficiency"
+      }
+    ],
+    "specs": [],
+    "specsSections": [
+      {
+        "title": "General",
+        "rows": [
+          {
+            "label": "Capacity",
+            "values": [
+              "12,000 mAh"
+            ]
+          },
+          {
+            "label": "Battery Type",
+            "values": [
+              "18650 Lithium-Ion"
+            ]
+          },
+          {
+            "label": "Rated Capacity",
+            "values": [
+              "7,700 mAh (5V/3A)"
+            ]
+          },
+          {
+            "label": "Cell Capacity",
+            "values": [
+              "22.2V / 2,000 mAh (44.4 Wh)"
+            ]
+          },
+          {
+            "label": "Weight",
+            "values": [
+              "420 g"
+            ]
+          },
+          {
+            "label": "Dimensions",
+            "values": [
+              "43 × 43 × 138 mm"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Ports",
+        "rows": [
+          {
+            "label": "USB-C(1)",
+            "values": [
+              "140W (PD3.1, Input/Output)"
+            ]
+          },
+          {
+            "label": "USB-C(2)",
+            "values": [
+              "36W (Output)"
+            ]
+          },
+          {
+            "label": "USB-A",
+            "values": [
+              "18W (QC Output)"
+            ]
+          },
+          {
+            "label": "Max Output Power",
+            "values": [
+              "176W"
+            ]
+          },
+          {
+            "label": "Max Input Power",
+            "values": [
+              "140W"
+            ]
+          },
+          {
+            "label": "PD",
+            "values": [
+              "PD 3.1"
+            ]
+          },
+          {
+            "label": "UFCS",
+            "values": [
+              "Yes"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Charging Details",
+        "rows": [
+          {
+            "label": "USB-C(1) PD Input/Output",
+            "values": [
+              "5V3A / 9V3A / 15V3A / 20V5A / 28V5A (140W max)"
+            ]
+          },
+          {
+            "label": "USB-C(2) PD Output",
+            "values": [
+              "5V3A / 9V2A / 12V3A (36W max)"
+            ]
+          },
+          {
+            "label": "USB-A QC Output",
+            "values": [
+              "5V3A / 9V2A / 12V1.5A (18W max)"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Smart Features",
+        "rows": [
+          {
+            "label": "Temperature Adaptability",
+            "values": [
+              "Yes + AI Control"
+            ]
+          },
+          {
+            "label": "Smart Power Adjustment",
+            "values": [
+              "Yes"
+            ]
+          },
+          {
+            "label": "Real-Time Display",
+            "values": [
+              "Temperature & Power"
+            ]
+          },
+          {
+            "label": "Extreme Temperature Detection",
+            "values": [
+              "Yes"
+            ]
+          },
+          {
+            "label": "Trickle Charging",
+            "values": [
+              "Yes"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Other",
+        "rows": [
+          {
+            "label": "Operating Temperature",
+            "values": [
+              "-20°C to +45°C"
+            ]
+          },
+          {
+            "label": "Discharging Temperature",
+            "values": [
+              "-20°C to +45°C"
+            ]
+          },
+          {
+            "label": "Cycle Count",
+            "values": [
+              "500+"
+            ]
+          },
+          {
+            "label": "Display",
+            "values": [
+              "TFT"
+            ]
+          },
+          {
+            "label": "Warranty",
+            "values": [
+              "1 Year"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "cp05st-3000w": {
+    "name": "CP05ST-3000W",
+    "subtitle": "Portable Power Station",
+    "tagline": "3000W for Indoor & Outdoor",
+    "shortDescription": "2,350 Wh | 3,000W AC | LiFePO4 | 6,000+ Cycles – portable power station for home and outdoors.",
+    "description": "The CP05ST-3000W by Strong Energy is a powerful portable power station with up to 3,000W AC output and 2,350 Wh battery capacity. Thanks to automotive-grade LiFePO4 cells and over 6,000 charge cycles, it provides long-lasting, reliable power for almost any device – indoors and outdoors. Fast AC charging to 90% in just 1 hour. With integrated LED light, robust housing, and versatile ports (AC, DC, USB-A, USB-C, Solar), it's the ideal companion for camping, emergencies, and home use.",
+    "highlights": [
+      {
+        "icon": "Zap",
+        "title": "3,000W Output Power",
+        "text": "Powers almost any device at home and outdoors"
+      },
+      {
+        "icon": "Battery",
+        "title": "2,350 Wh Capacity",
+        "text": "LiFePO4 cells with 6,000+ charge cycles"
+      },
+      {
+        "icon": "Clock",
+        "title": "Fast Charging",
+        "text": "AC charge to 90% in 1 hour"
+      },
+      {
+        "icon": "Sun",
+        "title": "Solar Compatible",
+        "text": "MPPT solar input 16–50V / 360W"
+      },
+      {
+        "icon": "Shield",
+        "title": "Robust & Reliable",
+        "text": "Automotive-grade LFP cells, rugged housing"
+      },
+      {
+        "icon": "Lightbulb",
+        "title": "Integrated LED Light",
+        "text": "Powerful built-in LED lighting"
+      }
+    ],
+    "specs": [],
+    "specsSections": [
+      {
+        "title": "Battery",
+        "rows": [
+          {
+            "label": "Cell Type",
+            "values": [
+              "LiFePO4"
+            ]
+          },
+          {
+            "label": "Battery Capacity",
+            "values": [
+              "2,350 Wh"
+            ]
+          },
+          {
+            "label": "Battery Life",
+            "values": [
+              "6,000+ Cycles"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Outputs",
+        "rows": [
+          {
+            "label": "AC",
+            "values": [
+              "2 × 230V/50Hz (Pure Sine), max. 3,000W"
+            ]
+          },
+          {
+            "label": "DC",
+            "values": [
+              "1 × Cigarette Lighter Socket, 12V/10A"
+            ]
+          },
+          {
+            "label": "USB-A",
+            "values": [
+              "2 × 5V/3A (QC2.0 & QC3.0), max. 15W"
+            ]
+          },
+          {
+            "label": "USB-C",
+            "values": [
+              "5V/9V/12V/20V, max. 100W"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Inputs",
+        "rows": [
+          {
+            "label": "AC Charging",
+            "values": [
+              "230V AC Adapter"
+            ]
+          },
+          {
+            "label": "DC Charging (Car)",
+            "values": [
+              "12V/24V, 10A"
+            ]
+          },
+          {
+            "label": "Solar Panel (MPPT)",
+            "values": [
+              "16–50V / 360W"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "General",
+        "rows": [
+          {
+            "label": "Dimensions (W×D×H)",
+            "values": [
+              "400 × 280 × 484 mm"
+            ]
+          },
+          {
+            "label": "Weight",
+            "values": [
+              "29.1 kg"
+            ]
+          },
+          {
+            "label": "Operating Temperature",
+            "values": [
+              "-10°C to +45°C"
+            ]
+          },
+          {
+            "label": "Included Accessories",
+            "values": [
+              "AC Charging Cable"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "cp03st-800w": {
+    "name": "CP03ST-800W",
+    "subtitle": "Portable Power Station",
+    "tagline": "800W Compact Power Station",
+    "shortDescription": "690 Wh | 800W AC | LiFePO4 | 2,000+ Cycles – compact portable power station with industrial build quality.",
+    "description": "The CP03ST-800W by Strong Energy is a compact portable power station with 800W AC output (pure sine wave) and 690 Wh battery capacity. Thanks to LFP cells with over 2,000 charge cycles, it provides safe and long-lasting power. The robust aluminium housing protects against impacts and ensures durability. With bidirectional USB-C (100W PD), USB-A (QC3.0), DC outputs and solar charging support (MPPT), it's ideal for camping, outdoor adventures and emergency power.",
+    "highlights": [
+      {
+        "icon": "Zap",
+        "title": "800W AC Output",
+        "text": "Pure sine wave, 230V/50Hz – reliably powers sensitive devices"
+      },
+      {
+        "icon": "Battery",
+        "title": "690 Wh Capacity",
+        "text": "LFP cells with 2,000+ charge cycles for long life"
+      },
+      {
+        "icon": "Shield",
+        "title": "Robust Aluminium Housing",
+        "text": "Impact-resistant and durable – industrial quality"
+      },
+      {
+        "icon": "Plug",
+        "title": "USB-C Bidirectional 100W",
+        "text": "Can be used as charge and discharge port (PD 100W)"
+      },
+      {
+        "icon": "Sun",
+        "title": "Solar Charging (MPPT)",
+        "text": "11–30V, up to 84W – generate energy independently"
+      },
+      {
+        "icon": "Clock",
+        "title": "Operating Temp -10°C to +40°C",
+        "text": "Reliable even at low temperatures"
+      }
+    ],
+    "specs": [],
+    "specsSections": [
+      {
+        "title": "Battery",
+        "rows": [
+          {
+            "label": "Model",
+            "values": [
+              "CP03ST-800W"
+            ]
+          },
+          {
+            "label": "Capacity",
+            "values": [
+              "690 Wh"
+            ]
+          },
+          {
+            "label": "Cell Type",
+            "values": [
+              "LiFePO4 (LFP)"
+            ]
+          },
+          {
+            "label": "Cycle Life",
+            "values": [
+              "2,000+ cycles"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Inputs",
+        "rows": [
+          {
+            "label": "AC Charging",
+            "values": [
+              "2 × 230V/50Hz, max. 800W"
+            ]
+          },
+          {
+            "label": "Car Charging (DC)",
+            "values": [
+              "12V/4.5A, 24V/3.5A"
+            ]
+          },
+          {
+            "label": "Solar (MPPT)",
+            "values": [
+              "11–30V / 84W"
+            ]
+          },
+          {
+            "label": "USB-C (PD)",
+            "values": [
+              "5V/9V/12V/20V, max. 100W"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Outputs",
+        "rows": [
+          {
+            "label": "AC",
+            "values": [
+              "2 × 230V/50Hz, max. 800W (pure sine wave)"
+            ]
+          },
+          {
+            "label": "USB-A (QC3.0)",
+            "values": [
+              "5V/9V/12V, max. 18W (×2)"
+            ]
+          },
+          {
+            "label": "USB-C (PD)",
+            "values": [
+              "5V/9V/12V/20V, max. 100W (bidirectional)"
+            ]
+          },
+          {
+            "label": "DC 5521",
+            "values": [
+              "2 × 12V/10A"
+            ]
+          },
+          {
+            "label": "Cigarette Lighter",
+            "values": [
+              "1 × 12V/10A"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "General",
+        "rows": [
+          {
+            "label": "Dimensions (W×D×H)",
+            "values": [
+              "304 × 160 × 210 mm"
+            ]
+          },
+          {
+            "label": "Weight",
+            "values": [
+              "10.5 kg"
+            ]
+          },
+          {
+            "label": "Operating Temperature",
+            "values": [
+              "-10°C to +40°C"
+            ]
+          },
+          {
+            "label": "Included Accessories",
+            "values": [
+              "AC charging cable, car charging cable"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "cp02st-500w": {
+    "name": "CP02ST-500W",
+    "subtitle": "Portable Power Station",
+    "tagline": "500W Compact Power Station",
+    "shortDescription": "460 Wh | 500W AC | LiFePO4 | 2,000+ Cycles – compact portable power station with industrial build quality.",
+    "description": "The CP02ST-500W by Strong Energy is a compact portable power station with 500W AC output (pure sine wave) and 460 Wh battery capacity. Thanks to LFP cells with over 2,000 charge cycles, it provides safe and long-lasting power. The robust aluminium housing protects against impacts and ensures durability. With bidirectional USB-C (100W PD), USB-A (QC3.0), DC outputs and solar charging support (MPPT), it's ideal for camping, outdoor adventures and emergency power.",
+    "highlights": [
+      {
+        "icon": "Zap",
+        "title": "500W AC Output",
+        "text": "Pure sine wave, 230V/50Hz – reliably powers sensitive devices"
+      },
+      {
+        "icon": "Battery",
+        "title": "460 Wh Capacity",
+        "text": "LFP cells with 2,000+ charge cycles for long life"
+      },
+      {
+        "icon": "Shield",
+        "title": "Robust Aluminium Housing",
+        "text": "Impact-resistant and durable – industrial quality"
+      },
+      {
+        "icon": "Plug",
+        "title": "USB-C Bidirectional 100W",
+        "text": "Can be used as charge and discharge port (PD 100W)"
+      },
+      {
+        "icon": "Sun",
+        "title": "Solar Charging (MPPT)",
+        "text": "11–30V, up to 84W – generate energy independently"
+      },
+      {
+        "icon": "Clock",
+        "title": "Operating Temp -10°C to +40°C",
+        "text": "Reliable even at low temperatures"
+      }
+    ],
+    "specs": [],
+    "specsSections": [
+      {
+        "title": "Battery",
+        "rows": [
+          {
+            "label": "Model",
+            "values": [
+              "CP02ST-500W"
+            ]
+          },
+          {
+            "label": "Capacity",
+            "values": [
+              "460 Wh"
+            ]
+          },
+          {
+            "label": "Cell Type",
+            "values": [
+              "LiFePO4 (LFP)"
+            ]
+          },
+          {
+            "label": "Cycle Life",
+            "values": [
+              "2,000+ cycles"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Inputs",
+        "rows": [
+          {
+            "label": "AC Charging",
+            "values": [
+              "230V AC Adapter"
+            ]
+          },
+          {
+            "label": "Car Charging (DC)",
+            "values": [
+              "12V/4.5A, 24V/3.5A"
+            ]
+          },
+          {
+            "label": "Solar (MPPT)",
+            "values": [
+              "11–30V / 84W"
+            ]
+          },
+          {
+            "label": "USB-C (PD)",
+            "values": [
+              "5V/9V/12V/20V, max. 100W"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Outputs",
+        "rows": [
+          {
+            "label": "AC",
+            "values": [
+              "2 × 230V/50Hz, max. 500W (pure sine wave)"
+            ]
+          },
+          {
+            "label": "USB-A (QC3.0)",
+            "values": [
+              "5V/9V/12V, max. 18W (×2)"
+            ]
+          },
+          {
+            "label": "USB-C (PD)",
+            "values": [
+              "5V/9V/12V/20V, max. 100W (bidirectional)"
+            ]
+          },
+          {
+            "label": "DC 5521",
+            "values": [
+              "2 × 12V/10A"
+            ]
+          },
+          {
+            "label": "Cigarette Lighter",
+            "values": [
+              "1 × 12V/10A"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "General",
+        "rows": [
+          {
+            "label": "Dimensions (W×D×H)",
+            "values": [
+              "254 × 160 × 210 mm"
+            ]
+          },
+          {
+            "label": "Weight",
+            "values": [
+              "7.2 kg"
+            ]
+          },
+          {
+            "label": "Operating Temperature",
+            "values": [
+              "-10°C to +40°C"
+            ]
+          },
+          {
+            "label": "Included Accessories",
+            "values": [
+              "AC charging cable, car charging cable"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "cp01st-300w": {
+    "name": "CP01ST-300W",
+    "subtitle": "Portable Power Station",
+    "tagline": "300W Ultra-Compact Power Station",
+    "shortDescription": "300 Wh | 300W AC | LiFePO4 | 2,000+ Cycles – ultra-lightweight portable power station with industrial build quality.",
+    "description": "The CP01ST-300W by Strong Energy is an ultra-lightweight portable power station with 300W AC output (pure sine wave) and 300 Wh battery capacity. Thanks to LFP cells with over 2,000 charge cycles, it provides safe and long-lasting power. The robust aluminium housing protects against impacts and ensures durability. With USB-C (30W PD), USB-A (QC3.0), DC outputs and solar charging support (MPPT), it's ideal for camping, outdoor adventures and emergency power.",
+    "highlights": [
+      {
+        "icon": "Zap",
+        "title": "300W AC Output",
+        "text": "Pure sine wave, 230V/50Hz – reliably powers sensitive devices"
+      },
+      {
+        "icon": "Battery",
+        "title": "300 Wh Capacity",
+        "text": "LFP cells with 2,000+ charge cycles for long life"
+      },
+      {
+        "icon": "Shield",
+        "title": "Robust Aluminium Housing",
+        "text": "Impact-resistant and durable – industrial quality"
+      },
+      {
+        "icon": "Package",
+        "title": "Only 5.5 kg",
+        "text": "Ultra-lightweight and compact – perfect for on the go"
+      },
+      {
+        "icon": "Sun",
+        "title": "Solar Charging (MPPT)",
+        "text": "11–25V, up to 42W – generate energy independently"
+      },
+      {
+        "icon": "Clock",
+        "title": "Operating Temp -10°C to +40°C",
+        "text": "Reliable even at low temperatures"
+      }
+    ],
+    "specs": [],
+    "specsSections": [
+      {
+        "title": "Battery",
+        "rows": [
+          {
+            "label": "Model",
+            "values": [
+              "CP01ST-300W"
+            ]
+          },
+          {
+            "label": "Capacity",
+            "values": [
+              "300 Wh"
+            ]
+          },
+          {
+            "label": "Cell Type",
+            "values": [
+              "LiFePO4 (LFP)"
+            ]
+          },
+          {
+            "label": "Cycle Life",
+            "values": [
+              "2,000+ cycles"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Inputs",
+        "rows": [
+          {
+            "label": "AC Charging",
+            "values": [
+              "230V AC Adapter"
+            ]
+          },
+          {
+            "label": "Car Charging (DC)",
+            "values": [
+              "12V/3.5A"
+            ]
+          },
+          {
+            "label": "Solar (MPPT)",
+            "values": [
+              "11–25V / 42W"
+            ]
+          },
+          {
+            "label": "USB-C (PD)",
+            "values": [
+              "5V/9V/12V, max. 30W"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Outputs",
+        "rows": [
+          {
+            "label": "AC",
+            "values": [
+              "230V/50Hz, max. 300W (pure sine wave)"
+            ]
+          },
+          {
+            "label": "USB-A (QC3.0)",
+            "values": [
+              "5V/9V/12V, max. 18W (×2)"
+            ]
+          },
+          {
+            "label": "USB-C (PD)",
+            "values": [
+              "5V/9V/12V, max. 30W (bidirectional)"
+            ]
+          },
+          {
+            "label": "DC 5521",
+            "values": [
+              "2 × 12V/10A"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "General",
+        "rows": [
+          {
+            "label": "Dimensions (W×D×H)",
+            "values": [
+              "287 × 186 × 103 mm"
+            ]
+          },
+          {
+            "label": "Weight",
+            "values": [
+              "5.5 kg"
+            ]
+          },
+          {
+            "label": "Operating Temperature",
+            "values": [
+              "-10°C to +40°C"
+            ]
+          },
+          {
+            "label": "Included Accessories",
+            "values": [
+              "AC charging cable, car charging cable"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "cs02st-100w": {
+    "name": "CS02ST-100W",
+    "subtitle": "Foldable Solar Panel",
+    "tagline": "100W Foldable Solar Panel",
+    "shortDescription": "100W | 23% Efficiency | Foldable & Weatherproof – powerful solar panel for camping, hiking and outdoor use.",
+    "description": "The CS02ST-100W by Strong Energy is a foldable solar panel with 100W power output and up to 23% efficiency. Compact and lightweight, ideal for camping, hiking and other outdoor activities. Rugged and weatherproof – waterproof and dustproof, suitable for extreme conditions. With overvoltage and short-circuit protection, certified to international safety standards. Includes MC4 cable and adapters for XT60, Anderson and DC5521.",
+    "highlights": [
+      {
+        "icon": "Sun",
+        "title": "100W Power",
+        "text": "Up to 23% efficiency for effective energy generation"
+      },
+      {
+        "icon": "Package",
+        "title": "Compact & Foldable",
+        "text": "Lightweight and handy – ideal for camping and hiking"
+      },
+      {
+        "icon": "Shield",
+        "title": "Rugged & Weatherproof",
+        "text": "Waterproof and dustproof, suitable for extreme conditions"
+      },
+      {
+        "icon": "Lock",
+        "title": "Safe to Use",
+        "text": "Overvoltage and short-circuit protection, internationally certified"
+      }
+    ],
+    "specs": [],
+    "specsSections": [
+      {
+        "title": "Performance",
+        "rows": [
+          {
+            "label": "Model",
+            "values": [
+              "CS02ST-100W"
+            ]
+          },
+          {
+            "label": "Max. Power (Pm)",
+            "values": [
+              "100W"
+            ]
+          },
+          {
+            "label": "Efficiency (EFF)",
+            "values": [
+              "23%"
+            ]
+          },
+          {
+            "label": "Open Circuit Voltage (Voc)",
+            "values": [
+              "21.6 V"
+            ]
+          },
+          {
+            "label": "Short Circuit Current (Isc)",
+            "values": [
+              "6.66 A"
+            ]
+          },
+          {
+            "label": "Voltage at max. Power (Vm)",
+            "values": [
+              "18 V"
+            ]
+          },
+          {
+            "label": "Current at max. Power (Im)",
+            "values": [
+              "5.55 A"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "General",
+        "rows": [
+          {
+            "label": "Dimensions (unfolded)",
+            "values": [
+              "1,589 × 396 mm (± 5 mm)"
+            ]
+          },
+          {
+            "label": "Dimensions (folded)",
+            "values": [
+              "396 × 398 × 50 mm (± 5 mm)"
+            ]
+          },
+          {
+            "label": "Weight",
+            "values": [
+              "4.0 kg (± 10%)"
+            ]
+          },
+          {
+            "label": "Operating Temperature",
+            "values": [
+              "-10°C to +60°C (best at +25°C)"
+            ]
+          },
+          {
+            "label": "Cable",
+            "values": [
+              "MC4 connector"
+            ]
+          },
+          {
+            "label": "Adapters",
+            "values": [
+              "XT60, Anderson, DC5521"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "cs03st-160w": {
+    "name": "CS03ST-160W",
+    "subtitle": "Foldable Solar Panel",
+    "tagline": "160W Foldable Solar Panel",
+    "shortDescription": "160W | 23% Efficiency | Foldable & Weatherproof – powerful solar panel for camping, hiking and outdoor use.",
+    "description": "The CS03ST-160W by Strong Energy is a foldable solar panel with 160W power output and up to 23% efficiency. Compact and lightweight, ideal for camping, hiking and other outdoor activities. Rugged and weatherproof – waterproof and dustproof, suitable for extreme conditions. With overvoltage and short-circuit protection, certified to international safety standards. Includes MC4 cable and adapters for XT60, Anderson and DC5521.",
+    "highlights": [
+      {
+        "icon": "Sun",
+        "title": "160W Power",
+        "text": "Up to 23% efficiency for effective energy generation"
+      },
+      {
+        "icon": "Package",
+        "title": "Compact & Foldable",
+        "text": "Lightweight and handy – ideal for camping and hiking"
+      },
+      {
+        "icon": "Shield",
+        "title": "Rugged & Weatherproof",
+        "text": "Waterproof and dustproof, suitable for extreme conditions"
+      },
+      {
+        "icon": "Lock",
+        "title": "Safe to Use",
+        "text": "Overvoltage and short-circuit protection, internationally certified"
+      }
+    ],
+    "specs": [],
+    "specsSections": [
+      {
+        "title": "Performance",
+        "rows": [
+          {
+            "label": "Model",
+            "values": [
+              "CS03ST-160W"
+            ]
+          },
+          {
+            "label": "Max. Power (Pm)",
+            "values": [
+              "160W"
+            ]
+          },
+          {
+            "label": "Efficiency (EFF)",
+            "values": [
+              "23%"
+            ]
+          },
+          {
+            "label": "Open Circuit Voltage (Voc)",
+            "values": [
+              "21.6 V"
+            ]
+          },
+          {
+            "label": "Short Circuit Current (Isc)",
+            "values": [
+              "10.66 A"
+            ]
+          },
+          {
+            "label": "Voltage at max. Power (Vm)",
+            "values": [
+              "18 V"
+            ]
+          },
+          {
+            "label": "Current at max. Power (Im)",
+            "values": [
+              "8.88 A"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "General",
+        "rows": [
+          {
+            "label": "Dimensions (unfolded)",
+            "values": [
+              "1,660 × 580 mm (± 5 mm)"
+            ]
+          },
+          {
+            "label": "Dimensions (folded)",
+            "values": [
+              "420 × 580 × 50 mm (± 5 mm)"
+            ]
+          },
+          {
+            "label": "Weight",
+            "values": [
+              "6.0 kg (± 10%)"
+            ]
+          },
+          {
+            "label": "Operating Temperature",
+            "values": [
+              "-10°C to +60°C (best at +25°C)"
+            ]
+          },
+          {
+            "label": "Cable",
+            "values": [
+              "MC4 connector"
+            ]
+          },
+          {
+            "label": "Adapters",
+            "values": [
+              "XT60, Anderson, DC5521"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

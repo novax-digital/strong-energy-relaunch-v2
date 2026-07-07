@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { DownloadsInteractive } from "@/components/DownloadsInteractive";
 import { PageHero } from "@/components/Hero";
 import { SEOJsonLd } from "@/components/SEOJsonLd";
@@ -18,7 +19,17 @@ export default function DownloadsPage() {
       <PageHero title="Downloads">
         <p>Datenblätter, Installationsanleitungen, Broschüren und mehr für alle unsere Produkte.</p>
       </PageHero>
-      <DownloadsInteractive downloads={downloads} products={products} />
+      <Suspense fallback={<DownloadsFallback />}>
+        <DownloadsInteractive downloads={downloads} products={products} />
+      </Suspense>
     </>
+  );
+}
+
+function DownloadsFallback() {
+  return (
+    <section className="pb-20">
+      <div className="container-wide text-sm text-muted-foreground">Downloads werden geladen...</div>
+    </section>
   );
 }

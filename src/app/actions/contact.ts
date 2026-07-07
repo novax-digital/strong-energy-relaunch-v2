@@ -25,12 +25,13 @@ function normalizeCustomerType(value: string) {
   if (normalized.includes("gewerbe")) return "gewerbe";
   if (normalized.includes("installateur")) return "installateur";
   if (normalized.includes("gross")) return "grosshaendler";
+  if (normalized.includes("partner")) return "partner";
   return "privatperson";
 }
 
 function normalizeInquiryCustomerType(value: string) {
   const customerType = normalizeCustomerType(value);
-  return customerType === "grosshaendler" ? "gewerbe" : customerType;
+  return customerType === "grosshaendler" || customerType === "partner" ? "gewerbe" : customerType;
 }
 
 function splitName(value: string) {

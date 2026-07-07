@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useMemo, useState } from "react";
-import { Play, Search, X } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { ChevronLeft, ChevronRight, Play, Search, X } from "lucide-react";
 import type { MediaCategory, MediaItem } from "@/types/content";
 import { translations, type Language } from "@/lib/i18n";
 
@@ -38,6 +38,10 @@ export function MediaGallery({ items, categories, lang = "de" }: { items: MediaI
     const childIds = categories.filter((category) => category.parent_id === activeCategory).map((category) => category.id);
     return bySearch.filter((item) => item.category_id === activeCategory || childIds.includes(item.category_id || ""));
   }, [activeCategory, categories, lang, orderedItems, search]);
+  const openableItems = useMemo(() => filtered.filter((item) => Boolean(mediaContentSource(item))), [filtered]);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const lightboxItem = lightboxIndex === null ? null : openableItems[lightboxIndex] || null;
+  const lightboxOpen = Boolean(lightboxItem);
 
   const visibleGroups = useMemo(() => {
     const selectedRoots = activeCategory === "all" ? rootCategories : rootCategories.filter((category) => category.id === activeCategory);
@@ -57,6 +61,46 @@ export function MediaGallery({ items, categories, lang = "de" }: { items: MediaI
       })
       .filter((group) => group.directItems.length > 0 || group.childGroups.length > 0);
   }, [activeCategory, categories, filtered, rootCategories]);
+
+  useEffect(() => {
+    if (!lightboxOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setLightboxIndex(null);
+      }
+      if (event.key === "ArrowLeft") {
+        setLightboxIndex((index) => (index === null || !openableItems.length ? index : (index - 1 + openableItems.length) % openableItems.length));
+      }
+      if (event.key === "ArrowRight") {
+        setLightboxIndex((index) => (index === null || !openableItems.length ? index : (index + 1) % openableItems.length));
+      }
+    }
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [lightboxOpen, openableItems.length]);
+
+  function openLightbox(item: MediaItem) {
+    const itemIndex = openableItems.findIndex((mediaItem) => mediaItem.id === item.id);
+    if (itemIndex >= 0) {
+      setLightboxIndex(itemIndex);
+    }
+  }
+
+  function showPreviousMedia() {
+    setLightboxIndex((index) => (index === null || !openableItems.length ? index : (index - 1 + openableItems.length) % openableItems.length));
+  }
+
+  function showNextMedia() {
+    setLightboxIndex((index) => (index === null || !openableItems.length ? index : (index + 1) % openableItems.length));
+  }
 
   return (
     <div>
@@ -111,7 +155,7 @@ export function MediaGallery({ items, categories, lang = "de" }: { items: MediaI
               {group.directItems.length ? (
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                   {group.directItems.map((item) => (
-                    <MediaTile item={item} key={item.id} lang={lang} />
+                    <MediaTile item={item} key={item.id} lang={lang} onOpen={() => openLightbox(item)} />
                   ))}
                 </div>
               ) : null}
@@ -124,7 +168,7 @@ export function MediaGallery({ items, categories, lang = "de" }: { items: MediaI
                   </div>
                   <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                     {childGroup.items.map((item) => (
-                      <MediaTile item={item} key={item.id} lang={lang} />
+                      <MediaTile item={item} key={item.id} lang={lang} onOpen={() => openLightbox(item)} />
                     ))}
                   </div>
                 </div>
@@ -138,18 +182,30 @@ export function MediaGallery({ items, categories, lang = "de" }: { items: MediaI
           </div>
         ) : null}
       </div>
+      {lightboxItem ? (
+        <MediaLightbox
+          item={lightboxItem}
+          lang={lang}
+          onClose={() => setLightboxIndex(null)}
+          onNext={showNextMedia}
+          onPrevious={showPreviousMedia}
+          showNavigation={openableItems.length > 1}
+          total={openableItems.length}
+          current={(lightboxIndex ?? 0) + 1}
+        />
+      ) : null}
     </div>
   );
 }
 
-function MediaTile({ item, lang }: { item: MediaItem; lang: Language }) {
+function MediaTile({ item, lang, onOpen }: { item: MediaItem; lang: Language; onOpen: () => void }) {
   const t = translations[lang].media;
   const src = item.local_thumbnail_url || item.local_file_url || item.thumbnail_url || item.file_url;
-  if (!src) return null;
+  if (!src || !mediaContentSource(item)) return null;
   const title = mediaTitle(item, lang);
   return (
     <article className="group cursor-pointer">
-      <a href={item.video_url || item.local_file_url || item.file_url || "#"} target="_blank" rel="noopener noreferrer">
+      <button aria-label={`${title} öffnen`} className="block w-full text-left" onClick={onOpen} type="button">
         <div className="relative aspect-square overflow-hidden rounded-xl bg-secondary/30">
           <Image src={src} alt={title} fill sizes="(min-width: 1280px) 20vw, (min-width: 768px) 33vw, 50vw" className="object-cover transition-transform duration-500 group-hover:scale-105" />
           {item.media_type === "video" ? (
@@ -164,9 +220,154 @@ function MediaTile({ item, lang }: { item: MediaItem; lang: Language }) {
           ) : null}
         </div>
         <h3 className="mt-2 line-clamp-2 px-0.5 text-xs font-medium text-foreground sm:text-sm">{title}</h3>
-      </a>
+      </button>
     </article>
   );
+}
+
+function MediaLightbox({
+  current,
+  item,
+  lang,
+  onClose,
+  onNext,
+  onPrevious,
+  showNavigation,
+  total
+}: {
+  current: number;
+  item: MediaItem;
+  lang: Language;
+  onClose: () => void;
+  onNext: () => void;
+  onPrevious: () => void;
+  showNavigation: boolean;
+  total: number;
+}) {
+  const title = mediaTitle(item, lang);
+  const description = mediaDescription(item, lang);
+  const source = mediaContentSource(item);
+
+  if (!source) return null;
+
+  return (
+    <div
+      aria-label={`${title} Lightbox`}
+      aria-modal="true"
+      className="fixed inset-0 z-[140] flex items-center justify-center bg-black/85 p-4 backdrop-blur-sm"
+      onClick={(event) => {
+        if (event.currentTarget === event.target) {
+          onClose();
+        }
+      }}
+      role="dialog"
+    >
+      <button
+        aria-label="Lightbox schließen"
+        className="absolute right-4 top-4 z-20 inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur transition-colors hover:bg-white/20"
+        onClick={onClose}
+        type="button"
+      >
+        <X className="h-5 w-5" />
+      </button>
+      {showNavigation ? (
+        <button
+          aria-label="Vorheriges Medium"
+          className="absolute left-4 top-1/2 z-20 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur transition-colors hover:bg-white/20"
+          onClick={(event) => {
+            event.stopPropagation();
+            onPrevious();
+          }}
+          type="button"
+        >
+          <ChevronLeft className="h-6 w-6" />
+        </button>
+      ) : null}
+      <div className="w-full max-w-6xl" onClick={(event) => event.stopPropagation()}>
+        <div className="relative flex h-[78vh] w-full items-center justify-center overflow-hidden rounded-xl bg-black/35">
+          {item.media_type === "video" ? <LightboxVideo source={source} title={title} /> : <LightboxImage source={source} title={title} onNext={showNavigation ? onNext : undefined} />}
+        </div>
+        <div className="mt-4 flex flex-col gap-2 text-white sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <h2 className="text-base font-semibold sm:text-lg">{title}</h2>
+            {description ? <p className="mt-1 max-w-3xl text-sm text-white/70">{description}</p> : null}
+          </div>
+          <span className="shrink-0 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold backdrop-blur">
+            {current} / {total}
+          </span>
+        </div>
+      </div>
+      {showNavigation ? (
+        <button
+          aria-label="Nächstes Medium"
+          className="absolute right-4 top-1/2 z-20 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur transition-colors hover:bg-white/20"
+          onClick={(event) => {
+            event.stopPropagation();
+            onNext();
+          }}
+          type="button"
+        >
+          <ChevronRight className="h-6 w-6" />
+        </button>
+      ) : null}
+    </div>
+  );
+}
+
+function LightboxImage({ onNext, source, title }: { onNext?: () => void; source: string; title: string }) {
+  if (onNext) {
+    return (
+      <button aria-label="Nächstes Medium anzeigen" className="relative h-full w-full cursor-pointer" onClick={onNext} type="button">
+        <Image src={source} alt={title} fill sizes="100vw" className="object-contain" priority />
+      </button>
+    );
+  }
+
+  return (
+    <div className="relative h-full w-full">
+      <Image src={source} alt={title} fill sizes="100vw" className="object-contain" priority />
+    </div>
+  );
+}
+
+function LightboxVideo({ source, title }: { source: string; title: string }) {
+  const wistiaId = getWistiaId(source);
+
+  if (wistiaId) {
+    return (
+      <iframe
+        allow="autoplay; fullscreen; picture-in-picture"
+        allowFullScreen
+        className="h-full w-full"
+        src={`https://fast.wistia.net/embed/iframe/${wistiaId}?seo=false&videoFoam=true`}
+        title={title}
+      />
+    );
+  }
+
+  if (isVideoFile(source)) {
+    return <video autoPlay className="h-full w-full" controls playsInline src={source} title={title} />;
+  }
+
+  return <iframe allow="autoplay; fullscreen; picture-in-picture" allowFullScreen className="h-full w-full" src={source} title={title} />;
+}
+
+function mediaContentSource(item: MediaItem) {
+  if (item.media_type === "video") {
+    return item.video_url || item.local_file_url || item.file_url;
+  }
+
+  return item.local_file_url || item.file_url;
+}
+
+function getWistiaId(source: string) {
+  if (/^[a-z0-9]{10}$/i.test(source)) return source;
+  if (!source.includes("wistia")) return null;
+  return source.match(/\/(?:medias|iframe)\/([a-z0-9]+)/i)?.[1] || null;
+}
+
+function isVideoFile(source: string) {
+  return /\.(mp4|webm|ogg)(\?.*)?$/i.test(source);
 }
 
 function categoryName(category: MediaCategory, lang: Language) {

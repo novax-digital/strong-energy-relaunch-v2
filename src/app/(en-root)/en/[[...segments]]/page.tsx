@@ -2,17 +2,19 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 import { Activity, ArrowLeft, ArrowRight, Award, Battery, Building2, Factory, Globe, GraduationCap, HandHeart, Headphones, Mail, Network, Newspaper, Settings, Shield, ShieldCheck, Users, Zap } from "lucide-react";
 import { AppPhoneSlider } from "@/components/AppPhoneSlider";
 import { AppStoreButtons } from "@/components/AppStoreButtons";
 import { BlogArticle } from "@/components/BlogArticle";
 import { BlogListing } from "@/components/BlogListing";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { ContactLiveForm } from "@/components/ContactLiveForm";
+import { ContactPageInteractive } from "@/components/ContactPageInteractive";
 import { DownloadsInteractive } from "@/components/DownloadsInteractive";
 import { FaqInteractive } from "@/components/FaqInteractive";
 import { HomeHero, PageHero } from "@/components/Hero";
 import { MediaGallery } from "@/components/MediaGallery";
+import { PartnerApplicationForm } from "@/components/PartnerApplicationForm";
 import { PartnerGrid } from "@/components/PartnerGrid";
 import { PresentationEmbed } from "@/components/PresentationEmbed";
 import { ProductDetailHero } from "@/components/ProductDetailHero";
@@ -20,10 +22,11 @@ import { ProductDetailTabs } from "@/components/ProductDetailTabs";
 import { ProductFeatureIcon } from "@/components/ProductFeatureIcon";
 import { ProductImageGallery } from "@/components/ProductImageGallery";
 import { ProductInquiryButton } from "@/components/ProductInquiryModal";
+import { ProductVideoButton } from "@/components/ProductVideoButton";
 import { ProductTabsGrid } from "@/components/ProductTabsGrid";
 import { SEOJsonLd } from "@/components/SEOJsonLd";
-import { faqGroups } from "@/content/faq";
-import { legalPages } from "@/content/legal";
+import { faqGroupsEn } from "@/content/faq";
+import { legalPages, legalPagesEn } from "@/content/legal";
 import { partners } from "@/content/partners";
 import { pageSeo, site } from "@/content/site";
 import { getBlogPostBySlug, getBlogPosts } from "@/lib/content/getBlogPosts";
@@ -39,8 +42,9 @@ const t = translations.en;
 
 type EnglishPageProps = {
   params: Promise<{ segments?: string[] }>;
-  searchParams?: Promise<{ produkt?: string | string[] }>;
 };
+
+export const dynamicParams = false;
 
 const seo: Record<string, Metadata> = {
   home: createMetadata({
@@ -205,7 +209,7 @@ export async function generateMetadata({ params }: EnglishPageProps): Promise<Me
   return {};
 }
 
-export default async function EnglishPage({ params, searchParams }: EnglishPageProps) {
+export default async function EnglishPage({ params }: EnglishPageProps) {
   const { segments = [] } = await params;
   const [section, second, third] = segments;
 
@@ -217,10 +221,7 @@ export default async function EnglishPage({ params, searchParams }: EnglishPageP
   if (section === "blog" && second) return <BlogDetailPageContent slug={second} />;
   if (section === "downloads") return <DownloadsPageContent />;
   if (section === "media") return <MediaPageContent />;
-  if (section === "contact") {
-    const resolvedSearchParams = await searchParams;
-    return <ContactPageContent productQueryValue={resolvedSearchParams?.produkt} />;
-  }
+  if (section === "contact") return <ContactPageContent />;
   if (section === "faq") return <FaqPageContent />;
   if (section === "partners") return <PartnerPageContent />;
   if (section === "about-us") return <AboutPageContent />;
@@ -402,8 +403,9 @@ function ProductDetailPageContent({ categorySlug, productSlug }: { categorySlug:
                   </div>
                 ))}
               </div>
-              <div className="mt-7">
+              <div className="mt-7 flex flex-col gap-4 sm:flex-row">
                 <ProductInquiryButton product={product} lang={lang} label={t.products.inquireNow} />
+                <ProductVideoButton product={product} label={t.products.productVideo} />
               </div>
             </div>
           </div>
@@ -463,7 +465,9 @@ function DownloadsPageContent() {
       <PageHero title={t.downloads.title}>
         <p>{t.downloads.subtitle}</p>
       </PageHero>
-      <DownloadsInteractive downloads={getDownloads(lang)} products={getProducts(lang)} lang={lang} />
+      <Suspense fallback={<DownloadsFallback />}>
+        <DownloadsInteractive downloads={getDownloads(lang)} products={getProducts(lang)} lang={lang} />
+      </Suspense>
     </>
   );
 }
@@ -484,39 +488,31 @@ function MediaPageContent() {
   );
 }
 
-function ContactPageContent({ productQueryValue }: { productQueryValue?: string | string[] }) {
-  const productQuery = (Array.isArray(productQueryValue) ? productQueryValue[0] : productQueryValue)?.trim();
-  const product = productQuery ? getProducts(lang).find((item) => item.slug === productQuery || item.name.toLowerCase() === productQuery.toLowerCase()) : undefined;
-  const productName = product?.name ?? productQuery;
+function ContactPageContent() {
+  const products = getProducts(lang).map((product) => ({ name: product.name, slug: product.slug }));
   return (
     <>
       <SEOJsonLd data={{ "@context": "https://schema.org", "@type": "ContactPage", name: "Contact", url: `${site.baseUrl}/en/contact` }} />
-      <section className="pb-20 pt-32">
-        <div className="container-wide">
-          <div className="mb-16 text-center">
-            <h1 className="mb-4 text-4xl font-bold text-foreground md:text-5xl">{productName ? `${productName} ${t.contact.inquiryTitleSuffix}` : t.contact.title}</h1>
-            <p className="mx-auto max-w-2xl text-lg text-muted-foreground">{productName ? t.contact.inquirySubtitle : t.contact.subtitle}</p>
-          </div>
-          <div className="mx-auto grid max-w-6xl grid-cols-1 gap-12 lg:grid-cols-3">
-            <aside className="space-y-8">
-              <h2 className="mb-6 text-xl font-bold text-foreground">{t.contact.howToReach}</h2>
-              <div className="space-y-5 text-sm text-muted-foreground">
-                <p><strong className="text-foreground">{site.legalName}</strong><br />{site.address.street}<br />{site.address.postalCode} {site.address.city}, {t.contact.country}</p>
-                <p><strong className="text-foreground">{site.phone}</strong><br />{t.contact.tollFree}</p>
-                <p>Mon-Thu: 8:00-17:00<br />Fri: 8:00-15:30</p>
-                <p><a href={`mailto:${site.email}`} className="text-foreground transition-smooth hover:text-primary">{site.email}</a></p>
-              </div>
-              <div className="relative mt-8 h-48 overflow-hidden rounded-2xl">
-                <Image src="/assets/kontakt-hero-BGf2Dxw2.jpg" alt="Strong Energy" fill sizes="(min-width: 1024px) 33vw, 100vw" className="object-cover object-top" />
-              </div>
-            </aside>
-            <div className="lg:col-span-2">
-              <ContactLiveForm productName={productName} productSlug={product?.slug} lang={lang} />
-            </div>
-          </div>
-        </div>
-      </section>
+      <Suspense fallback={<ContactFallback />}>
+        <ContactPageInteractive products={products} lang={lang} />
+      </Suspense>
     </>
+  );
+}
+
+function DownloadsFallback() {
+  return (
+    <section className="pb-20">
+      <div className="container-wide text-sm text-muted-foreground">Downloads are loading...</div>
+    </section>
+  );
+}
+
+function ContactFallback() {
+  return (
+    <section className="pb-20 pt-32">
+      <div className="container-wide text-center text-sm text-muted-foreground">Contact form is loading...</div>
+    </section>
   );
 }
 
@@ -527,7 +523,7 @@ function FaqPageContent() {
       <PageHero title={<>{t.faq.title} <span>{t.faq.titleHighlight}</span></>}>
         <p>{t.faq.subtitle}</p>
       </PageHero>
-      <FaqInteractive groups={faqGroups} lang={lang} />
+      <FaqInteractive groups={faqGroupsEn} lang={lang} />
     </>
   );
 }
@@ -549,16 +545,7 @@ function PartnerPageContent() {
             </div>
           </div>
           <PartnerGrid partners={partners} />
-          <section className="mt-20 text-center">
-            <div className="mx-auto max-w-2xl rounded-2xl border border-border bg-card p-10 md:p-14">
-              <h2 className="mb-4 text-2xl font-bold text-foreground md:text-3xl">{t.partner.becomeTitle}</h2>
-              <p className="mx-auto mb-8 max-w-lg text-muted-foreground">{t.partner.becomeText}</p>
-              <Link href={localizedPath("/kontakt", lang)} className="btn-gradient group inline-flex items-center gap-2 rounded-full px-8 py-4 text-lg font-semibold shadow-lg">
-                {t.partner.cta}
-                <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-              </Link>
-            </div>
-          </section>
+          <PartnerApplicationForm lang={lang} />
         </div>
       </section>
     </>
@@ -729,7 +716,7 @@ function AppPageContent() {
 }
 
 function LegalPageContent({ slug }: { slug: string }) {
-  const page = legalPages.find((item) => item.slug === slug);
+  const page = legalPagesEn.find((item) => item.slug === slug) || legalPages.find((item) => item.slug === slug);
   if (!page) notFound();
   const title = legalTitles[slug] || page.title;
   return (

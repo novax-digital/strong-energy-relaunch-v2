@@ -61,8 +61,7 @@ export const translations = {
     },
     topbar: {
       followUs: "Folge uns:",
-      announcement: "Offizieller Vertriebspartner für CNTE & CATL in Europa",
-      consultation: "Beratung vereinbaren"
+      announcement: "Offizieller Vertriebspartner für CNTE & CATL in Europa"
     },
     hero: {
       subtitle: "Ihr führender Anbieter für fortschrittliche Energiespeicherlösungen für Wohn-, Gewerbe- und Industrieanwendungen.",
@@ -105,6 +104,7 @@ export const translations = {
       home: "Home",
       products: "Produkte",
       inquireNow: "Angebot anfragen",
+      productVideo: "Produktvideo",
       learnMore: "Mehr erfahren",
       tabs: {
         description: "Beschreibung",
@@ -245,8 +245,6 @@ export const translations = {
       customize: "Einstellungen anpassen",
       necessary: "Notwendig",
       necessaryDesc: "Für die Grundfunktion der Website erforderlich",
-      analytics: "Analyse",
-      analyticsDesc: "Hilft uns die Nutzung der Website zu verstehen",
       marketing: "Marketing",
       marketingDesc: "Für optionale Marketingfunktionen vorbereitet",
       acceptAll: "Alle akzeptieren",
@@ -269,8 +267,7 @@ export const translations = {
     },
     topbar: {
       followUs: "Follow us:",
-      announcement: "Official distribution partner for CNTE & CATL in Europe",
-      consultation: "Book a consultation"
+      announcement: "Official distribution partner for CNTE & CATL in Europe"
     },
     hero: {
       subtitle: "Your leading provider of advanced energy storage solutions for residential, commercial and industrial applications.",
@@ -313,6 +310,7 @@ export const translations = {
       home: "Home",
       products: "Products",
       inquireNow: "Request a quote",
+      productVideo: "Product video",
       learnMore: "Learn more",
       tabs: {
         description: "Description",
@@ -461,8 +459,6 @@ export const translations = {
       customize: "Customize settings",
       necessary: "Necessary",
       necessaryDesc: "Required for the basic function of the website",
-      analytics: "Analytics",
-      analyticsDesc: "Helps us understand website usage",
       marketing: "Marketing",
       marketingDesc: "Prepared for optional marketing features",
       acceptAll: "Accept all",

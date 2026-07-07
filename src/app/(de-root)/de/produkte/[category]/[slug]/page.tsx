@@ -8,6 +8,7 @@ import { ProductDetailTabs } from "@/components/ProductDetailTabs";
 import { ProductFeatureIcon } from "@/components/ProductFeatureIcon";
 import { ProductImageGallery } from "@/components/ProductImageGallery";
 import { ProductInquiryButton } from "@/components/ProductInquiryModal";
+import { ProductVideoButton } from "@/components/ProductVideoButton";
 import { SEOJsonLd } from "@/components/SEOJsonLd";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { getDownloadsByProduct } from "@/lib/content/getDownloads";
@@ -126,6 +127,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
               </div>
               <div className="mt-7 flex flex-col gap-4 sm:flex-row">
                 <ProductInquiryButton product={product} label="Angebot anfragen" />
+                <ProductVideoButton product={product} />
               </div>
             </div>
           </div>

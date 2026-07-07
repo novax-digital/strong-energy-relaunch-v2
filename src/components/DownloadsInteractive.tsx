@@ -1,7 +1,8 @@
 "use client";
 
 import { Download, ExternalLink, FileText, Link2, Search, X } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { DownloadItem, Product } from "@/types/content";
 import { localizedPath, translations, type Language } from "@/lib/i18n";
 
@@ -29,16 +30,28 @@ function slugify(value: string) {
     .replace(/^-+|-+$/g, "");
 }
 
-export function DownloadsInteractive({ downloads, products, lang = "de" }: { downloads: DownloadItem[]; products: Product[]; lang?: Language }) {
-  const [search, setSearch] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
+type DownloadsInteractiveProps = {
+  downloads: DownloadItem[];
+  products: Product[];
+  lang?: Language;
+  initialItemSlug?: string;
+};
+
+export function DownloadsInteractive({ downloads, products, lang = "de", initialItemSlug }: DownloadsInteractiveProps) {
+  const searchParams = useSearchParams();
+  const searchParamItemSlug = searchParams.get("item")?.trim();
+  const resolvedInitialItemSlug = initialItemSlug || searchParamItemSlug;
+  const itemRefs = useRef<Record<string, HTMLElement | null>>({});
   const t = translations[lang].downloads;
 
-  const downloadsWithFile = useMemo(
-    () => downloads.filter((item) => Boolean(lang === "en" ? item.local_file_url_en || item.file_url_en || item.local_file_url_de || item.file_url_de : item.local_file_url_de || item.file_url_de)),
-    [downloads, lang]
+  const downloadsWithFile = useMemo(() => downloads.filter((item) => hasDownloadFile(item, lang)), [downloads, lang]);
+  const initialItem = useMemo(
+    () => (resolvedInitialItemSlug ? downloadsWithFile.find((download) => downloadSlug(download, lang) === resolvedInitialItemSlug) : undefined),
+    [downloadsWithFile, lang, resolvedInitialItemSlug]
   );
+  const [search, setSearch] = useState(() => (initialItem ? downloadTitle(initialItem, lang) : ""));
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
   const categories = useMemo(() => {
     const used = [...new Set(downloadsWithFile.map((item) => item.category))];
     return used.sort((a, b) => {
@@ -67,12 +80,22 @@ export function DownloadsInteractive({ downloads, products, lang = "de" }: { dow
 
   const hasFilters = Boolean(selectedCategory || selectedProduct || search);
 
+  useEffect(() => {
+    if (!initialItem) {
+      return;
+    }
+
+    window.setTimeout(() => {
+      itemRefs.current[initialItem.id]?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 80);
+  }, [initialItem]);
+
   function fileUrl(item: DownloadItem) {
     return lang === "en" ? item.local_file_url_en || item.file_url_en || item.local_file_url_de || item.file_url_de || "#" : item.local_file_url_de || item.file_url_de || "#";
   }
 
   async function copyItemLink(item: DownloadItem) {
-    const url = `${window.location.origin}${localizedPath("/downloads", lang)}?item=${slugify(downloadTitle(item, lang))}`;
+    const url = `${window.location.origin}${localizedPath("/downloads", lang)}?item=${downloadSlug(item, lang)}`;
     await navigator.clipboard.writeText(url).catch(() => undefined);
   }
 
@@ -184,6 +207,9 @@ export function DownloadsInteractive({ downloads, products, lang = "de" }: { dow
                 return (
                   <article
                     key={item.id}
+                    ref={(element) => {
+                      itemRefs.current[item.id] = element;
+                    }}
                     className="group flex cursor-pointer items-center gap-4 rounded-xl border border-border bg-card p-5 transition-all hover:border-primary/30 hover:shadow-md"
                     onClick={() => window.open(fileUrl(item), "_blank", "noopener,noreferrer")}
                   >
@@ -252,6 +278,14 @@ export function DownloadsInteractive({ downloads, products, lang = "de" }: { dow
 
 function downloadTitle(item: DownloadItem, lang: Language) {
   return lang === "en" ? item.title_en || item.title_de : item.title_de;
+}
+
+function downloadSlug(item: DownloadItem, lang: Language) {
+  return slugify(downloadTitle(item, lang));
+}
+
+function hasDownloadFile(item: DownloadItem, lang: Language) {
+  return Boolean(lang === "en" ? item.local_file_url_en || item.file_url_en || item.local_file_url_de || item.file_url_de : item.local_file_url_de || item.file_url_de);
 }
 
 function downloadDescription(item: DownloadItem, lang: Language) {

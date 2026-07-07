@@ -1,11 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import { Instagram, Linkedin, Youtube } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { site } from "@/content/site";
-import { getLanguageFromPathname, localizedPath, translations } from "@/lib/i18n";
+import { getLanguageFromPathname, translations } from "@/lib/i18n";
 
 export function TopBar() {
   const pathname = usePathname();
@@ -43,7 +42,6 @@ export function TopBar() {
           </div>
         </div>
         <p className="truncate px-2 text-center text-[11px] font-medium leading-tight sm:text-sm">{labels.announcement}</p>
-        <Link href={localizedPath("/kontakt", lang)} className="hidden md:inline font-semibold hover:opacity-80 transition-opacity">{labels.consultation}</Link>
       </div>
     </div>
   );

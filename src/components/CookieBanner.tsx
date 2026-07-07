@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { BarChart3, ChevronDown, ChevronUp, Cookie, Megaphone, Shield } from "lucide-react";
+import { ChevronDown, ChevronUp, Cookie, Megaphone, Shield } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useState, useSyncExternalStore } from "react";
 import { getLanguageFromPathname, localizedPath, translations } from "@/lib/i18n";
@@ -31,18 +31,17 @@ export function CookieBanner() {
   const pathname = usePathname();
   const visible = useSyncExternalStore(subscribe, getClientSnapshot, getServerSnapshot);
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const [analytics, setAnalytics] = useState(false);
   const [marketing, setMarketing] = useState(false);
   const lang = getLanguageFromPathname(pathname);
   const t = translations[lang].cookie;
 
-  function saveConsent(preferences: { analytics: boolean; marketing: boolean }) {
+  function saveConsent(preferences: { marketing: boolean }) {
     window.localStorage.setItem(consentKey, JSON.stringify({ necessary: true, ...preferences }));
     window.dispatchEvent(new Event(consentEvent));
   }
 
   function accept(consent: Consent) {
-    saveConsent(consent === "all" ? { analytics: true, marketing: true } : { analytics, marketing });
+    saveConsent(consent === "all" ? { marketing: true } : { marketing });
   }
 
   if (!visible) return null;
@@ -82,16 +81,6 @@ export function CookieBanner() {
             </label>
             <label className="flex items-center justify-between p-4 rounded-xl bg-muted/50 border border-border">
               <span className="flex items-center gap-3">
-                  <BarChart3 className="h-4 w-4 text-primary shrink-0" />
-                <span>
-                  <strong className="block text-sm font-semibold text-foreground">{t.analytics}</strong>
-                  <span className="text-xs text-muted-foreground">{t.analyticsDesc}</span>
-                </span>
-              </span>
-              <input type="checkbox" checked={analytics} onChange={(event) => setAnalytics(event.target.checked)} className="h-4 w-4" />
-            </label>
-            <label className="flex items-center justify-between p-4 rounded-xl bg-muted/50 border border-border">
-              <span className="flex items-center gap-3">
                   <Megaphone className="h-4 w-4 text-primary shrink-0" />
                 <span>
                   <strong className="block text-sm font-semibold text-foreground">{t.marketing}</strong>
@@ -112,9 +101,8 @@ export function CookieBanner() {
             </button>
           ) : null}
           <button className="px-6 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-smooth flex-1" type="button" onClick={() => {
-            setAnalytics(false);
             setMarketing(false);
-            saveConsent({ analytics: false, marketing: false });
+            saveConsent({ marketing: false });
           }}>
             {t.onlyNecessary}
           </button>

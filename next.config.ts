@@ -30,8 +30,13 @@ const nextConfig: NextConfig = {
         permanent: true
       },
       {
-        source: "/produkte/:path*",
+        source: "/produkte",
         destination: "/de/produkte",
+        permanent: true
+      },
+      {
+        source: "/produkte/:path*",
+        destination: "/de/produkte/:path*",
         permanent: true
       },
       {
@@ -50,8 +55,63 @@ const nextConfig: NextConfig = {
         permanent: true
       },
       {
-        source: "/blog/:path*",
+        source: "/faq",
+        destination: "/de/faq",
+        permanent: true
+      },
+      {
+        source: "/360-app",
+        destination: "/de/360-app",
+        permanent: true
+      },
+      {
+        source: "/impressum",
+        destination: "/de/impressum",
+        permanent: true
+      },
+      {
+        source: "/agb",
+        destination: "/de/agb",
+        permanent: true
+      },
+      {
+        source: "/datenschutz",
+        destination: "/de/datenschutz",
+        permanent: true
+      },
+      {
+        source: "/garantiebedingungen",
+        destination: "/de/garantiebedingungen",
+        permanent: true
+      },
+      {
+        source: "/rechtliche-hinweise",
+        destination: "/de/rechtliche-hinweise",
+        permanent: true
+      },
+      {
+        source: "/gpsr",
+        destination: "/de/gpsr",
+        permanent: true
+      },
+      {
+        source: "/cookie-richtlinie",
+        destination: "/de/cookie-richtlinie",
+        permanent: true
+      },
+      {
+        source: "/blog",
         destination: "/de/blog",
+        permanent: true
+      },
+      {
+        source: "/blog/:path*",
+        destination: "/de/blog/:path*",
+        permanent: true
+      },
+      {
+        source: "/download/:slug",
+        destination: "/de/downloads?item=:slug",
         permanent: true
       },
       {

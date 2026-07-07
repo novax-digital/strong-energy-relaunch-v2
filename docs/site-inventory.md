@@ -458,8 +458,7 @@ Die Live-Seite wurde zweimal geprüft: einmal über den initialen HTML-Response 
 - 2. Hosting
 - 3. Allgemeine Hinweise und Pflicht­informationen
 - 4. Datenerfassung auf dieser Website
-- 5. Analyse-Tools und Werbung
-- 6. Plugins und Tools
+- 5. Plugins und Tools
 
 ### Gerenderter DOM: interne Links
 

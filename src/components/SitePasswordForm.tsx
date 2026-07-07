@@ -1,115 +1,40 @@
 "use client";
 
 import Image from "next/image";
-import { usePathname } from "next/navigation";
 import { Eye, EyeOff, Lock, ShieldCheck } from "lucide-react";
-import { FormEvent, ReactNode, useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
 import { site } from "@/content/site";
-import { getSupabaseBrowserClient } from "@/lib/supabase/client";
 
-const STORAGE_KEY = "strong-energy-authenticated";
-const PROTECTED_SETTING_ID = "main";
-
-type GateStatus = "checking" | "open" | "locked";
-
-function isBypassedPath(pathname: string) {
-  return pathname.startsWith("/admin") || pathname.startsWith("/login");
-}
-
-export function SitePasswordGate({ children }: { children: ReactNode }) {
-  const pathname = usePathname();
-  const bypassed = isBypassedPath(pathname);
-  const [gate, setGate] = useState<{ pathname: string; status: GateStatus }>({ pathname: "", status: "checking" });
+export function SitePasswordForm({ nextPath }: { nextPath: string }) {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
-
-  useEffect(() => {
-    if (bypassed) {
-      return;
-    }
-
-    let active = true;
-
-    async function loadProtectionState() {
-      setError("");
-
-      try {
-        const { data, error: settingsError } = await getSupabaseBrowserClient()
-          .from("site_settings_public")
-          .select("password_protection_enabled")
-          .eq("id", PROTECTED_SETTING_ID)
-          .maybeSingle();
-
-        if (!active) {
-          return;
-        }
-
-        if (settingsError || !data?.password_protection_enabled) {
-          setGate({ pathname, status: "open" });
-          return;
-        }
-
-        const { data: sessionData } = await getSupabaseBrowserClient().auth.getSession();
-        if (!active) {
-          return;
-        }
-
-        setGate({ pathname, status: sessionData.session || sessionStorage.getItem(STORAGE_KEY) === "true" ? "open" : "locked" });
-      } catch {
-        if (active) {
-          setGate({ pathname, status: "open" });
-        }
-      }
-    }
-
-    loadProtectionState();
-
-    return () => {
-      active = false;
-    };
-  }, [bypassed, pathname]);
 
   async function submitPassword(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError("");
     setSubmitting(true);
 
-    const { data, error: verifyError } = await getSupabaseBrowserClient().functions.invoke<{ success: boolean }>("verify-site-password", {
-      body: { password }
-    });
+    const response = await fetch("/api/site-password", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ password, next: nextPath })
+    }).catch(() => null);
 
     setSubmitting(false);
 
-    if (verifyError) {
-      setError("Die Passwort-Prüfung ist gerade nicht erreichbar.");
-      return;
-    }
-
-    if (!data?.success) {
-      setError("Das Passwort stimmt nicht.");
+    if (!response?.ok) {
+      const data = (await response?.json().catch(() => null)) as { error?: string } | null;
+      setError(data?.error || "Die Passwort-Prüfung ist gerade nicht erreichbar.");
       setPassword("");
       return;
     }
 
-    sessionStorage.setItem(STORAGE_KEY, "true");
-    setGate({ pathname, status: "open" });
-    setPassword("");
-  }
-
-  if (bypassed) {
-    return <>{children}</>;
-  }
-
-  const status = gate.pathname === pathname ? gate.status : "checking";
-
-  if (status === "open") {
-    return <>{children}</>;
-  }
-
-  if (status === "checking") {
-    return <div className="min-h-screen bg-background" aria-hidden="true" />;
+    const data = (await response.json().catch(() => null)) as { next?: string } | null;
+    window.location.assign(data?.next || nextPath || "/de");
   }
 
   return (

@@ -295,6 +295,7 @@ function formatCustomerType(value: string | null | undefined) {
   if (normalized === "privatperson") return "Privatperson";
   if (normalized === "installateur") return "Installateur";
   if (normalized === "grosshaendler") return "Großhändler";
+  if (normalized === "partner") return "Partner";
   return value || "-";
 }
 
@@ -868,7 +869,7 @@ function SectionRenderer({ section }: { section: AdminSection }) {
     case "sitemap":
       return <InfoPanel title="Sitemap" text="Die öffentliche Sitemap wird in dieser Next-Version automatisch aus statischen Routen, Produkten, Blogposts und Rechtstexten generiert." link="/sitemap.xml" linkLabel="Sitemap öffnen" />;
     case "llms":
-      return <InfoPanel title="llms.txt" text="Die ursprüngliche Admin-Ansicht für llms.txt ist vorbereitet. Für eine echte Bearbeitung braucht es entweder eine Supabase-Tabelle oder eine Datei-Write-Route auf dem Hosting." />;
+      return <InfoPanel title="llms.txt" text="Die öffentliche llms.txt wird als statische Datei ausgeliefert und enthält die wichtigsten Seiten, Produktbereiche und Hinweise für KI-Assistenten." link="/llms.txt" linkLabel="llms.txt öffnen" />;
     case "protection":
       return <ProtectionSection />;
     case "account":
