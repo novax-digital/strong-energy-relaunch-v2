@@ -2719,27 +2719,63 @@ function ProtectionSection() {
 }
 
 function AccountSection() {
+  const [currentPassword, setCurrentPassword] = useState("");
   const [password, setPassword] = useState("");
   const [repeat, setRepeat] = useState("");
   const [message, setMessage] = useState("");
+  const [saving, setSaving] = useState(false);
 
   async function save(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setMessage("");
+    setSaving(true);
+    if (!currentPassword) {
+      setMessage("Bitte geben Sie Ihr aktuelles Passwort ein.");
+      setSaving(false);
+      return;
+    }
     if (password.length < 6) {
       setMessage("Das Passwort muss mindestens 6 Zeichen lang sein.");
+      setSaving(false);
       return;
     }
     if (password !== repeat) {
       setMessage("Die Passwörter stimmen nicht überein.");
+      setSaving(false);
       return;
     }
-    const { error } = await getSupabaseBrowserClient().auth.updateUser({ password });
+
+    const supabase = getSupabaseBrowserClient();
+    const {
+      data: { user },
+      error: userError
+    } = await supabase.auth.getUser();
+
+    if (userError || !user?.email) {
+      setMessage("Sitzung konnte nicht geprüft werden. Bitte neu einloggen.");
+      setSaving(false);
+      return;
+    }
+
+    const { error: verifyError } = await supabase.auth.signInWithPassword({
+      email: user.email,
+      password: currentPassword
+    });
+
+    if (verifyError) {
+      setMessage("Das aktuelle Passwort ist nicht korrekt.");
+      setSaving(false);
+      return;
+    }
+
+    const { error } = await supabase.auth.updateUser({ password });
     setMessage(error ? error.message : "Passwort wurde aktualisiert.");
     if (!error) {
+      setCurrentPassword("");
       setPassword("");
       setRepeat("");
     }
+    setSaving(false);
   }
 
   return (
@@ -2747,15 +2783,21 @@ function AccountSection() {
       <h2 className="text-lg font-bold">Passwort ändern</h2>
       <div className="mt-6 space-y-4">
         <label className="grid gap-2 text-sm font-semibold">
+          Altes Passwort
+          <input className="h-11 rounded-xl border border-input bg-background px-3.5 font-normal outline-none focus:border-primary focus:ring-2 focus:ring-primary/25" type="password" value={currentPassword} onChange={(event) => setCurrentPassword(event.target.value)} autoComplete="current-password" required />
+        </label>
+        <label className="grid gap-2 text-sm font-semibold">
           Neues Passwort
-          <input className="h-11 rounded-xl border border-input bg-background px-3.5 font-normal outline-none focus:border-primary focus:ring-2 focus:ring-primary/25" type="password" value={password} onChange={(event) => setPassword(event.target.value)} required />
+          <input className="h-11 rounded-xl border border-input bg-background px-3.5 font-normal outline-none focus:border-primary focus:ring-2 focus:ring-primary/25" type="password" value={password} onChange={(event) => setPassword(event.target.value)} autoComplete="new-password" required />
         </label>
         <label className="grid gap-2 text-sm font-semibold">
           Wiederholen
-          <input className="h-11 rounded-xl border border-input bg-background px-3.5 font-normal outline-none focus:border-primary focus:ring-2 focus:ring-primary/25" type="password" value={repeat} onChange={(event) => setRepeat(event.target.value)} required />
+          <input className="h-11 rounded-xl border border-input bg-background px-3.5 font-normal outline-none focus:border-primary focus:ring-2 focus:ring-primary/25" type="password" value={repeat} onChange={(event) => setRepeat(event.target.value)} autoComplete="new-password" required />
         </label>
         {message ? <p className="text-sm text-muted-foreground">{message}</p> : null}
-        <button className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary/90" type="submit">Speichern</button>
+        <button className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary/90 disabled:opacity-60" disabled={saving} type="submit">
+          {saving ? "Speichert..." : "Speichern"}
+        </button>
       </div>
     </form>
   );
