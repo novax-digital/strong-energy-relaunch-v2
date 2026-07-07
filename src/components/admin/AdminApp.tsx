@@ -302,6 +302,43 @@ function cx(...classes: Array<string | false | null | undefined>) {
   return classes.filter(Boolean).join(" ");
 }
 
+function errorPayloadMessage(payload: unknown) {
+  if (!payload || typeof payload !== "object") return "";
+  const record = payload as Record<string, unknown>;
+  if (typeof record.error === "string") return record.error;
+  if (typeof record.message === "string") return record.message;
+  return "";
+}
+
+async function functionErrorMessage(data: unknown, fnError: unknown, fallback: string) {
+  const dataMessage = errorPayloadMessage(data);
+  if (dataMessage) return dataMessage;
+
+  if (fnError && typeof fnError === "object") {
+    const errorRecord = fnError as { context?: unknown; message?: unknown };
+    const response = errorRecord.context instanceof Response ? errorRecord.context : null;
+
+    if (response) {
+      try {
+        const payload = await response.clone().json();
+        const payloadMessage = errorPayloadMessage(payload);
+        if (payloadMessage) return payloadMessage;
+      } catch {
+        try {
+          const text = await response.clone().text();
+          if (text.trim()) return text.trim();
+        } catch {
+          // Fall through to the generic error message below.
+        }
+      }
+    }
+
+    if (typeof errorRecord.message === "string") return errorRecord.message;
+  }
+
+  return fallback;
+}
+
 function slugify(value: string) {
   return value
     .toLowerCase()
@@ -2406,13 +2443,14 @@ function UsersSection() {
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [creating, setCreating] = useState(false);
 
   const load = useCallback(async () => {
     setLoading(true);
     setError("");
     const { data, error: fnError } = await getSupabaseBrowserClient().functions.invoke("manage-users", { body: { action: "list" } });
     if (fnError || data?.error) {
-      setError(data?.error || fnError?.message || "Die Edge Function manage-users ist nicht erreichbar.");
+      setError(await functionErrorMessage(data, fnError, "Die Edge Function manage-users ist nicht erreichbar."));
       setUsers([]);
     } else {
       setUsers(data?.users || []);
@@ -2435,31 +2473,36 @@ function UsersSection() {
     setCreateDialogOpen(false);
     setEmail("");
     setPassword("");
+    setCreating(false);
   }
 
   async function createUser(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setCreating(true);
+    setError("");
     const { data, error: fnError } = await getSupabaseBrowserClient().functions.invoke("manage-users", {
-      body: { action: "create", email, password, role: "admin" }
+      body: { action: "create", email: email.trim(), password, role: "admin" }
     });
     if (fnError || data?.error) {
-      setError(data?.error || fnError?.message || "Nutzer konnte nicht erstellt werden.");
+      setError(await functionErrorMessage(data, fnError, "Nutzer konnte nicht erstellt werden."));
+      setCreating(false);
       return;
     }
     setEmail("");
     setPassword("");
+    setCreating(false);
     setCreateDialogOpen(false);
-    load();
+    void load();
   }
 
   async function deleteUser(user: UserEntry) {
     if (!confirm(`Nutzer ${user.email} wirklich löschen?`)) return;
     const { data, error: fnError } = await getSupabaseBrowserClient().functions.invoke("manage-users", { body: { action: "delete", userId: user.id } });
     if (fnError || data?.error) {
-      setError(data?.error || fnError?.message || "Nutzer konnte nicht gelöscht werden.");
+      setError(await functionErrorMessage(data, fnError, "Nutzer konnte nicht gelöscht werden."));
       return;
     }
-    load();
+    void load();
   }
 
   return (
@@ -2511,7 +2554,9 @@ function UsersSection() {
             <p className="text-xs leading-5 text-muted-foreground">Der neue Nutzer erhält automatisch die Rolle „admin“.</p>
             <div className="flex justify-end gap-2 border-t border-border pt-4">
               <button className={buttonClass("outline")} onClick={closeCreateDialog} type="button">Abbrechen</button>
-              <button className={buttonClass()} disabled={!email || password.length < 6} type="submit">Erstellen</button>
+              <button className={buttonClass()} disabled={creating || !email || password.length < 6} type="submit">
+                {creating ? "Erstellt..." : "Erstellen"}
+              </button>
             </div>
           </form>
         </FormDialog>

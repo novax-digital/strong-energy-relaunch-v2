@@ -6,6 +6,38 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type",
 };
 
+function jsonResponse(data: Record<string, unknown>, status = 200) {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: { ...corsHeaders, "Content-Type": "application/json" },
+  });
+}
+
+function errorMessage(error: unknown) {
+  if (error instanceof Error) return error.message;
+  if (typeof error === "string") return error;
+  return "Unbekannter Fehler";
+}
+
+function authCreateStatus(error: { status?: number; message?: string }) {
+  const message = error.message?.toLowerCase() || "";
+  if (message.includes("already") || message.includes("registered")) return 409;
+  if (error.status && error.status >= 400 && error.status < 500) return error.status;
+  return 500;
+}
+
+function authCreateMessage(error: { message?: string }) {
+  const message = error.message || "";
+  const normalized = message.toLowerCase();
+  if (normalized.includes("already") || normalized.includes("registered")) {
+    return "Dieser Nutzer existiert bereits.";
+  }
+  if (normalized.includes("password")) {
+    return "Das Passwort erfüllt die Supabase-Anforderungen nicht.";
+  }
+  return message || "Nutzer konnte nicht erstellt werden.";
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -15,10 +47,7 @@ Deno.serve(async (req) => {
     // Verify the caller is an admin
     const authHeader = req.headers.get("Authorization");
     if (!authHeader) {
-      return new Response(JSON.stringify({ error: "Unauthorized" }), {
-        status: 401,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      return jsonResponse({ error: "Nicht autorisiert. Bitte neu einloggen." }, 401);
     }
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
@@ -31,26 +60,21 @@ Deno.serve(async (req) => {
     const token = authHeader.replace("Bearer ", "");
     const { data: claimsData, error: claimsError } = await anonClient.auth.getClaims(token);
     if (claimsError || !claimsData?.claims) {
-      return new Response(JSON.stringify({ error: "Unauthorized" }), {
-        status: 401,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      return jsonResponse({ error: "Sitzung abgelaufen. Bitte neu einloggen." }, 401);
     }
     const callerId = claimsData.claims.sub;
 
     // Check admin role
     const adminClient = createClient(supabaseUrl, serviceRoleKey);
-    const { data: roles } = await adminClient
+    const { data: roles, error: roleCheckError } = await adminClient
       .from("user_roles")
       .select("role")
       .eq("user_id", callerId)
       .eq("role", "admin");
 
+    if (roleCheckError) throw roleCheckError;
     if (!roles || roles.length === 0) {
-      return new Response(JSON.stringify({ error: "Forbidden" }), {
-        status: 403,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      return jsonResponse({ error: "Keine Admin-Berechtigung für die Nutzerverwaltung." }, 403);
     }
 
     const { action, ...payload } = await req.json();
@@ -72,71 +96,79 @@ Deno.serve(async (req) => {
         role: allRoles?.find((r) => r.user_id === u.id)?.role || null,
       }));
 
-      return new Response(JSON.stringify({ users: usersWithRoles }), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      return jsonResponse({ users: usersWithRoles });
     }
 
     if (action === "create") {
       const { email, password, role } = payload;
-      if (!email || !password) {
-        return new Response(JSON.stringify({ error: "E-Mail und Passwort erforderlich" }), {
-          status: 400,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
+      const normalizedEmail = typeof email === "string" ? email.trim().toLowerCase() : "";
+      const passwordValue = typeof password === "string" ? password : "";
+      const roleValue = role === "admin" ? "admin" : null;
+
+      if (!normalizedEmail || !passwordValue) {
+        return jsonResponse({ error: "E-Mail und Passwort erforderlich." }, 400);
+      }
+
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail)) {
+        return jsonResponse({ error: "Bitte eine gültige E-Mail-Adresse eingeben." }, 400);
+      }
+
+      if (passwordValue.length < 6) {
+        return jsonResponse({ error: "Das Passwort muss mindestens 6 Zeichen lang sein." }, 400);
       }
 
       const { data: newUser, error: createError } = await adminClient.auth.admin.createUser({
-        email,
-        password,
+        email: normalizedEmail,
+        password: passwordValue,
         email_confirm: true,
       });
-      if (createError) throw createError;
 
-      // Assign role if specified
-      if (role && newUser.user) {
-        await adminClient.from("user_roles").insert({
-          user_id: newUser.user.id,
-          role,
-        });
+      if (createError) {
+        return jsonResponse({ error: authCreateMessage(createError) }, authCreateStatus(createError));
       }
 
-      return new Response(JSON.stringify({ user: { id: newUser.user.id, email: newUser.user.email } }), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      if (!newUser.user) {
+        return jsonResponse({ error: "Supabase hat keinen Nutzer zurückgegeben." }, 500);
+      }
+
+      // Assign role if specified
+      if (roleValue) {
+        const { error: roleError } = await adminClient.from("user_roles").upsert({
+          user_id: newUser.user.id,
+          role: roleValue,
+        }, {
+          onConflict: "user_id,role",
+        });
+
+        if (roleError) {
+          await adminClient.auth.admin.deleteUser(newUser.user.id);
+          return jsonResponse({ error: `Nutzer konnte nicht vollständig angelegt werden: ${roleError.message}` }, 500);
+        }
+      }
+
+      return jsonResponse({ user: { id: newUser.user.id, email: newUser.user.email } });
     }
 
     if (action === "delete") {
       const { userId } = payload;
       if (!userId) {
-        return new Response(JSON.stringify({ error: "User ID erforderlich" }), {
-          status: 400,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
+        return jsonResponse({ error: "User ID erforderlich." }, 400);
       }
       // Prevent self-deletion
       if (userId === callerId) {
-        return new Response(JSON.stringify({ error: "Sie können sich nicht selbst löschen" }), {
-          status: 400,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
+        return jsonResponse({ error: "Sie können sich nicht selbst löschen." }, 400);
       }
 
       const { error: deleteError } = await adminClient.auth.admin.deleteUser(userId);
       if (deleteError) throw deleteError;
 
-      return new Response(JSON.stringify({ success: true }), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      return jsonResponse({ success: true });
     }
 
     if (action === "update_role") {
       const { userId, role } = payload;
       if (!userId) {
-        return new Response(JSON.stringify({ error: "User ID erforderlich" }), {
-          status: 400,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
+        return jsonResponse({ error: "User ID erforderlich." }, 400);
       }
 
       // Remove existing roles
@@ -147,19 +179,12 @@ Deno.serve(async (req) => {
         await adminClient.from("user_roles").insert({ user_id: userId, role });
       }
 
-      return new Response(JSON.stringify({ success: true }), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      return jsonResponse({ success: true });
     }
 
-    return new Response(JSON.stringify({ error: "Unknown action" }), {
-      status: 400,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    return jsonResponse({ error: "Unbekannte Aktion." }, 400);
   } catch (error) {
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    console.error("manage-users error:", error);
+    return jsonResponse({ error: errorMessage(error) }, 500);
   }
 });
