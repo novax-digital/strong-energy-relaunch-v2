@@ -485,11 +485,17 @@ select {
 
 .page-hero h1,
 .contact-hero h1,
-.article-page h1,
-.legal-page h1 {
+.article-page h1 {
   margin: 0;
   font-size: clamp(2.5rem, 5vw, 4.8rem);
   line-height: 1.04;
+  letter-spacing: 0;
+}
+
+.legal-page h1 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3.6rem);
+  line-height: 1.08;
   letter-spacing: 0;
 }
 
@@ -1055,6 +1061,10 @@ td {
   padding: 104px 0;
 }
 
+.legal-page {
+  padding-top: 136px;
+}
+
 .article-page__inner,
 .legal-page__inner {
   width: min(100%, 860px);
@@ -1077,6 +1087,24 @@ td {
   color: var(--fg);
   margin-top: 32px;
   letter-spacing: 0;
+}
+
+.legal-page .rich-text h2 {
+  font-size: clamp(1.35rem, 2.2vw, 1.8rem);
+  line-height: 1.22;
+  margin-top: 40px;
+}
+
+.legal-page .rich-text h3 {
+  font-size: clamp(1.12rem, 1.7vw, 1.35rem);
+  line-height: 1.28;
+  margin-top: 28px;
+}
+
+.legal-page .rich-text h4 {
+  font-size: 1rem;
+  line-height: 1.35;
+  margin-top: 24px;
 }
 
 .rich-text p,
