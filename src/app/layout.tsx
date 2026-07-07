@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import type { ReactNode } from "react";
+import { PagePreloader } from "@/components/PagePreloader";
+import { SitePasswordGate } from "@/components/SitePasswordGate";
 import { site } from "@/content/site";
 import "./globals.css";
 
@@ -21,7 +23,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="de" className={inter.className} data-scroll-behavior="smooth">
-      <body>{children}</body>
+      <body>
+        <PagePreloader />
+        <SitePasswordGate>{children}</SitePasswordGate>
+      </body>
     </html>
   );
 }

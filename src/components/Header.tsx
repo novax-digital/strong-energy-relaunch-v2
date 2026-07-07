@@ -2,11 +2,12 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronDown, Menu, X } from "lucide-react";
+import { ChevronDown, Menu, UserCog, X } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { site } from "@/content/site";
 import { getLanguageFromPathname, getMainNavigation, languages, localizedPath, switchLocalePath, translations, type Language } from "@/lib/i18n";
+import { getSupabaseBrowserClient } from "@/lib/supabase/client";
 import { TopBar } from "./TopBar";
 
 export function Header() {
@@ -14,12 +15,41 @@ export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [langDropdownOpen, setLangDropdownOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [adminVisible, setAdminVisible] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 80);
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    let active = true;
+
+    try {
+      const supabase = getSupabaseBrowserClient();
+      void supabase.auth.getSession().then(({ data }) => {
+        if (active) {
+          setAdminVisible(Boolean(data.session));
+        }
+      });
+
+      const { data } = supabase.auth.onAuthStateChange((_event, session) => {
+        if (active) {
+          setAdminVisible(Boolean(session));
+        }
+      });
+
+      return () => {
+        active = false;
+        data.subscription.unsubscribe();
+      };
+    } catch {
+      return () => {
+        active = false;
+      };
+    }
   }, []);
 
   const lang = getLanguageFromPathname(pathname);
@@ -37,6 +67,9 @@ export function Header() {
   const navLinkClass = isTransparent
     ? "text-white hover:text-white/80 transition-smooth text-base font-medium flex items-center gap-1 drop-shadow-sm"
     : "text-foreground/70 hover:text-primary transition-smooth text-base font-medium flex items-center gap-1";
+  const iconButtonClass = isTransparent
+    ? "text-white/80 hover:text-white hover:bg-white/10"
+    : "text-foreground/70 hover:text-foreground hover:bg-secondary";
 
   return (
     <header
@@ -67,9 +100,7 @@ export function Header() {
             </Link>
             <div className="relative" onMouseEnter={() => setLangDropdownOpen(true)} onMouseLeave={() => setLangDropdownOpen(false)}>
               <button
-                className={`flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium transition-smooth ${
-                  isTransparent ? "text-white/80 hover:text-white hover:bg-white/10" : "text-foreground/70 hover:text-foreground hover:bg-secondary"
-                }`}
+                className={`flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium transition-smooth ${iconButtonClass}`}
                 type="button"
                 aria-label={`${lang === "en" ? "Current language" : "Aktuelle Sprache"} ${currentLanguage.label}`}
               >
@@ -101,6 +132,16 @@ export function Header() {
                 </div>
               ) : null}
             </div>
+            {adminVisible ? (
+              <Link
+                className={`flex h-10 w-10 items-center justify-center rounded-lg transition-smooth ${iconButtonClass}`}
+                href="/admin"
+                aria-label="Admin-Bereich öffnen"
+                title="Admin-Bereich"
+              >
+                <UserCog size={20} strokeWidth={1.9} />
+              </Link>
+            ) : null}
           </div>
 
           <button
@@ -150,6 +191,16 @@ export function Header() {
                     );
                   })}
                 </div>
+                {adminVisible ? (
+                  <Link
+                    href="/admin"
+                    className="mt-3 flex items-center justify-center gap-2 rounded-lg border border-border px-3 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-secondary"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <UserCog size={18} strokeWidth={1.9} />
+                    Admin-Bereich
+                  </Link>
+                ) : null}
               </div>
             </div>
           </div>

@@ -7,6 +7,7 @@ import { ProductDetailHero } from "@/components/ProductDetailHero";
 import { ProductDetailTabs } from "@/components/ProductDetailTabs";
 import { ProductFeatureIcon } from "@/components/ProductFeatureIcon";
 import { ProductImageGallery } from "@/components/ProductImageGallery";
+import { ProductInquiryButton } from "@/components/ProductInquiryModal";
 import { SEOJsonLd } from "@/components/SEOJsonLd";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { getDownloadsByProduct } from "@/lib/content/getDownloads";
@@ -124,9 +125,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                 ))}
               </div>
               <div className="mt-7 flex flex-col gap-4 sm:flex-row">
-                <a className="btn-gradient rounded-full px-6 py-3 text-center text-base font-semibold shadow-lg" href={`/de/kontakt?produkt=${encodeURIComponent(product.slug)}`}>
-                  Angebot anfragen
-                </a>
+                <ProductInquiryButton product={product} label="Angebot anfragen" />
               </div>
             </div>
           </div>

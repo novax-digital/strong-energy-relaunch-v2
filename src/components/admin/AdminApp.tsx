@@ -2161,48 +2161,152 @@ function ProtectionSection() {
   const [enabled, setEnabled] = useState(false);
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(true);
-  const [message, setMessage] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [updatedAt, setUpdatedAt] = useState<string | null>(null);
+  const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
 
   useEffect(() => {
+    let active = true;
+
     async function load() {
-      const { data } = await getSupabaseBrowserClient().from("site_settings").select("*").limit(1).maybeSingle();
+      const { data, error } = await getSupabaseBrowserClient().from("site_settings").select("*").eq("id", "main").maybeSingle();
+      if (!active) {
+        return;
+      }
+
+      if (error) {
+        setMessage({ type: "error", text: error.message });
+        setLoading(false);
+        return;
+      }
+
       if (data) {
         setEnabled(Boolean(data.password_protection_enabled));
         setPassword(String(data.password_protection_password || ""));
+        setUpdatedAt(typeof data.updated_at === "string" ? data.updated_at : null);
+      } else {
+        setMessage({ type: "error", text: "Die site_settings-Zeile 'main' wurde nicht gefunden." });
       }
       setLoading(false);
     }
+
     load();
+
+    return () => {
+      active = false;
+    };
   }, []);
 
-  async function save() {
-    setMessage("");
-    const { error } = await getSupabaseBrowserClient().from("site_settings").upsert({
-      id: "default",
+  async function save(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setMessage(null);
+
+    if (enabled && !password.trim()) {
+      setMessage({ type: "error", text: "Bitte ein Passwort eintragen, wenn der Schutz aktiv ist." });
+      return;
+    }
+
+    setSaving(true);
+    const { data, error } = await getSupabaseBrowserClient().from("site_settings").update({
       password_protection_enabled: enabled,
       password_protection_password: password,
       updated_at: new Date().toISOString()
-    });
-    setMessage(error ? error.message : "Website-Schutz gespeichert.");
+    }).eq("id", "main").select("updated_at").single();
+    setSaving(false);
+
+    if (error) {
+      setMessage({ type: "error", text: error.message });
+      return;
+    }
+
+    setUpdatedAt(typeof data?.updated_at === "string" ? data.updated_at : new Date().toISOString());
+    setMessage({ type: "success", text: enabled ? "Passwortschutz ist aktiv." : "Passwortschutz ist deaktiviert." });
   }
 
   return (
-    <div className="max-w-2xl rounded-xl border border-border bg-white p-5">
-      <h2 className="text-lg font-bold">Website-Schutz</h2>
-      <p className="mt-2 text-sm text-muted-foreground">Diese Einstellung nutzt dieselbe `site_settings`-Tabelle wie das Relaunch-Backend.</p>
-      <div className="mt-6 space-y-4">
-        <label className="flex items-center gap-3 text-sm font-semibold">
-          <input checked={enabled} onChange={(event) => setEnabled(event.target.checked)} type="checkbox" disabled={loading} />
-          Passwortschutz aktivieren
-        </label>
-        <label className="grid gap-2 text-sm font-semibold">
-          Passwort
-          <input className="h-11 rounded-xl border border-input bg-background px-3.5 outline-none focus:border-primary focus:ring-2 focus:ring-primary/25" value={password} onChange={(event) => setPassword(event.target.value)} />
-        </label>
-        {message ? <p className="text-sm text-muted-foreground">{message}</p> : null}
-        <button className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary/90" onClick={save} type="button">Speichern</button>
+    <form onSubmit={save} className="max-w-3xl overflow-hidden rounded-2xl border border-border bg-white shadow-sm">
+      <div className="flex flex-col gap-4 border-b border-border bg-secondary/30 p-5 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-start gap-3">
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+            <Shield className="h-5 w-5" />
+          </div>
+          <div>
+            <h2 className="text-lg font-bold">Website-Schutz</h2>
+            <p className="mt-1 max-w-xl text-sm text-muted-foreground">Schützt die öffentliche Website mit einem Vorschau-Passwort.</p>
+          </div>
+        </div>
+        <span className={cx(
+          "inline-flex w-fit items-center gap-2 rounded-full border px-3 py-1 text-xs font-semibold",
+          enabled ? "border-primary/20 bg-primary/10 text-primary" : "border-border bg-white text-muted-foreground"
+        )}>
+          <span className={cx("h-2 w-2 rounded-full", enabled ? "bg-primary" : "bg-muted-foreground/40")} />
+          {enabled ? "Aktiv" : "Inaktiv"}
+        </span>
       </div>
-    </div>
+
+      <div className="grid gap-6 p-5 md:grid-cols-[1fr_220px]">
+        <div className="space-y-5">
+          <label className="flex cursor-pointer items-center justify-between gap-4 rounded-xl border border-border bg-background/60 px-4 py-3">
+            <span>
+              <span className="block text-sm font-semibold text-foreground">Passwortschutz aktivieren</span>
+              <span className="mt-1 block text-xs leading-5 text-muted-foreground">Besucher müssen zuerst das Passwort eingeben.</span>
+            </span>
+            <span className="relative inline-flex h-7 w-12 shrink-0 items-center">
+              <input className="peer sr-only" checked={enabled} onChange={(event) => setEnabled(event.target.checked)} type="checkbox" disabled={loading || saving} />
+              <span className="absolute inset-0 rounded-full bg-muted transition-colors peer-checked:bg-primary peer-disabled:opacity-60" />
+              <span className="absolute left-1 h-5 w-5 rounded-full bg-white shadow-sm transition-transform peer-checked:translate-x-5" />
+            </span>
+          </label>
+
+          <label className="grid gap-2 text-sm font-semibold">
+            Passwort
+            <span className="relative">
+              <Key className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <input
+                className="h-12 w-full rounded-xl border border-input bg-background px-11 pr-12 outline-none transition-all focus:border-primary/50 focus:ring-2 focus:ring-primary/20 disabled:opacity-60"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                type={showPassword ? "text" : "password"}
+                disabled={loading || saving}
+              />
+              <button
+                className="absolute right-3 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                type="button"
+                onClick={() => setShowPassword((value) => !value)}
+                aria-label={showPassword ? "Passwort verbergen" : "Passwort anzeigen"}
+              >
+                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              </button>
+            </span>
+          </label>
+
+          {message ? (
+            <div className={cx(
+              "flex items-start gap-2 rounded-xl border px-4 py-3 text-sm",
+              message.type === "success" ? "border-primary/20 bg-primary/10 text-primary" : "border-destructive/20 bg-destructive/10 text-destructive"
+            )}>
+              {message.type === "success" ? <Check className="mt-0.5 h-4 w-4" /> : <X className="mt-0.5 h-4 w-4" />}
+              <span>{message.text}</span>
+            </div>
+          ) : null}
+
+          <button className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-primary px-5 text-sm font-semibold text-white transition-colors hover:bg-primary/90 disabled:opacity-60" type="submit" disabled={loading || saving}>
+            {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+            {saving ? "Speichern..." : "Speichern"}
+          </button>
+        </div>
+
+        <div className="border-t border-border pt-4 text-sm md:border-l md:border-t-0 md:pl-5 md:pt-0">
+          <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Aktueller Zustand</p>
+          <p className="mt-3 font-semibold text-foreground">{loading ? "Wird geladen..." : enabled ? "Schutz eingeschaltet" : "Schutz ausgeschaltet"}</p>
+          <p className="mt-2 text-xs leading-5 text-muted-foreground">
+            Gespeichert wird die Einstellung <span className="font-mono">site_settings.main</span>, die auch die Passwort-Prüfung nutzt.
+          </p>
+          {updatedAt ? <p className="mt-4 text-xs text-muted-foreground">Aktualisiert: {formatDateTime(updatedAt)}</p> : null}
+        </div>
+      </div>
+    </form>
   );
 }
 

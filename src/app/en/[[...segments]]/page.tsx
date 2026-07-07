@@ -17,6 +17,7 @@ import { ProductDetailHero } from "@/components/ProductDetailHero";
 import { ProductDetailTabs } from "@/components/ProductDetailTabs";
 import { ProductFeatureIcon } from "@/components/ProductFeatureIcon";
 import { ProductImageGallery } from "@/components/ProductImageGallery";
+import { ProductInquiryButton } from "@/components/ProductInquiryModal";
 import { ProductTabsGrid } from "@/components/ProductTabsGrid";
 import { SEOJsonLd } from "@/components/SEOJsonLd";
 import { faqGroups } from "@/content/faq";
@@ -389,9 +390,7 @@ function ProductDetailPageContent({ categorySlug, productSlug }: { categorySlug:
                 ))}
               </div>
               <div className="mt-7">
-                <Link className="btn-gradient rounded-full px-6 py-3 text-center text-base font-semibold shadow-lg" href={`${localizedPath("/kontakt", lang)}?produkt=${encodeURIComponent(product.slug)}`}>
-                  {t.products.inquireNow}
-                </Link>
+                <ProductInquiryButton product={product} lang={lang} label={t.products.inquireNow} />
               </div>
             </div>
           </div>
