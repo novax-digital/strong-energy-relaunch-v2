@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
   Bell,
@@ -575,7 +576,9 @@ function AdminSidebar({
   return (
     <aside className={cx("sticky top-0 flex h-screen shrink-0 flex-col border-r border-border bg-white transition-all duration-300", collapsed ? "w-[68px]" : "w-64")}>
       <div className="flex h-16 items-center border-b border-border px-4">
-        <Image src={site.logo} alt="Strong Energy" width={160} height={46} className={cx("h-8 w-auto", collapsed && "h-6")} />
+        <Link href="/de" aria-label="Zur Hauptseite" className="inline-flex items-center rounded-md outline-none transition-opacity hover:opacity-80 focus-visible:ring-2 focus-visible:ring-primary/35">
+          <Image src={site.logo} alt="Strong Energy" width={160} height={46} className={cx("h-8 w-auto", collapsed && "h-6")} />
+        </Link>
       </div>
 
       <nav className="flex-1 overflow-y-auto px-3 py-4">
