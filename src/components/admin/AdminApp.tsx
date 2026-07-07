@@ -2203,7 +2203,8 @@ function CrudSection({
     }
 
     const supabase = getSupabaseBrowserClient();
-    const payloadWithTimestamp = "updated_at" in (editing || {}) || table !== "product_categories" ? { ...payload, updated_at: new Date().toISOString() } : payload;
+    const hasUpdatedAtColumn = Boolean(editing && Object.prototype.hasOwnProperty.call(editing, "updated_at"));
+    const payloadWithTimestamp = hasUpdatedAtColumn ? { ...payload, updated_at: new Date().toISOString() } : payload;
     const result = editing
       ? await supabase.from(table).update(payloadWithTimestamp).eq(primaryKey, editing[primaryKey] as string)
       : await supabase.from(table).insert(payloadWithTimestamp);
