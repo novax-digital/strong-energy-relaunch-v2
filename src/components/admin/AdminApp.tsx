@@ -1660,6 +1660,23 @@ function BlogSection() {
     };
   }
 
+  function translationCandidates(language = form.language) {
+    const targetLanguage = language === "en" ? "de" : "en";
+    return posts.filter((post) => post.id !== editing?.id && (post.language || "de") === targetLanguage);
+  }
+
+  function selectedTranslationValue() {
+    const candidates = translationCandidates();
+    return candidates.some((post) => (post.translation_group_id || post.id) === form.translation_group_id) ? form.translation_group_id : "";
+  }
+
+  function updateLanguage(language: string) {
+    setForm((previous) => {
+      const stillValid = posts.some((post) => post.id !== editing?.id && (post.language || "de") !== language && (post.translation_group_id || post.id) === previous.translation_group_id);
+      return { ...previous, language, translation_group_id: stillValid ? previous.translation_group_id : crypto.randomUUID() };
+    });
+  }
+
   function openCreate() {
     const author = defaultAuthor();
     setEditing(null);
@@ -1683,7 +1700,7 @@ function BlogSection() {
       is_published: post.is_published,
       is_featured: post.is_featured,
       language: post.language || "de",
-      translation_group_id: post.translation_group_id || ""
+      translation_group_id: post.translation_group_id || crypto.randomUUID()
     });
     setError("");
     setDialogOpen(true);
@@ -1881,9 +1898,26 @@ function BlogSection() {
             <TextAreaField label="Inhalt (Markdown)" value={form.content} onChange={(value) => setForm((previous) => ({ ...previous, content: value }))} placeholder={"# Überschrift\n\nDein Inhalt hier...\n\n- Listenpunkt 1\n- Listenpunkt 2"} rows={12} mono />
             <div className="grid gap-4 md:grid-cols-2">
               <SelectField label="Kategorie" value={form.category} onChange={(value) => setForm((previous) => ({ ...previous, category: value }))} placeholder="Kategorie wählen" options={blogCategoryOptions.map((value) => ({ label: value, value }))} />
-              <SelectField label="Sprache" value={form.language} onChange={(value) => setForm((previous) => ({ ...previous, language: value }))} options={blogLanguageOptions} />
+              <SelectField label="Sprache" value={form.language} onChange={updateLanguage} options={blogLanguageOptions} />
             </div>
-            <TextField label="Übersetzungsgruppe" value={form.translation_group_id} onChange={(value) => setForm((previous) => ({ ...previous, translation_group_id: value }))} placeholder="Automatisch für DE/EN-Paare" />
+            <label className="grid gap-2 text-sm font-medium text-foreground">
+              Sprachversion
+              <select
+                className={inputClass}
+                value={selectedTranslationValue()}
+                onChange={(event) => setForm((previous) => ({ ...previous, translation_group_id: event.target.value || crypto.randomUUID() }))}
+              >
+                <option value="">Eigenständiger Beitrag / neues Übersetzungspaar</option>
+                {translationCandidates().map((post) => (
+                  <option key={post.id} value={post.translation_group_id || post.id}>
+                    Als Übersetzung von {languageLabel(post.language)}: {post.title}
+                  </option>
+                ))}
+              </select>
+              <span className="text-xs font-normal leading-5 text-muted-foreground">
+                Verknüpft deutsche und englische Versionen miteinander. Für einen neuen einzelnen Beitrag einfach auf „Eigenständiger Beitrag“ lassen.
+              </span>
+            </label>
             <SelectField
               label="Autor"
               value={form.author_id}
@@ -2368,7 +2402,7 @@ function UsersSection() {
   const [users, setUsers] = useState<UserEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [showCreate, setShowCreate] = useState(false);
+  const [createDialogOpen, setCreateDialogOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -2389,6 +2423,19 @@ function UsersSection() {
     void Promise.resolve().then(load);
   }, [load]);
 
+  function openCreateDialog() {
+    setEmail("");
+    setPassword("");
+    setError("");
+    setCreateDialogOpen(true);
+  }
+
+  function closeCreateDialog() {
+    setCreateDialogOpen(false);
+    setEmail("");
+    setPassword("");
+  }
+
   async function createUser(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const { data, error: fnError } = await getSupabaseBrowserClient().functions.invoke("manage-users", {
@@ -2400,7 +2447,7 @@ function UsersSection() {
     }
     setEmail("");
     setPassword("");
-    setShowCreate(false);
+    setCreateDialogOpen(false);
     load();
   }
 
@@ -2417,21 +2464,13 @@ function UsersSection() {
   return (
     <div className="space-y-4">
       <SectionToolbar title={`Nutzer (${users.length})`} loading={loading} onRefresh={load}>
-        <button className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary/90" onClick={() => setShowCreate((value) => !value)} type="button">
-          {showCreate ? <X className="h-3.5 w-3.5" /> : <Plus className="h-3.5 w-3.5" />}
-          {showCreate ? "Abbrechen" : "Neuer Nutzer"}
+        <button className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary/90" onClick={openCreateDialog} type="button">
+          <Plus className="h-3.5 w-3.5" />
+          Neuer Nutzer
         </button>
       </SectionToolbar>
 
       {error ? <p className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">{error}</p> : null}
-
-      {showCreate ? (
-        <form onSubmit={createUser} className="grid gap-3 rounded-xl border border-border bg-white p-4 md:grid-cols-[1fr_1fr_auto]">
-          <input className="h-11 rounded-xl border border-input bg-background px-3.5 text-sm font-normal outline-none focus:border-primary focus:ring-2 focus:ring-primary/25" type="email" placeholder="E-Mail" value={email} onChange={(event) => setEmail(event.target.value)} required />
-          <input className="h-11 rounded-xl border border-input bg-background px-3.5 text-sm font-normal outline-none focus:border-primary focus:ring-2 focus:ring-primary/25" type="password" placeholder="Passwort" value={password} onChange={(event) => setPassword(event.target.value)} required minLength={6} />
-          <button className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary/90" type="submit">Erstellen</button>
-        </form>
-      ) : null}
 
       <div className="overflow-hidden rounded-xl border border-border bg-white">
         <table className="w-full text-[13px]">
@@ -2461,6 +2500,21 @@ function UsersSection() {
           </tbody>
         </table>
       </div>
+
+      {createDialogOpen ? (
+        <FormDialog title="Neuer Nutzer" onClose={closeCreateDialog}>
+          <form className="space-y-4" onSubmit={createUser}>
+            <p className="text-sm text-muted-foreground">Lege einen neuen Admin-Nutzer für das Backend an.</p>
+            <TextField label="E-Mail" required type="email" value={email} onChange={setEmail} placeholder="admin@example.com" />
+            <TextField label="Passwort" required type="password" value={password} onChange={setPassword} placeholder="Mindestens 6 Zeichen" />
+            <p className="text-xs leading-5 text-muted-foreground">Der neue Nutzer erhält automatisch die Rolle „admin“.</p>
+            <div className="flex justify-end gap-2 border-t border-border pt-4">
+              <button className={buttonClass("outline")} onClick={closeCreateDialog} type="button">Abbrechen</button>
+              <button className={buttonClass()} disabled={!email || password.length < 6} type="submit">Erstellen</button>
+            </div>
+          </form>
+        </FormDialog>
+      ) : null}
     </div>
   );
 }
