@@ -53,7 +53,7 @@ export function LoginForm() {
             <label className="grid gap-2 text-sm font-semibold text-foreground">
               E-Mail
               <input
-                className="h-12 rounded-xl border border-input bg-background px-4 outline-none transition-all focus:border-primary/50 focus:ring-2 focus:ring-primary/20"
+                className="h-12 rounded-xl border border-input bg-background px-4 font-normal outline-none transition-all focus:border-primary/50 focus:ring-2 focus:ring-primary/20"
                 type="email"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
@@ -64,7 +64,7 @@ export function LoginForm() {
             <label className="grid gap-2 text-sm font-semibold text-foreground">
               Passwort
               <input
-                className="h-12 rounded-xl border border-input bg-background px-4 outline-none transition-all focus:border-primary/50 focus:ring-2 focus:ring-primary/20"
+                className="h-12 rounded-xl border border-input bg-background px-4 font-normal outline-none transition-all focus:border-primary/50 focus:ring-2 focus:ring-primary/20"
                 type="password"
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}

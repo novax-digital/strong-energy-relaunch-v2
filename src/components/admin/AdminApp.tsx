@@ -256,8 +256,8 @@ const blogCategoryColors: Record<string, string> = {
 };
 const blogLanguageOptions = [{ label: "🇩🇪 Deutsch", value: "de" }, { label: "🇬🇧 English", value: "en" }];
 
-const inputClass = "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm outline-none transition-colors placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-primary/40 disabled:cursor-not-allowed disabled:opacity-50";
-const textareaClass = "flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm outline-none transition-colors placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-primary/40 disabled:cursor-not-allowed disabled:opacity-50";
+const inputClass = "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm font-normal outline-none transition-colors placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-primary/40 disabled:cursor-not-allowed disabled:opacity-50";
+const textareaClass = "flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm font-normal outline-none transition-colors placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-primary/40 disabled:cursor-not-allowed disabled:opacity-50";
 const labelClass = "text-sm font-medium leading-none text-foreground";
 const tableClass = "w-full caption-bottom text-sm";
 const tableHeadClass = "h-12 px-4 text-left align-middle font-medium text-muted-foreground";
@@ -2427,8 +2427,8 @@ function UsersSection() {
 
       {showCreate ? (
         <form onSubmit={createUser} className="grid gap-3 rounded-xl border border-border bg-white p-4 md:grid-cols-[1fr_1fr_auto]">
-          <input className="h-11 rounded-xl border border-input bg-background px-3.5 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/25" type="email" placeholder="E-Mail" value={email} onChange={(event) => setEmail(event.target.value)} required />
-          <input className="h-11 rounded-xl border border-input bg-background px-3.5 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/25" type="password" placeholder="Passwort" value={password} onChange={(event) => setPassword(event.target.value)} required minLength={6} />
+          <input className="h-11 rounded-xl border border-input bg-background px-3.5 text-sm font-normal outline-none focus:border-primary focus:ring-2 focus:ring-primary/25" type="email" placeholder="E-Mail" value={email} onChange={(event) => setEmail(event.target.value)} required />
+          <input className="h-11 rounded-xl border border-input bg-background px-3.5 text-sm font-normal outline-none focus:border-primary focus:ring-2 focus:ring-primary/25" type="password" placeholder="Passwort" value={password} onChange={(event) => setPassword(event.target.value)} required minLength={6} />
           <button className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary/90" type="submit">Erstellen</button>
         </form>
       ) : null}
@@ -2572,7 +2572,7 @@ function ProtectionSection() {
             <span className="relative">
               <Key className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <input
-                className="h-12 w-full rounded-xl border border-input bg-background px-11 pr-12 outline-none transition-all focus:border-primary/50 focus:ring-2 focus:ring-primary/20 disabled:opacity-60"
+                className="h-12 w-full rounded-xl border border-input bg-background px-11 pr-12 font-normal outline-none transition-all focus:border-primary/50 focus:ring-2 focus:ring-primary/20 disabled:opacity-60"
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
                 type={showPassword ? "text" : "password"}
@@ -2648,11 +2648,11 @@ function AccountSection() {
       <div className="mt-6 space-y-4">
         <label className="grid gap-2 text-sm font-semibold">
           Neues Passwort
-          <input className="h-11 rounded-xl border border-input bg-background px-3.5 outline-none focus:border-primary focus:ring-2 focus:ring-primary/25" type="password" value={password} onChange={(event) => setPassword(event.target.value)} required />
+          <input className="h-11 rounded-xl border border-input bg-background px-3.5 font-normal outline-none focus:border-primary focus:ring-2 focus:ring-primary/25" type="password" value={password} onChange={(event) => setPassword(event.target.value)} required />
         </label>
         <label className="grid gap-2 text-sm font-semibold">
           Wiederholen
-          <input className="h-11 rounded-xl border border-input bg-background px-3.5 outline-none focus:border-primary focus:ring-2 focus:ring-primary/25" type="password" value={repeat} onChange={(event) => setRepeat(event.target.value)} required />
+          <input className="h-11 rounded-xl border border-input bg-background px-3.5 font-normal outline-none focus:border-primary focus:ring-2 focus:ring-primary/25" type="password" value={repeat} onChange={(event) => setRepeat(event.target.value)} required />
         </label>
         {message ? <p className="text-sm text-muted-foreground">{message}</p> : null}
         <button className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary/90" type="submit">Speichern</button>
