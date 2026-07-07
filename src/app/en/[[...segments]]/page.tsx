@@ -14,6 +14,7 @@ import { FaqInteractive } from "@/components/FaqInteractive";
 import { HomeHero, PageHero } from "@/components/Hero";
 import { MediaGallery } from "@/components/MediaGallery";
 import { PartnerGrid } from "@/components/PartnerGrid";
+import { PresentationEmbed } from "@/components/PresentationEmbed";
 import { ProductDetailHero } from "@/components/ProductDetailHero";
 import { ProductDetailTabs } from "@/components/ProductDetailTabs";
 import { ProductFeatureIcon } from "@/components/ProductFeatureIcon";
@@ -101,7 +102,15 @@ const seo: Record<string, Metadata> = {
     title: "Strong Energy 360 App",
     description: "The Strong Energy 360 App provides real-time monitoring and management for inverters, energy storage and accessories.",
     path: "/en/360-app"
-  })
+  }),
+  presentation: {
+    title: "Presentation - Strong Energy",
+    description: "Internal presentation",
+    robots: {
+      index: false,
+      follow: false
+    }
+  }
 };
 
 const legalTitles: Record<string, string> = {
@@ -131,6 +140,7 @@ export function generateStaticParams() {
     { segments: ["partners"] },
     { segments: ["about-us"] },
     { segments: ["360-app"] },
+    { segments: ["presentation"] },
     ...legalPages.map((page) => ({ segments: [localizeLegalSlug(page.slug, lang)] }))
   ];
 }
@@ -179,6 +189,7 @@ export async function generateMetadata({ params }: EnglishPageProps): Promise<Me
   if (section === "partners") return seo.partner;
   if (section === "about-us") return seo.about;
   if (section === "360-app") return seo.app;
+  if (section === "presentation") return seo.presentation;
 
   const legalSlug = normalizeLegalSlug(section);
   const legalPage = legalPages.find((page) => page.slug === legalSlug);
@@ -214,6 +225,7 @@ export default async function EnglishPage({ params, searchParams }: EnglishPageP
   if (section === "partners") return <PartnerPageContent />;
   if (section === "about-us") return <AboutPageContent />;
   if (section === "360-app") return <AppPageContent />;
+  if (section === "presentation") return <PresentationEmbed />;
 
   const legalSlug = normalizeLegalSlug(section);
   const legalPage = legalPages.find((page) => page.slug === legalSlug);

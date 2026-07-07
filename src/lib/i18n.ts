@@ -19,7 +19,8 @@ const deToEn: Record<string, string> = {
   "/gpsr": "/gpsr",
   "/cookie-richtlinie": "/cookie-policy",
   "/partner": "/partners",
-  "/360-app": "/360-app"
+  "/360-app": "/360-app",
+  "/praesentation": "/presentation"
 };
 
 const enToDe: Record<string, string> = Object.fromEntries(Object.entries(deToEn).map(([de, en]) => [en, de]));
