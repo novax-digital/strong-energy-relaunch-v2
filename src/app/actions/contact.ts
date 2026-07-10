@@ -1,16 +1,25 @@
 "use server";
 
+export interface ContactState {
+  ok: boolean;
+  message: string;
+  requestId?: string;
+  fieldErrors?: Record<string, string>;
+}
+
+type ZendoriResponse = {
+  status?: "angenommen" | "bereits_verarbeitet";
+  correlation_id?: string;
+  error?: string;
+};
+
 type SubmissionIntent = "contact" | "inquiry";
 type SupabaseTable = "contact_messages" | "inquiries";
 type SupabaseValue = string | boolean | null;
 type SupabaseRow = Record<string, SupabaseValue>;
 type NotificationValue = string | boolean | null | undefined;
 
-export interface ContactState {
-  ok: boolean;
-  message: string;
-  fieldErrors?: Record<string, string>;
-}
+const ZENDORI_ENDPOINT = "https://strongenergy.zendori.ai/api/ingest/form";
 
 function readString(formData: FormData, key: string) {
   return String(formData.get(key) || "").trim();
@@ -45,11 +54,7 @@ function splitName(value: string) {
 function supabaseConfig() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
-
-  if (!url || !key) {
-    throw new Error("Supabase ist nicht konfiguriert.");
-  }
-
+  if (!url || !key) throw new Error("Supabase ist nicht konfiguriert.");
   return { url, key };
 }
 
@@ -65,14 +70,96 @@ async function insertSupabaseRow(table: SupabaseTable, payload: SupabaseRow) {
     },
     body: JSON.stringify(payload)
   });
-
   if (!response.ok) {
     const details = await response.text();
     throw new Error(`Supabase ${table} insert failed (${response.status}): ${details}`);
   }
 }
 
+async function sendNotification(type: SubmissionIntent, data: Record<string, NotificationValue>) {
+  const { url, key } = supabaseConfig();
+  const response = await fetch(`${url}/functions/v1/send-notification-email`, {
+    method: "POST",
+    headers: {
+      apikey: key,
+      Authorization: `Bearer ${key}`,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ type, data })
+  });
+  if (!response.ok) {
+    const details = await response.text();
+    throw new Error(`Notification failed (${response.status}): ${details}`);
+  }
+}
+
+function flatFormPayload(formData: FormData) {
+  return Object.fromEntries(
+    Array.from(formData.entries(), ([key, value]) => [key, typeof value === "string" ? value : value.name])
+  );
+}
+
+async function sendToZendori(formData: FormData): Promise<ContactState> {
+  const requestId = readString(formData, "request_id");
+  if (!requestId) {
+    return { ok: false, message: "Die Anfrage konnte nicht eindeutig zugeordnet werden. Bitte laden Sie die Seite neu.", requestId };
+  }
+
+  // Bots sollen keine Tickets erzeugen und zugleich keine verwertbare Rückmeldung erhalten.
+  if (readString(formData, "website")) {
+    return { ok: true, message: "Vielen Dank. Ihre Anfrage wurde übermittelt.", requestId };
+  }
+
+  const key = process.env.ZENDORI_FORM_KEY;
+  if (!key) {
+    console.error("ZENDORI_FORM_KEY ist nicht konfiguriert.");
+    return { ok: false, message: "Der Formularversand ist derzeit nicht konfiguriert. Bitte versuchen Sie es später erneut.", requestId };
+  }
+
+  try {
+    const response = await fetch(ZENDORI_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-zendori-key": key
+      },
+      body: JSON.stringify(flatFormPayload(formData)),
+      cache: "no-store"
+    });
+
+    let result: ZendoriResponse = {};
+    try {
+      result = (await response.json()) as ZendoriResponse;
+    } catch {
+      // Eine nicht lesbare Fehlerantwort wird unten mit einer sicheren Meldung behandelt.
+    }
+
+    if (response.status === 202 && (result.status === "angenommen" || result.status === "bereits_verarbeitet")) {
+      return { ok: true, message: "Vielen Dank. Ihre Anfrage wurde erfolgreich übermittelt.", requestId };
+    }
+
+    console.error("Zendori-Formularversand fehlgeschlagen.", response.status, result);
+    return {
+      ok: false,
+      message: result.error || "Ihre Anfrage konnte gerade nicht übermittelt werden. Bitte versuchen Sie es erneut.",
+      requestId
+    };
+  } catch (error) {
+    console.error("Zendori-Formularversand nicht erreichbar.", error);
+    return {
+      ok: false,
+      message: "Der Formularversand ist gerade nicht erreichbar. Bitte versuchen Sie es erneut.",
+      requestId
+    };
+  }
+}
+
 export async function sendProductInquiry(_previous: ContactState, formData: FormData): Promise<ContactState> {
+  const requestId = readString(formData, "request_id");
+  if (readString(formData, "website")) {
+    return { ok: true, message: "Vielen Dank. Ihre Anfrage wurde übermittelt.", requestId };
+  }
+
   const fields = {
     customerType: readString(formData, "customerType"),
     firstName: readString(formData, "firstName"),
@@ -93,7 +180,6 @@ export async function sendProductInquiry(_previous: ContactState, formData: Form
     utmCampaign: readString(formData, "utm_campaign"),
     utmContent: readString(formData, "utm_content")
   };
-
   const fieldErrors: Record<string, string> = {};
   if (fields.firstName.length < 2) fieldErrors.firstName = "Bitte geben Sie Ihren Vornamen ein.";
   if (fields.lastName.length < 2) fieldErrors.lastName = "Bitte geben Sie Ihren Nachnamen ein.";
@@ -101,8 +187,11 @@ export async function sendProductInquiry(_previous: ContactState, formData: Form
   if (!hasAcceptedPrivacy(fields.privacy)) fieldErrors.privacy = "Bitte stimmen Sie der Datenschutzerklärung zu.";
 
   if (Object.keys(fieldErrors).length) {
-    return { ok: false, message: "Bitte prüfen Sie Ihre Eingaben.", fieldErrors };
+    return { ok: false, message: "Bitte prüfen Sie Ihre Eingaben.", requestId, fieldErrors };
   }
+
+  const zendoriResult = await sendToZendori(formData);
+  if (!zendoriResult.ok) return zendoriResult;
 
   const customerType = normalizeInquiryCustomerType(fields.customerType);
   const phone = fields.phone.slice(0, 30) || null;
@@ -117,10 +206,7 @@ export async function sendProductInquiry(_previous: ContactState, formData: Form
     fields.companyName && `Unternehmen: ${fields.companyName}`,
     fields.postalCode && `PLZ: ${fields.postalCode}`,
     fields.bundesland && `Bundesland: ${fields.bundesland}`
-  ]
-    .filter(Boolean)
-    .join(" | ")
-    .slice(0, 255);
+  ].filter(Boolean).join(" | ").slice(0, 255);
 
   try {
     await insertSupabaseRow("inquiries", {
@@ -137,7 +223,6 @@ export async function sendProductInquiry(_previous: ContactState, formData: Form
       utm_campaign: fields.utmCampaign || null,
       utm_content: fields.utmContent || null
     });
-
     try {
       await sendNotification("inquiry", {
         firstName: fields.firstName,
@@ -152,33 +237,19 @@ export async function sendProductInquiry(_previous: ContactState, formData: Form
     } catch (error) {
       console.warn("Produktanfrage wurde gespeichert, aber die Benachrichtigung konnte nicht gesendet werden.", error);
     }
-
-    return { ok: true, message: "Vielen Dank. Ihre Produktanfrage wurde übermittelt." };
+    return { ok: true, message: "Vielen Dank. Ihre Produktanfrage wurde übermittelt.", requestId };
   } catch (error) {
     console.error("Produktanfrage konnte nicht gespeichert werden.", error);
-    return { ok: false, message: "Leider konnte Ihre Anfrage gerade nicht gespeichert werden. Bitte versuchen Sie es später erneut." };
-  }
-}
-
-async function sendNotification(type: SubmissionIntent, data: Record<string, NotificationValue>) {
-  const { url, key } = supabaseConfig();
-  const response = await fetch(`${url}/functions/v1/send-notification-email`, {
-    method: "POST",
-    headers: {
-      apikey: key,
-      Authorization: `Bearer ${key}`,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ type, data })
-  });
-
-  if (!response.ok) {
-    const details = await response.text();
-    throw new Error(`Notification failed (${response.status}): ${details}`);
+    return { ok: false, message: "Leider konnte Ihre Anfrage gerade nicht gespeichert werden. Bitte versuchen Sie es später erneut.", requestId };
   }
 }
 
 export async function sendContactMessage(_previous: ContactState, formData: FormData): Promise<ContactState> {
+  const requestId = readString(formData, "request_id");
+  if (readString(formData, "website")) {
+    return { ok: true, message: "Vielen Dank. Ihre Anfrage wurde übermittelt.", requestId };
+  }
+
   const intent = readString(formData, "intent") === "inquiry" ? "inquiry" : "contact";
   const fields = {
     name: readString(formData, "name"),
@@ -195,7 +266,6 @@ export async function sendContactMessage(_previous: ContactState, formData: Form
     utmCampaign: readString(formData, "utm_campaign"),
     utmContent: readString(formData, "utm_content")
   };
-
   const fieldErrors: Record<string, string> = {};
   if (fields.name.length < 2) fieldErrors.name = "Bitte geben Sie Ihren Namen ein.";
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email)) fieldErrors.email = "Bitte geben Sie eine gültige E-Mail-Adresse ein.";
@@ -203,8 +273,11 @@ export async function sendContactMessage(_previous: ContactState, formData: Form
   if (!hasAcceptedPrivacy(fields.privacy)) fieldErrors.privacy = "Bitte stimmen Sie der Datenschutzerklärung zu.";
 
   if (Object.keys(fieldErrors).length) {
-    return { ok: false, message: "Bitte prüfen Sie Ihre Eingaben.", fieldErrors };
+    return { ok: false, message: "Bitte prüfen Sie Ihre Eingaben.", requestId, fieldErrors };
   }
+
+  const zendoriResult = await sendToZendori(formData);
+  if (!zendoriResult.ok) return zendoriResult;
 
   const { firstName, lastName } = splitName(fields.name);
   const customerType = normalizeCustomerType(fields.customerType);
@@ -216,10 +289,7 @@ export async function sendContactMessage(_previous: ContactState, formData: Form
         fields.productName && `Produkt: ${fields.productName}`,
         fields.topic && `Betreff: ${fields.topic}`,
         fields.message && `Nachricht: ${fields.message}`
-      ]
-        .filter(Boolean)
-        .join(" | ")
-        .slice(0, 255);
+      ].filter(Boolean).join(" | ").slice(0, 255);
 
       await insertSupabaseRow("inquiries", {
         customer_type: customerType,
@@ -235,7 +305,6 @@ export async function sendContactMessage(_previous: ContactState, formData: Form
         utm_campaign: fields.utmCampaign || null,
         utm_content: fields.utmContent || null
       });
-
       try {
         await sendNotification("inquiry", {
           firstName,
@@ -249,8 +318,7 @@ export async function sendContactMessage(_previous: ContactState, formData: Form
       } catch (error) {
         console.warn("Produktanfrage wurde gespeichert, aber die Benachrichtigung konnte nicht gesendet werden.", error);
       }
-
-      return { ok: true, message: "Vielen Dank. Ihre Produktanfrage wurde übermittelt." };
+      return { ok: true, message: "Vielen Dank. Ihre Produktanfrage wurde übermittelt.", requestId };
     }
 
     await insertSupabaseRow("contact_messages", {
@@ -263,7 +331,6 @@ export async function sendContactMessage(_previous: ContactState, formData: Form
       message: fields.message.slice(0, 5000),
       privacy_accepted: true
     });
-
     try {
       await sendNotification("contact", {
         firstName,
@@ -277,10 +344,9 @@ export async function sendContactMessage(_previous: ContactState, formData: Form
     } catch (error) {
       console.warn("Kontaktnachricht wurde gespeichert, aber die Benachrichtigung konnte nicht gesendet werden.", error);
     }
-
-    return { ok: true, message: "Vielen Dank. Ihre Nachricht wurde übermittelt." };
+    return { ok: true, message: "Vielen Dank. Ihre Nachricht wurde übermittelt.", requestId };
   } catch (error) {
     console.error("Anfrage konnte nicht gespeichert werden.", error);
-    return { ok: false, message: "Leider konnte Ihre Anfrage gerade nicht gespeichert werden. Bitte versuchen Sie es später erneut." };
+    return { ok: false, message: "Leider konnte Ihre Anfrage gerade nicht gespeichert werden. Bitte versuchen Sie es später erneut.", requestId };
   }
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState, useEffect, useMemo, useState } from "react";
+import { useActionState, useEffect, useMemo, useRef, useState } from "react";
 import { ArrowRight, Check, Headphones, ShieldCheck, Truck, X } from "lucide-react";
 import { sendContactMessage, type ContactState } from "@/app/actions/contact";
 import { localizedPath, type Language } from "@/lib/i18n";
@@ -131,6 +131,9 @@ export function PartnerApplicationForm({ lang = "de" }: { lang?: Language }) {
 function PartnerInquiryModal({ lang, onClose }: { lang: Language; onClose: () => void }) {
   const t = labels[lang];
   const [state, formAction, pending] = useActionState(sendContactMessage, initialState);
+  const formRef = useRef<HTMLFormElement>(null);
+  const requestIdRef = useRef("");
+  const requestIdInputRef = useRef<HTMLInputElement>(null);
   const [partnerType, setPartnerType] = useState<PartnerType>("installateur");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -150,6 +153,19 @@ function PartnerInquiryModal({ lang, onClose }: { lang: Language; onClose: () =>
         .join("\n\n"),
     [company, message, selectedPartnerLabel, t.companyLabel, t.messageLabel, t.partnerType]
   );
+
+  useEffect(() => {
+    if (!state.ok || state.requestId !== requestIdRef.current) return;
+    queueMicrotask(() => {
+      formRef.current?.reset();
+      setPartnerType("installateur");
+      setFirstName("");
+      setLastName("");
+      setCompany("");
+      setMessage("");
+      requestIdRef.current = "";
+    });
+  }, [state.ok, state.requestId]);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -200,7 +216,10 @@ function PartnerInquiryModal({ lang, onClose }: { lang: Language; onClose: () =>
         <form
           action={formAction}
           className="max-h-[calc(100vh-13rem)] space-y-5 overflow-y-auto px-7 py-6"
+          ref={formRef}
           onSubmit={(event) => {
+            requestIdRef.current ||= crypto.randomUUID();
+            if (requestIdInputRef.current) requestIdInputRef.current.value = requestIdRef.current;
             const email = String(new FormData(event.currentTarget).get("email") || "");
             if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
               event.preventDefault();
@@ -210,6 +229,8 @@ function PartnerInquiryModal({ lang, onClose }: { lang: Language; onClose: () =>
             setClientError("");
           }}
         >
+          <input ref={requestIdInputRef} name="request_id" type="hidden" />
+          <input className="hidden" name="website" type="text" tabIndex={-1} autoComplete="off" aria-hidden="true" />
           <input name="customerType" type="hidden" value={partnerType} />
           <input name="intent" type="hidden" value="contact" />
           <input name="name" type="hidden" value={`${firstName} ${lastName}`.trim()} />
@@ -245,6 +266,7 @@ function PartnerInquiryModal({ lang, onClose }: { lang: Language; onClose: () =>
               autoComplete="given-name"
               className={inputClass}
               maxLength={100}
+              name="firstName"
               placeholder={t.firstName}
               required
               value={firstName}
@@ -255,6 +277,7 @@ function PartnerInquiryModal({ lang, onClose }: { lang: Language; onClose: () =>
               autoComplete="family-name"
               className={inputClass}
               maxLength={100}
+              name="lastName"
               placeholder={t.lastName}
               required
               value={lastName}
@@ -267,6 +290,7 @@ function PartnerInquiryModal({ lang, onClose }: { lang: Language; onClose: () =>
             autoComplete="organization"
             className={inputClass}
             maxLength={150}
+            name="company"
             placeholder={t.company}
             value={company}
             onChange={(event) => setCompany(event.target.value)}

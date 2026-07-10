@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useMemo, useState } from "react";
+import { useActionState, useEffect, useMemo, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import { ArrowLeft, ArrowRight, Check, ChevronDown, Headphones, ShieldCheck, Truck, X } from "lucide-react";
 import { sendProductInquiry, type ContactState } from "@/app/actions/contact";
@@ -218,6 +218,9 @@ export function ProductInquiryButton({
 function ProductInquiryModal({ product, lang, onClose }: { product: Product; lang: Language; onClose: () => void }) {
   const t = labels[lang];
   const [state, formAction, pending] = useActionState(sendProductInquiry, initialState);
+  const formRef = useRef<HTMLFormElement>(null);
+  const requestIdRef = useRef("");
+  const requestIdInputRef = useRef<HTMLInputElement>(null);
   const isCommercialStorage = COMMERCIAL_STORAGE_SLUGS.includes(product.slug);
   const [step, setStep] = useState<1 | 2>(isCommercialStorage ? 1 : 2);
   const [customerType, setCustomerType] = useState(isCommercialStorage ? "gewerbe" : "installateur");
@@ -246,10 +249,12 @@ function ProductInquiryModal({ product, lang, onClose }: { product: Product; lan
   }, []);
 
   useEffect(() => {
-    if (!state.ok) return;
+    if (!state.ok || state.requestId !== requestIdRef.current) return;
+    formRef.current?.reset();
+    requestIdRef.current = "";
     const timeout = window.setTimeout(onClose, 900);
     return () => window.clearTimeout(timeout);
-  }, [onClose, state.ok]);
+  }, [onClose, state.ok, state.requestId]);
 
   const inputClass =
     "h-[52px] w-full rounded-xl border-2 border-slate-200 bg-slate-50 px-4 text-sm font-medium text-slate-900 placeholder:text-slate-400 outline-none transition focus:border-primary/60 focus:ring-4 focus:ring-primary/15";
@@ -280,7 +285,10 @@ function ProductInquiryModal({ product, lang, onClose }: { product: Product; lan
         <form
           action={formAction}
           className="max-h-[calc(90vh-116px)] space-y-5 overflow-y-auto px-7 py-7"
+          ref={formRef}
           onSubmit={(event) => {
+            requestIdRef.current ||= crypto.randomUUID();
+            if (requestIdInputRef.current) requestIdInputRef.current.value = requestIdRef.current;
             const data = new FormData(event.currentTarget);
             const email = String(data.get("email") || "");
             if (!email.includes("@")) {
@@ -291,6 +299,8 @@ function ProductInquiryModal({ product, lang, onClose }: { product: Product; lan
             }
           }}
         >
+          <input ref={requestIdInputRef} type="hidden" name="request_id" />
+          <input className="hidden" name="website" type="text" tabIndex={-1} autoComplete="off" aria-hidden="true" />
           <input type="hidden" name="productName" value={product.name} />
           <input type="hidden" name="productSlug" value={product.slug} />
           <input type="hidden" name="goal" value={goal} />
@@ -418,7 +428,7 @@ function ProductInquiryModal({ product, lang, onClose }: { product: Product; lan
                 ) : null}
                 <button
                   type="submit"
-                  disabled={pending}
+            disabled={pending}
                   className={`${isCommercialStorage ? "" : "col-span-2"} btn-gradient flex h-14 items-center justify-center rounded-full px-6 text-base font-bold uppercase shadow-lg disabled:cursor-not-allowed disabled:opacity-60`}
                 >
                   {pending ? t.sending : t.submit}

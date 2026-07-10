@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Send } from "lucide-react";
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import { sendContactMessage, type ContactState } from "@/app/actions/contact";
 import { localizedPath, translations, type Language } from "@/lib/i18n";
 
@@ -10,17 +10,33 @@ const initialState: ContactState = { ok: false, message: "" };
 
 export function ContactLiveForm({ productName, productSlug, lang = "de" }: { productName?: string; productSlug?: string; lang?: Language } = {}) {
   const [state, formAction, pending] = useActionState(sendContactMessage, initialState);
+  const formRef = useRef<HTMLFormElement>(null);
+  const requestIdRef = useRef("");
+  const requestIdInputRef = useRef<HTMLInputElement>(null);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [clientError, setClientError] = useState("");
   const isInquiry = Boolean(productName || productSlug);
   const t = translations[lang].contact;
 
+  useEffect(() => {
+    if (!state.ok || state.requestId !== requestIdRef.current) return;
+    queueMicrotask(() => {
+      formRef.current?.reset();
+      setFirstName("");
+      setLastName("");
+      requestIdRef.current = "";
+    });
+  }, [state.ok, state.requestId]);
+
   return (
     <form
       action={formAction}
       className="space-y-6 rounded-2xl border border-border bg-card p-6 md:p-8"
+      ref={formRef}
       onSubmit={(event) => {
+        requestIdRef.current ||= crypto.randomUUID();
+        if (requestIdInputRef.current) requestIdInputRef.current.value = requestIdRef.current;
         const form = event.currentTarget;
         const data = new FormData(form);
         const email = String(data.get("email") || "");
@@ -32,6 +48,8 @@ export function ContactLiveForm({ productName, productSlug, lang = "de" }: { pro
         }
       }}
     >
+      <input ref={requestIdInputRef} type="hidden" name="request_id" />
+      <input className="hidden" name="website" type="text" tabIndex={-1} autoComplete="off" aria-hidden="true" />
       <input type="hidden" name="name" value={`${firstName} ${lastName}`.trim()} />
       <input type="hidden" name="intent" value={isInquiry ? "inquiry" : "contact"} />
       {productName ? <input type="hidden" name="productName" value={productName} /> : null}
@@ -55,6 +73,7 @@ export function ContactLiveForm({ productName, productSlug, lang = "de" }: { pro
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <input
           className="rounded-xl border border-input bg-background px-4 py-3 outline-none transition-all focus:border-primary/50 focus:ring-2 focus:ring-primary/30"
+          name="firstName"
           placeholder={t.firstName}
           value={firstName}
           onChange={(event) => setFirstName(event.target.value)}
@@ -63,6 +82,7 @@ export function ContactLiveForm({ productName, productSlug, lang = "de" }: { pro
         />
         <input
           className="rounded-xl border border-input bg-background px-4 py-3 outline-none transition-all focus:border-primary/50 focus:ring-2 focus:ring-primary/30"
+          name="lastName"
           placeholder={t.lastName}
           value={lastName}
           onChange={(event) => setLastName(event.target.value)}

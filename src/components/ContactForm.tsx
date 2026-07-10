@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import { sendContactMessage, type ContactState } from "@/app/actions/contact";
 
 const initialState: ContactState = { ok: false, message: "" };
@@ -24,13 +24,27 @@ export function ContactForm({
   customerType?: "gewerbe" | "privatperson" | "installateur" | "grosshaendler";
 } = {}) {
   const [state, formAction, pending] = useActionState(sendContactMessage, initialState);
+  const formRef = useRef<HTMLFormElement>(null);
+  const requestIdRef = useRef("");
+  const requestIdInputRef = useRef<HTMLInputElement>(null);
   const [clientError, setClientError] = useState("");
+
+  useEffect(() => {
+    if (!state.ok || state.requestId !== requestIdRef.current) return;
+    queueMicrotask(() => {
+      formRef.current?.reset();
+      requestIdRef.current = "";
+    });
+  }, [state.ok, state.requestId]);
 
   return (
     <form
       className="bg-card border border-border rounded-2xl p-6 md:p-8 shadow-sm"
       action={formAction}
+      ref={formRef}
       onSubmit={(event) => {
+        requestIdRef.current ||= crypto.randomUUID();
+        if (requestIdInputRef.current) requestIdInputRef.current.value = requestIdRef.current;
         const form = event.currentTarget;
         const email = String(new FormData(form).get("email") || "");
         if (!email.includes("@")) {
@@ -41,6 +55,8 @@ export function ContactForm({
         }
       }}
     >
+      <input ref={requestIdInputRef} type="hidden" name="request_id" />
+      <input className="hidden" name="website" type="text" tabIndex={-1} autoComplete="off" aria-hidden="true" />
       <input type="hidden" name="intent" value={intent} />
       <input type="hidden" name="customerType" value={customerType} />
       {productName ? <input type="hidden" name="productName" value={productName} /> : null}
