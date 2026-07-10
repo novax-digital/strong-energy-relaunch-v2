@@ -21,6 +21,15 @@ type NotificationValue = string | boolean | null | undefined;
 
 const ZENDORI_ENDPOINT = "https://strongenergy.zendori.ai/api/ingest/form";
 
+const zendoriSettingColumns = {
+  contact: "zendori_contact_enabled",
+  commercial: "zendori_commercial_enabled",
+  partner: "zendori_partner_enabled",
+  product_inquiry: "zendori_product_inquiry_enabled"
+} as const;
+
+type ZendoriFormId = keyof typeof zendoriSettingColumns;
+
 function readString(formData: FormData, key: string) {
   return String(formData.get(key) || "").trim();
 }
@@ -97,6 +106,28 @@ function flatFormPayload(formData: FormData) {
   return Object.fromEntries(
     Array.from(formData.entries(), ([key, value]) => [key, typeof value === "string" ? value : value.name])
   );
+}
+
+async function isZendoriEnabled(formData: FormData) {
+  const formId = readString(formData, "form_id") as ZendoriFormId;
+  const column = zendoriSettingColumns[formId] || zendoriSettingColumns.contact;
+
+  try {
+    const { url, key } = supabaseConfig();
+    const response = await fetch(
+      `${url}/rest/v1/site_settings_public?id=eq.main&select=${column}`,
+      {
+        headers: { apikey: key, Authorization: `Bearer ${key}` },
+        cache: "no-store"
+      }
+    );
+    if (!response.ok) throw new Error(`Status ${response.status}`);
+    const rows = (await response.json()) as Array<Record<string, boolean>>;
+    return rows[0]?.[column] !== false;
+  } catch (error) {
+    console.warn("Zendori-Formulareinstellung konnte nicht gelesen werden; Zendori bleibt aktiv.", error);
+    return true;
+  }
 }
 
 async function sendToZendori(formData: FormData): Promise<ContactState> {
@@ -190,8 +221,10 @@ export async function sendProductInquiry(_previous: ContactState, formData: Form
     return { ok: false, message: "Bitte prüfen Sie Ihre Eingaben.", requestId, fieldErrors };
   }
 
-  const zendoriResult = await sendToZendori(formData);
-  if (!zendoriResult.ok) return zendoriResult;
+  if (await isZendoriEnabled(formData)) {
+    const zendoriResult = await sendToZendori(formData);
+    if (!zendoriResult.ok) return zendoriResult;
+  }
 
   const customerType = normalizeInquiryCustomerType(fields.customerType);
   const phone = fields.phone.slice(0, 30) || null;
@@ -276,8 +309,10 @@ export async function sendContactMessage(_previous: ContactState, formData: Form
     return { ok: false, message: "Bitte prüfen Sie Ihre Eingaben.", requestId, fieldErrors };
   }
 
-  const zendoriResult = await sendToZendori(formData);
-  if (!zendoriResult.ok) return zendoriResult;
+  if (await isZendoriEnabled(formData)) {
+    const zendoriResult = await sendToZendori(formData);
+    if (!zendoriResult.ok) return zendoriResult;
+  }
 
   const { firstName, lastName } = splitName(fields.name);
   const customerType = normalizeCustomerType(fields.customerType);

@@ -49,6 +49,7 @@ export function ContactLiveForm({ productName, productSlug, lang = "de" }: { pro
       }}
     >
       <input ref={requestIdInputRef} type="hidden" name="request_id" />
+      <input type="hidden" name="form_id" value="contact" />
       <input className="hidden" name="website" type="text" tabIndex={-1} autoComplete="off" aria-hidden="true" />
       <input type="hidden" name="name" value={`${firstName} ${lastName}`.trim()} />
       <input type="hidden" name="intent" value={isInquiry ? "inquiry" : "contact"} />

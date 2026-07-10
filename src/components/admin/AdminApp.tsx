@@ -30,6 +30,7 @@ import {
   RefreshCcw,
   Save,
   Shield,
+  SlidersHorizontal,
   Sparkles,
   Star,
   Trash2,
@@ -199,6 +200,7 @@ type AdminSection =
   | "users"
   | "products"
   | "notifications"
+  | "form-integrations"
   | "sitemap"
   | "llms"
   | "protection"
@@ -228,6 +230,7 @@ const sectionTitles: Record<AdminSection, string> = {
   users: "Nutzerverwaltung",
   products: "Produkte",
   notifications: "E-Mail-Empfänger",
+  "form-integrations": "Formular-Anbindungen",
   sitemap: "Sitemap",
   llms: "llms.txt",
   protection: "Website-Schutz",
@@ -712,6 +715,7 @@ function AdminSidebar({
         {!collapsed ? <p className="mt-8 px-2 text-xs font-bold uppercase tracking-wider text-muted-foreground">Einstellungen</p> : null}
         <div className="mt-2 space-y-1">
           <SidebarButton collapsed={collapsed} icon={<Bell />} label="E-Mail-Empfänger" active={currentSection === "notifications"} onClick={() => onNavigate("notifications")} />
+          <SidebarButton collapsed={collapsed} icon={<SlidersHorizontal />} label="Formular-Anbindungen" active={currentSection === "form-integrations"} onClick={() => onNavigate("form-integrations")} />
           <SidebarButton collapsed={collapsed} icon={<Globe />} label="Sitemap" active={currentSection === "sitemap"} onClick={() => onNavigate("sitemap")} />
           <SidebarButton collapsed={collapsed} icon={<Bot />} label="llms.txt" active={currentSection === "llms"} onClick={() => onNavigate("llms")} />
           <SidebarButton collapsed={collapsed} icon={<Shield />} label="Website-Schutz" active={currentSection === "protection"} onClick={() => onNavigate("protection")} />
@@ -791,6 +795,8 @@ function SectionRenderer({ section }: { section: AdminSection }) {
       return <InquiriesSection />;
     case "messages":
       return <MessagesSection />;
+    case "form-integrations":
+      return <FormIntegrationsSection />;
     case "blog":
       return <BlogSection />;
     case "topics":
@@ -2563,6 +2569,133 @@ function UsersSection() {
         </FormDialog>
       ) : null}
     </div>
+  );
+}
+
+type ZendoriSettingKey =
+  | "zendori_contact_enabled"
+  | "zendori_commercial_enabled"
+  | "zendori_partner_enabled"
+  | "zendori_product_inquiry_enabled";
+
+const zendoriForms: Array<{ key: ZendoriSettingKey; title: string; description: string }> = [
+  {
+    key: "zendori_contact_enabled",
+    title: "Kontaktformular",
+    description: "Kontaktseite unter /de/kontakt und /en/contact."
+  },
+  {
+    key: "zendori_commercial_enabled",
+    title: "Gewerbespeicher-Anfrage",
+    description: "Kontaktformular auf den Gewerbespeicher- und Commercial-Landingpages."
+  },
+  {
+    key: "zendori_partner_enabled",
+    title: "Partnerformular",
+    description: "Anfragen von Installateuren und Großhändlern auf der Partnerseite."
+  },
+  {
+    key: "zendori_product_inquiry_enabled",
+    title: "Produktanfrage",
+    description: "Angebots- und Beratungsanfragen direkt auf den Produktseiten."
+  }
+];
+
+function FormIntegrationsSection() {
+  const [settings, setSettings] = useState<Record<ZendoriSettingKey, boolean>>({
+    zendori_contact_enabled: true,
+    zendori_commercial_enabled: true,
+    zendori_partner_enabled: true,
+    zendori_product_inquiry_enabled: true
+  });
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+
+  useEffect(() => {
+    let active = true;
+
+    async function load() {
+      const columns = zendoriForms.map((form) => form.key).join(",");
+      const { data, error } = await getSupabaseBrowserClient().from("site_settings").select(columns).eq("id", "main").maybeSingle();
+      if (!active) return;
+      if (error) {
+        setMessage({ type: "error", text: error.message });
+      } else if (data) {
+        const row = data as unknown as Record<string, unknown>;
+        setSettings((current) => ({
+          ...current,
+          ...Object.fromEntries(zendoriForms.map((form) => [form.key, row[form.key] !== false]))
+        }));
+      }
+      setLoading(false);
+    }
+
+    load();
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  async function save(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setSaving(true);
+    setMessage(null);
+    const { error } = await getSupabaseBrowserClient().from("site_settings").update({
+      ...settings,
+      updated_at: new Date().toISOString()
+    }).eq("id", "main");
+    setSaving(false);
+    setMessage(error
+      ? { type: "error", text: error.message }
+      : { type: "success", text: "Zendori-Einstellungen wurden gespeichert." });
+  }
+
+  return (
+    <form className="max-w-3xl overflow-hidden rounded-2xl border border-border bg-white shadow-sm" onSubmit={save}>
+      <div className="flex items-start gap-3 border-b border-border bg-secondary/30 p-5">
+        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+          <SlidersHorizontal className="h-5 w-5" />
+        </div>
+        <div>
+          <h2 className="text-lg font-bold">Zendori Bridge</h2>
+          <p className="mt-1 max-w-xl text-sm text-muted-foreground">
+            Steuert den zusätzlichen Versand an Zendori für jedes Formular. Datenbankeintrag und E-Mail-Benachrichtigung bleiben immer aktiv.
+          </p>
+        </div>
+      </div>
+
+      <div className="space-y-3 p-5">
+        {zendoriForms.map((form) => (
+          <label className="flex cursor-pointer items-center justify-between gap-4 rounded-xl border border-border bg-background/60 px-4 py-3" key={form.key}>
+            <span>
+              <span className="block text-sm font-semibold text-foreground">{form.title}</span>
+              <span className="mt-1 block text-xs leading-5 text-muted-foreground">{form.description}</span>
+            </span>
+            <span className="relative inline-flex h-7 w-12 shrink-0 items-center">
+              <input
+                checked={settings[form.key]}
+                className="peer sr-only"
+                disabled={loading || saving}
+                onChange={(event) => setSettings((current) => ({ ...current, [form.key]: event.target.checked }))}
+                type="checkbox"
+              />
+              <span className="absolute inset-0 rounded-full bg-muted-foreground/25 transition-colors peer-checked:bg-primary peer-focus-visible:ring-2 peer-focus-visible:ring-primary/40 peer-focus-visible:ring-offset-2" />
+              <span className="absolute left-1 h-5 w-5 rounded-full bg-white shadow transition-transform peer-checked:translate-x-5" />
+            </span>
+          </label>
+        ))}
+
+        {message ? (
+          <p className={cx("rounded-lg px-3 py-2 text-sm", message.type === "success" ? "bg-green-50 text-green-700" : "bg-red-50 text-red-700")}>{message.text}</p>
+        ) : null}
+
+        <button className={cx(buttonClass("default"), "mt-2")} disabled={loading || saving} type="submit">
+          {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+          Einstellungen speichern
+        </button>
+      </div>
+    </form>
   );
 }
 

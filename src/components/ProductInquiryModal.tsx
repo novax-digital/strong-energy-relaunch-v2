@@ -300,6 +300,7 @@ function ProductInquiryModal({ product, lang, onClose }: { product: Product; lan
           }}
         >
           <input ref={requestIdInputRef} type="hidden" name="request_id" />
+          <input type="hidden" name="form_id" value="product_inquiry" />
           <input className="hidden" name="website" type="text" tabIndex={-1} autoComplete="off" aria-hidden="true" />
           <input type="hidden" name="productName" value={product.name} />
           <input type="hidden" name="productSlug" value={product.slug} />

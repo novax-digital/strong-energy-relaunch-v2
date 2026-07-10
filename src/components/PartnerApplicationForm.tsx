@@ -230,6 +230,7 @@ function PartnerInquiryModal({ lang, onClose }: { lang: Language; onClose: () =>
           }}
         >
           <input ref={requestIdInputRef} name="request_id" type="hidden" />
+          <input name="form_id" type="hidden" value="partner" />
           <input className="hidden" name="website" type="text" tabIndex={-1} autoComplete="off" aria-hidden="true" />
           <input name="customerType" type="hidden" value={partnerType} />
           <input name="intent" type="hidden" value="contact" />
