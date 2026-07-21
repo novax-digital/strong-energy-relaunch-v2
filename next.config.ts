@@ -25,6 +25,11 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: "/de/download/alfred-10-installations-und-betriebsanleitung",
+        destination: "/assets/downloads/1773071703835-manual-strong-alfred-de-v1.3-20251014-a336027c.pdf",
+        permanent: true
+      },
+      {
         source: "/",
         destination: "/de",
         permanent: true
