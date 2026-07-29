@@ -53,7 +53,7 @@ export function ContactPageInteractive({ lang = "de", products }: { lang?: Langu
                   </div>
                   <div className="text-sm text-muted-foreground">
                     <a href={phoneHref} className="font-semibold text-foreground transition-smooth hover:text-primary">{phone}</a>
-                    <p className="text-xs">{t.tollFree}</p>
+                    {t.tollFree && <p className="text-xs">{t.tollFree}</p>}
                   </div>
                 </div>
                 <div className="flex items-start gap-4">

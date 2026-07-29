@@ -69,7 +69,7 @@ export function Footer() {
               <Phone size={16} className="mt-0.5 shrink-0" />
               <span>
                 <span className="block text-white/80 font-medium">{phone}</span>
-                <span className="text-xs text-white/40">{t.footer.tollFree}</span>
+                {t.footer.tollFree && <span className="text-xs text-white/40">{t.footer.tollFree}</span>}
               </span>
             </a>
             <div className="flex items-start gap-3 text-white/60 text-sm">
