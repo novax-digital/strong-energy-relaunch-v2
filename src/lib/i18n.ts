@@ -156,7 +156,7 @@ export const translations = {
       inquirySubtitle: "Wir melden uns mit Beratung, Verfügbarkeit und einem passenden Angebot.",
       howToReach: "So erreichen Sie uns",
       country: "Deutschland",
-      tollFree: "(gebührenfrei)",
+      tollFree: "(Tech-Support)",
       selectType: "Bitte wählen:",
       business: "Gewerbe",
       private: "Privatperson",

@@ -7,8 +7,8 @@ export const site = {
   locale: "de_DE",
   logo: "/assets/logo-CkaIU7X8.png",
   defaultImage: "/favicon.png",
-  phone: "0800 7788 787",
-  phoneHref: "tel:+4908007788787",
+  phone: "+49 1588 864 2696",
+  phoneHref: "tel:+4915888642696",
   email: "info_de@strong-energy.eu",
   address: {
     street: "Von-Werth-Straße 1",
