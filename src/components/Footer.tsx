@@ -16,6 +16,8 @@ export function Footer() {
   const mainNavigation = getMainNavigation(lang);
   const socialIcons = [Linkedin, Youtube, Instagram];
   const openingHours = lang === "en" ? ["Mon-Thu: 8:00-17:00", "Fri: 8:00-15:30"] : site.openingHours;
+  const phone = lang === "en" ? site.englishPhone : site.phone;
+  const phoneHref = lang === "en" ? site.englishPhoneHref : site.phoneHref;
 
   return (
     <footer className="bg-[#1a1f24] relative">
@@ -63,10 +65,10 @@ export function Footer() {
         <div>
           <h2 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">{t.footer.contact}</h2>
           <div className="space-y-4 inline-flex flex-col items-center md:items-start">
-            <a href={site.phoneHref} className="flex items-start gap-3 text-white/60 hover:text-primary transition-smooth text-sm">
+            <a href={phoneHref} className="flex items-start gap-3 text-white/60 hover:text-primary transition-smooth text-sm">
               <Phone size={16} className="mt-0.5 shrink-0" />
               <span>
-                <span className="block text-white/80 font-medium">{site.phone}</span>
+                <span className="block text-white/80 font-medium">{phone}</span>
                 <span className="text-xs text-white/40">{t.footer.tollFree}</span>
               </span>
             </a>

@@ -9,6 +9,8 @@ export const site = {
   defaultImage: "/favicon.png",
   phone: "+49 1588 864 2696",
   phoneHref: "tel:+4915888642696",
+  englishPhone: "+49 221 2920 1070",
+  englishPhoneHref: "tel:+4922129201070",
   email: "info_de@strong-energy.eu",
   address: {
     street: "Von-Werth-Straße 1",

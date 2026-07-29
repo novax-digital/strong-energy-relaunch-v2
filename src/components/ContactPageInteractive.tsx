@@ -19,6 +19,8 @@ export function ContactPageInteractive({ lang = "de", products }: { lang?: Langu
   const product = productQuery ? products.find((item) => item.slug === productQuery || item.name.toLowerCase() === productQuery.toLowerCase()) : undefined;
   const productName = product?.name ?? productQuery;
   const hours = lang === "en" ? ["Mon-Thu: 8:00-17:00", "Fri: 8:00-15:30"] : ["Mo-Do: 8:00-17:00 Uhr", "Fr: 8:00-15:30 Uhr"];
+  const phone = lang === "en" ? site.englishPhone : site.phone;
+  const phoneHref = lang === "en" ? site.englishPhoneHref : site.phoneHref;
 
   return (
     <section className="pb-20 pt-32">
@@ -50,7 +52,7 @@ export function ContactPageInteractive({ lang = "de", products }: { lang?: Langu
                     <Phone className="h-5 w-5 text-primary" />
                   </div>
                   <div className="text-sm text-muted-foreground">
-                    <a href={site.phoneHref} className="font-semibold text-foreground transition-smooth hover:text-primary">{site.phone}</a>
+                    <a href={phoneHref} className="font-semibold text-foreground transition-smooth hover:text-primary">{phone}</a>
                     <p className="text-xs">{t.tollFree}</p>
                   </div>
                 </div>
