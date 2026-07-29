@@ -230,7 +230,7 @@ export const translations = {
       menu: "Menü",
       address: "Adresse",
       contact: "Kontakt",
-      tollFree: "(gebührenfrei)",
+      tollFree: "(Tech-Support)",
       appTitle: "Strong Energy 360 App",
       appDownload: "Downloade die Strong Energy 360 App:",
       copyright: "Alle Rechte vorbehalten.",
