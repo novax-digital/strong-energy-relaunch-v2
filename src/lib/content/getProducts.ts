@@ -1,9 +1,15 @@
 import { products, productCategories } from "@/content/products";
 import productTranslationsEnJson from "@/content/generated/product-translations-en.json";
 import type { Product, ProductCategory } from "@/types/content";
-import { translateCategorySlug, type Language } from "@/lib/i18n";
+import { reverseCategorySlug, translateCategorySlug, type Language } from "@/lib/i18n";
 
 const productTranslationsEn = productTranslationsEnJson as Record<string, Partial<Product>>;
+const productCategoryImages: Record<string, string> = {
+  solaranlagen: "/assets/solaranlagen-2BF5y_wA.webp",
+  "gewerbespeicher-aio": "/assets/gewerbespeicher-aio-kachel-YpXwZeiG.jpg",
+  "gewerbespeicher-container": "/assets/gewerbespeicher-container-hero-Cf9R8gAu.png",
+  "mobile-charging": "/assets/powerbank-s19-ZCOk-RgR.webp"
+};
 
 function localizeProduct(product: Product, lang: Language): Product {
   const category = productCategories.find((item) => item.slug === product.categorySlug);
@@ -39,4 +45,8 @@ export function getProductCategories(lang: Language = "de") {
 
 export function getProductsByCategory(categorySlug: string, lang: Language = "de") {
   return getProducts(lang).filter((product) => product.categorySlug === categorySlug);
+}
+
+export function getProductCategoryImage(categorySlug: string) {
+  return productCategoryImages[reverseCategorySlug(categorySlug)];
 }

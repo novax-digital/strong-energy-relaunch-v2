@@ -34,7 +34,7 @@ import { getLiveBlogPostBySlug } from "@/lib/content/getLiveBlogPost";
 import { getDownloads, getDownloadsByProduct } from "@/lib/content/getDownloads";
 import { getMediaCategories, getMediaItems } from "@/lib/content/getMediaItems";
 import { getProductByPath } from "@/lib/content/getProductBySlug";
-import { getProductCategories, getProducts } from "@/lib/content/getProducts";
+import { getProductCategories, getProductCategoryImage, getProducts } from "@/lib/content/getProducts";
 import { localizeLegalSlug, localizedPath, normalizeLegalSlug, translations } from "@/lib/i18n";
 import { absoluteUrl, breadcrumbJsonLd, createMetadata } from "@/lib/seo";
 
@@ -163,7 +163,7 @@ export async function generateMetadata({ params }: EnglishPageProps): Promise<Me
       title: `${category.label_en} | Strong Energy`,
       description: `Products in the ${category.label_en} category from Strong Energy.`,
       path: `/en/products/${category.slug}`,
-      image: "/assets/alfred-02-C1Z1mvvG.webp"
+      image: getProductCategoryImage(category.slug)
     });
   }
   if (section === "products" && second && third) {

@@ -110,6 +110,7 @@ export const translations = {
         description: "Beschreibung",
         features: "Features",
         specs: "Technische Daten",
+        comparison: "Vergleich",
         downloads: "Downloads"
       },
       noSpecs: "Für dieses Produkt sind aktuell keine technischen Daten hinterlegt.",
@@ -316,6 +317,7 @@ export const translations = {
         description: "Description",
         features: "Features",
         specs: "Technical Data",
+        comparison: "Comparison",
         downloads: "Downloads"
       },
       noSpecs: "No technical data is currently available for this product.",

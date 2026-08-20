@@ -2,24 +2,27 @@
 
 import { useId, useMemo, useSyncExternalStore } from "react";
 import { Download } from "lucide-react";
+import { ProductComparisonTable } from "@/components/ProductComparisonTable";
 import { ProductFeatureIcon } from "@/components/ProductFeatureIcon";
 import type { DownloadItem, Product, SpecGroup, SpecRow, SpecSection } from "@/types/content";
 import { useLiveDownloads } from "@/hooks/useLiveDownloads";
 import { translations, type Language } from "@/lib/i18n";
 
-type ProductTab = "description" | "features" | "specs" | "downloads";
+type ProductTab = "description" | "features" | "specs" | "comparison" | "downloads";
 
 const tabHashes: Record<Language, Record<ProductTab, string>> = {
   de: {
     description: "beschreibung",
     features: "features",
     specs: "technische-daten",
+    comparison: "vergleich",
     downloads: "downloads"
   },
   en: {
     description: "description",
     features: "features",
     specs: "technical-data",
+    comparison: "comparison",
     downloads: "downloads"
   }
 };
@@ -31,6 +34,8 @@ const tabsByHash: Record<string, ProductTab> = {
   specs: "specs",
   "technische-daten": "specs",
   "technical-data": "specs",
+  vergleich: "comparison",
+  comparison: "comparison",
   downloads: "downloads"
 };
 
@@ -44,11 +49,13 @@ export function ProductDetailTabs({ downloads, product, lang = "de" }: { downloa
       { id: "description", label: t.tabs.description },
       { id: "features", label: t.tabs.features },
       { id: "specs", label: t.tabs.specs },
+      { id: "comparison", label: t.tabs.comparison },
       { id: "downloads", label: t.tabs.downloads }
     ];
     const hasSpecs = Boolean(product.specs?.length || product.specsSections?.length || product.specsTable);
-    return tabLabels.filter((tab) => tab.id !== "specs" || hasSpecs);
-  }, [product.specs?.length, product.specsSections?.length, product.specsTable, t.tabs.description, t.tabs.downloads, t.tabs.features, t.tabs.specs]);
+    const hasComparison = product.slug === "star-h" || product.slug === "star-q";
+    return tabLabels.filter((tab) => (tab.id !== "specs" || hasSpecs) && (tab.id !== "comparison" || hasComparison));
+  }, [product.slug, product.specs?.length, product.specsSections?.length, product.specsTable, t.tabs.comparison, t.tabs.description, t.tabs.downloads, t.tabs.features, t.tabs.specs]);
   const urlHash = useSyncExternalStore(subscribeToUrlHash, getUrlHash, getServerUrlHash);
   const requestedTab = tabsByHash[urlHash];
   const activeTab = requestedTab && tabs.some((tab) => tab.id === requestedTab) ? requestedTab : "description";
@@ -69,14 +76,14 @@ export function ProductDetailTabs({ downloads, product, lang = "de" }: { downloa
         <span aria-hidden="true" className="absolute top-0 scroll-mt-28 md:scroll-mt-32" id={tabHashes[lang][tab.id]} key={`${tab.id}-anchor`} />
       ))}
       <div className="overflow-x-auto rounded-2xl bg-secondary/45 p-1">
-        <div aria-label="Produktdetails" className="flex min-w-max gap-1" role="tablist">
+        <div aria-label="Produktdetails" className="flex min-w-max gap-1 md:min-w-0" role="tablist">
           {tabs.map((tab) => {
             const selected = activeTab === tab.id;
             return (
               <button
                 aria-controls={`${baseId}-${tab.id}`}
                 aria-selected={selected}
-                className={`min-h-11 rounded-xl px-6 text-sm font-bold transition-all md:px-8 ${
+                className={`min-h-11 min-w-[10rem] rounded-xl px-6 text-sm font-bold transition-all md:min-w-0 md:flex-1 md:px-8 ${
                   selected ? "border-2 border-primary bg-white text-foreground shadow-sm" : "border-2 border-transparent text-muted-foreground hover:text-foreground"
                 }`}
                 id={`${baseId}-${tab.id}-tab`}
@@ -102,6 +109,7 @@ export function ProductDetailTabs({ downloads, product, lang = "de" }: { downloa
         {activeTab === "description" ? <DescriptionPanel product={product} /> : null}
         {activeTab === "features" ? <FeaturesPanel product={product} /> : null}
         {activeTab === "specs" ? <TechnicalPanel product={product} lang={lang} /> : null}
+        {activeTab === "comparison" ? <ProductComparisonTable categorySlug={product.categorySlug} currentProductSlug={product.slug} lang={lang} /> : null}
         {activeTab === "downloads" ? <DownloadsPanel downloads={downloadsWithFile} lang={lang} /> : null}
       </div>
     </section>

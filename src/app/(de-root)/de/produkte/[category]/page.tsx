@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PageHero } from "@/components/Hero";
 import { ProductTabsGrid } from "@/components/ProductTabsGrid";
-import { getProductCategories, getProducts } from "@/lib/content/getProducts";
+import { getProductCategories, getProductCategoryImage, getProducts } from "@/lib/content/getProducts";
 import { createMetadata } from "@/lib/seo";
 
 export function generateStaticParams() {
@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: { params: Promise<{ category:
     title: `${category.label_de} | Strong Energy`,
     description: `Produkte aus der Kategorie ${category.label_de} von Strong Energy.`,
     path: `/de/produkte/${category.slug}`,
-    image: "/assets/alfred-02-C1Z1mvvG.webp"
+    image: getProductCategoryImage(category.slug)
   });
 }
 
