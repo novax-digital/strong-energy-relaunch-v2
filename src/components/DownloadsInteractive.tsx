@@ -1,7 +1,7 @@
 "use client";
 
 import { Download, ExternalLink, FileText, Link2, Search, X } from "lucide-react";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { DownloadItem, Product } from "@/types/content";
 import { useLiveDownloads } from "@/hooks/useLiveDownloads";
@@ -40,6 +40,8 @@ type DownloadsInteractiveProps = {
 
 export function DownloadsInteractive({ downloads, products, lang = "de", initialItemSlug }: DownloadsInteractiveProps) {
   const liveDownloads = useLiveDownloads(downloads);
+  const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const searchParamItemSlug = searchParams.get("item")?.trim();
   const resolvedInitialItemSlug = initialItemSlug || searchParamItemSlug;
@@ -52,8 +54,6 @@ export function DownloadsInteractive({ downloads, products, lang = "de", initial
     [downloadsWithFile, lang, resolvedInitialItemSlug]
   );
   const [search, setSearch] = useState(() => (initialItem ? downloadTitle(initialItem, lang) : ""));
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
   const categories = useMemo(() => {
     const used = [...new Set(downloadsWithFile.map((item) => item.category))];
     return used.sort((a, b) => {
@@ -69,6 +69,8 @@ export function DownloadsInteractive({ downloads, products, lang = "de", initial
     const usedSlugs = new Set(downloadsWithFile.flatMap((item) => item.product_slugs || []));
     return products.filter((product) => usedSlugs.has(product.slug));
   }, [downloadsWithFile, products]);
+  const selectedCategory = categories.find((category) => downloadCategorySlug(category, lang) === searchParams.get("category")) || null;
+  const selectedProduct = usedProducts.find((product) => product.slug === searchParams.get("product"))?.slug || null;
 
   const filtered = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -112,6 +114,22 @@ export function DownloadsInteractive({ downloads, products, lang = "de", initial
     document.body.removeChild(anchor);
   }
 
+  function updateUrlFilters(updates: { category?: string | null; product?: string | null }) {
+    const params = new URLSearchParams(searchParams.toString());
+
+    for (const [key, value] of Object.entries(updates)) {
+      if (value) {
+        params.set(key, value);
+      } else {
+        params.delete(key);
+      }
+    }
+
+    params.delete("item");
+    const query = params.toString();
+    router.push(query ? `${pathname}?${query}` : pathname, { scroll: false });
+  }
+
   return (
     <section className="pb-20">
       <div className="container-wide">
@@ -135,8 +153,7 @@ export function DownloadsInteractive({ downloads, products, lang = "de", initial
                     <button
                       key={category}
                       onClick={() => {
-                        setSelectedCategory(selectedCategory === category ? null : category);
-                        setSelectedProduct(null);
+                        updateUrlFilters({ category: selectedCategory === category ? null : downloadCategorySlug(category, lang), product: null });
                       }}
                       className={`w-full rounded-lg px-3 py-2 text-left text-sm font-medium transition-colors ${
                         selectedCategory === category ? "bg-primary text-primary-foreground" : "text-foreground hover:bg-secondary"
@@ -156,8 +173,7 @@ export function DownloadsInteractive({ downloads, products, lang = "de", initial
                     <button
                       key={product.slug}
                       onClick={() => {
-                        setSelectedProduct(selectedProduct === product.slug ? null : product.slug);
-                        setSelectedCategory(null);
+                        updateUrlFilters({ product: selectedProduct === product.slug ? null : product.slug, category: null });
                       }}
                       className={`w-full rounded-lg px-3 py-2 text-left text-sm font-medium transition-colors ${
                         selectedProduct === product.slug ? "bg-primary text-primary-foreground" : "text-foreground hover:bg-secondary"
@@ -173,8 +189,7 @@ export function DownloadsInteractive({ downloads, products, lang = "de", initial
               {hasFilters ? (
                 <button
                   onClick={() => {
-                    setSelectedCategory(null);
-                    setSelectedProduct(null);
+                    updateUrlFilters({ category: null, product: null });
                     setSearch("");
                   }}
                   className="flex items-center gap-2 text-sm text-primary hover:underline"
@@ -297,4 +312,8 @@ function downloadDescription(item: DownloadItem, lang: Language) {
 function localizedCategory(category: string, lang: Language) {
   const map = translations[lang].downloads.fileCategoryMap as Record<string, string>;
   return map[category] || category;
+}
+
+function downloadCategorySlug(category: string, lang: Language) {
+  return slugify(localizedCategory(category, lang));
 }

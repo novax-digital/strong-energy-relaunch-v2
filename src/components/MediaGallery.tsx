@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { ChevronLeft, ChevronRight, Play, Search, X } from "lucide-react";
 import { useLiveMedia } from "@/hooks/useLiveMedia";
@@ -10,8 +11,11 @@ import { translations, type Language } from "@/lib/i18n";
 export function MediaGallery({ items, categories, lang = "de" }: { items: MediaItem[]; categories: MediaCategory[]; lang?: Language }) {
   const t = translations[lang].media;
   const liveMedia = useLiveMedia(items, categories);
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const rootCategories = useMemo(() => liveMedia.categories.filter((category) => !category.parent_id).sort((a, b) => a.sort_order - b.sort_order), [liveMedia.categories]);
-  const [activeCategory, setActiveCategory] = useState<string>("all");
+  const activeCategory = rootCategories.find((category) => mediaCategorySlug(category, lang) === searchParams.get("category"))?.id || "all";
   const [search, setSearch] = useState("");
   const orderedItems = useMemo(() => {
     const videoOrder = new Map([
@@ -124,6 +128,19 @@ export function MediaGallery({ items, categories, lang = "de" }: { items: MediaI
     setLightboxIndex((index) => (index === null || !openableItems.length ? index : (index + 1) % openableItems.length));
   }
 
+  function selectCategory(category: MediaCategory | null) {
+    const params = new URLSearchParams(searchParams.toString());
+
+    if (category) {
+      params.set("category", mediaCategorySlug(category, lang));
+    } else {
+      params.delete("category");
+    }
+
+    const query = params.toString();
+    router.push(query ? `${pathname}?${query}` : pathname, { scroll: false });
+  }
+
   return (
     <div>
       <div className="flex justify-center mb-8 px-0" role="list" aria-label="Medienkategorien">
@@ -131,7 +148,7 @@ export function MediaGallery({ items, categories, lang = "de" }: { items: MediaI
         <button
           type="button"
           className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold whitespace-nowrap transition-all duration-300 ${activeCategory === "all" ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground hover:bg-card/50"}`}
-          onClick={() => setActiveCategory("all")}
+          onClick={() => selectCategory(null)}
         >
           {t.all}
         </button>
@@ -140,7 +157,7 @@ export function MediaGallery({ items, categories, lang = "de" }: { items: MediaI
             key={category.id}
             type="button"
             className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold whitespace-nowrap transition-all duration-300 ${activeCategory === category.id ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground hover:bg-card/50"}`}
-            onClick={() => setActiveCategory(category.id)}
+            onClick={() => selectCategory(category)}
           >
             {categoryName(category, lang)}
           </button>
@@ -416,6 +433,19 @@ function isVideoFile(source: string) {
 
 function categoryName(category: MediaCategory, lang: Language) {
   return lang === "en" ? category.name_en || category.name_de : category.name_de;
+}
+
+function mediaCategorySlug(category: MediaCategory, lang: Language) {
+  return slugify(categoryName(category, lang));
+}
+
+function slugify(value: string) {
+  return value
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
 }
 
 function mediaTitle(item: MediaItem, lang: Language) {

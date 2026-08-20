@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useMemo, useState } from "react";
+import { useId, useMemo, useSyncExternalStore } from "react";
 import { Download } from "lucide-react";
 import { ProductFeatureIcon } from "@/components/ProductFeatureIcon";
 import type { DownloadItem, Product, SpecGroup, SpecRow, SpecSection } from "@/types/content";
@@ -9,8 +9,32 @@ import { translations, type Language } from "@/lib/i18n";
 
 type ProductTab = "description" | "features" | "specs" | "downloads";
 
+const tabHashes: Record<Language, Record<ProductTab, string>> = {
+  de: {
+    description: "beschreibung",
+    features: "features",
+    specs: "technische-daten",
+    downloads: "downloads"
+  },
+  en: {
+    description: "description",
+    features: "features",
+    specs: "technical-data",
+    downloads: "downloads"
+  }
+};
+
+const tabsByHash: Record<string, ProductTab> = {
+  beschreibung: "description",
+  description: "description",
+  features: "features",
+  specs: "specs",
+  "technische-daten": "specs",
+  "technical-data": "specs",
+  downloads: "downloads"
+};
+
 export function ProductDetailTabs({ downloads, product, lang = "de" }: { downloads: DownloadItem[]; product: Product; lang?: Language }) {
-  const [activeTab, setActiveTab] = useState<ProductTab>("description");
   const liveDownloads = useLiveDownloads(downloads, product.slug);
   const downloadsWithFile = useMemo(() => liveDownloads.filter((download) => hasDownloadFile(download, lang)), [lang, liveDownloads]);
   const baseId = useId();
@@ -25,9 +49,25 @@ export function ProductDetailTabs({ downloads, product, lang = "de" }: { downloa
     const hasSpecs = Boolean(product.specs?.length || product.specsSections?.length || product.specsTable);
     return tabLabels.filter((tab) => tab.id !== "specs" || hasSpecs);
   }, [product.specs?.length, product.specsSections?.length, product.specsTable, t.tabs.description, t.tabs.downloads, t.tabs.features, t.tabs.specs]);
+  const urlHash = useSyncExternalStore(subscribeToUrlHash, getUrlHash, getServerUrlHash);
+  const requestedTab = tabsByHash[urlHash];
+  const activeTab = requestedTab && tabs.some((tab) => tab.id === requestedTab) ? requestedTab : "description";
+
+  function selectTab(tab: ProductTab) {
+    const nextHash = tabHashes[lang][tab];
+    if (getUrlHash() === nextHash) return;
+
+    const url = new URL(window.location.href);
+    url.hash = nextHash;
+    window.history.pushState(null, "", url);
+    window.dispatchEvent(new Event("hashchange"));
+  }
 
   return (
-    <section className="container-wide mt-12 md:mt-16">
+    <section className="container-wide relative mt-12 scroll-mt-28 md:mt-16 md:scroll-mt-32">
+      {tabs.filter((tab) => tab.id !== "description").map((tab) => (
+        <span aria-hidden="true" className="absolute top-0 scroll-mt-28 md:scroll-mt-32" id={tabHashes[lang][tab.id]} key={`${tab.id}-anchor`} />
+      ))}
       <div className="overflow-x-auto rounded-2xl bg-secondary/45 p-1">
         <div aria-label="Produktdetails" className="flex min-w-max gap-1" role="tablist">
           {tabs.map((tab) => {
@@ -41,7 +81,7 @@ export function ProductDetailTabs({ downloads, product, lang = "de" }: { downloa
                 }`}
                 id={`${baseId}-${tab.id}-tab`}
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
+                onClick={() => selectTab(tab.id)}
                 role="tab"
                 type="button"
               >
@@ -66,6 +106,23 @@ export function ProductDetailTabs({ downloads, product, lang = "de" }: { downloa
       </div>
     </section>
   );
+}
+
+function subscribeToUrlHash(callback: () => void) {
+  window.addEventListener("hashchange", callback);
+  window.addEventListener("popstate", callback);
+  return () => {
+    window.removeEventListener("hashchange", callback);
+    window.removeEventListener("popstate", callback);
+  };
+}
+
+function getUrlHash() {
+  return decodeURIComponent(window.location.hash.slice(1)).toLowerCase();
+}
+
+function getServerUrlHash() {
+  return "";
 }
 
 function DescriptionPanel({ product }: { product: Product }) {

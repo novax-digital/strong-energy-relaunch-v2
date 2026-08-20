@@ -482,7 +482,9 @@ function MediaPageContent() {
       </PageHero>
       <section className="py-12">
         <div className="container-wide">
-          <MediaGallery items={getMediaItems()} categories={getMediaCategories()} lang={lang} />
+          <Suspense fallback={<div className="text-sm text-muted-foreground">Media is loading...</div>}>
+            <MediaGallery items={getMediaItems()} categories={getMediaCategories()} lang={lang} />
+          </Suspense>
         </div>
       </section>
     </>

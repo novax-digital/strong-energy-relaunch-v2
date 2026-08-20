@@ -1,9 +1,10 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import Link from "next/link";
+import { useMemo } from "react";
 import { useLiveProductCategories } from "@/hooks/useLiveProductCategories";
 import type { Product, ProductCategory } from "@/types/content";
-import { translations, type Language } from "@/lib/i18n";
+import { localizedPath, translations, type Language } from "@/lib/i18n";
 import { ProductCard } from "./ProductCard";
 
 type ActiveCategory = "all" | string;
@@ -18,8 +19,7 @@ interface ProductTabsGridProps {
 export function ProductTabsGrid({ products, categories, initialCategory, lang = "de" }: ProductTabsGridProps) {
   const t = translations[lang].products;
   const liveCategories = useLiveProductCategories(categories, lang, initialCategory);
-  const initialActive = initialCategory && products.some((product) => product.categorySlug === initialCategory) ? initialCategory : "all";
-  const [activeCategory, setActiveCategory] = useState<ActiveCategory>(initialActive);
+  const activeCategory: ActiveCategory = initialCategory || "all";
   const visibleCategorySlugs = useMemo(() => new Set(liveCategories.map((category) => category.slug)), [liveCategories]);
   const visibleProducts = useMemo(() => products.filter((product) => visibleCategorySlugs.has(product.categorySlug)), [products, visibleCategorySlugs]);
 
@@ -28,38 +28,32 @@ export function ProductTabsGrid({ products, categories, initialCategory, lang = 
     return products.filter((product) => product.categorySlug === activeCategory);
   }, [activeCategory, products, visibleProducts]);
 
-  function selectCategory(category: ActiveCategory) {
-    setActiveCategory(category);
-  }
-
   return (
     <div>
       <div className="flex justify-center mb-8 px-0">
         <div className="inline-flex items-center gap-2 p-1.5 rounded-full bg-secondary/40 border border-border backdrop-blur-sm overflow-x-auto max-w-full no-scrollbar" role="tablist" aria-label="Produktkategorien">
-          <button
+          <Link
             className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold whitespace-nowrap transition-all duration-300 ${
               activeCategory === "all" ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground hover:bg-card/50"
             }`}
-            type="button"
+            href={localizedPath("/produkte", lang)}
             role="tab"
             aria-selected={activeCategory === "all"}
-            onClick={() => selectCategory("all")}
           >
             {t.all}
-          </button>
+          </Link>
           {liveCategories.map((category) => (
-            <button
+            <Link
               className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold whitespace-nowrap transition-all duration-300 ${
                 activeCategory === category.slug ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground hover:bg-card/50"
               }`}
+              href={localizedPath(`/produkte/${category.slug}`, lang)}
               key={category.slug}
-              type="button"
               role="tab"
               aria-selected={activeCategory === category.slug}
-              onClick={() => selectCategory(category.slug)}
             >
               {lang === "en" ? category.label_en : category.label_de}
-            </button>
+            </Link>
           ))}
         </div>
       </div>

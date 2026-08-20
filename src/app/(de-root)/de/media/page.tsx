@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { MediaGallery } from "@/components/MediaGallery";
 import { PageHero } from "@/components/Hero";
 import { SEOJsonLd } from "@/components/SEOJsonLd";
@@ -19,7 +20,9 @@ export default function MediaPage() {
       </PageHero>
       <section className="py-12">
         <div className="container-wide">
-          <MediaGallery items={items} categories={categories} />
+          <Suspense fallback={<div className="text-sm text-muted-foreground">Medien werden geladen...</div>}>
+            <MediaGallery items={items} categories={categories} />
+          </Suspense>
         </div>
       </section>
     </>
