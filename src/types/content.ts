@@ -148,6 +148,8 @@ export interface Partner {
   logo: string;
   url?: string;
   premium?: boolean;
+  sortName?: string;
+  largeLogo?: boolean;
 }
 
 export interface FaqGroup {

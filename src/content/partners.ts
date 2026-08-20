@@ -13,6 +13,7 @@ export const partners: Partner[] = [
   { name: "LIBI Elektronik", logo: "/assets/libi-B_lMfd7n.webp", url: "https://www.libielektronik.de/" },
   { name: "New Energy", logo: "/assets/new-energy-RqyuXS3J.webp", url: "https://www.new-energy.tech/" },
   { name: "PV*SOL", logo: "/assets/pvsol-Cby-vq2T.webp", url: "https://pvsol-database.valentin-software.com/" },
+  { name: "Björn Reiss", sortName: "Reiss, Björn", logo: "/assets/bjoern-reiss.png", largeLogo: true },
   { name: "Solar Manager", logo: "/assets/solarmanager-EqVtPZTu.png", url: "https://www.solarmanager.ch/" },
   { name: "Sonnenstrom Bayern", logo: "/assets/sonnenstrom-bayern-CLZj9hNo.jpg", url: "https://sonnenstrom.bayern/" },
   { name: "TS Solar Electric", logo: "/assets/ts-solar-BUNKug29.png", url: "https://ts-solar-electric.de/" },

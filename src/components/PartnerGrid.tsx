@@ -6,7 +6,7 @@ export function PartnerGrid({ partners }: { partners: Partner[] }) {
   const sortedPartners = [...partners].sort((a, b) => {
     if (a.premium && !b.premium) return -1;
     if (!a.premium && b.premium) return 1;
-    return a.name.localeCompare(b.name, "de");
+    return (a.sortName || a.name).localeCompare(b.sortName || b.name, "de");
   });
 
   return (
@@ -32,7 +32,7 @@ export function PartnerGrid({ partners }: { partners: Partner[] }) {
               width={220}
               height={120}
               sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-              className="h-auto max-h-16 w-auto max-w-[180px] object-contain transition-transform duration-300 group-hover:scale-105"
+              className={`h-auto w-auto object-contain transition-transform duration-300 group-hover:scale-105 ${partner.largeLogo ? "max-h-[104px] max-w-[220px]" : "max-h-16 max-w-[180px]"}`}
             />
           </>
         );
