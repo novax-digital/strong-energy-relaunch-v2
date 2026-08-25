@@ -1,19 +1,15 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { ArrowRight } from "lucide-react";
+import { GoogleReviewsWidget } from "@/components/GoogleReviewsWidget";
+import { HomeHeroVideo } from "@/components/HomeHeroVideo";
 import { localizedPath, translations, type Language } from "@/lib/i18n";
 
 export function HomeHero({ lang = "de" }: { lang?: Language }) {
   const t = translations[lang].hero;
   return (
-    <section className="relative min-h-[78vh] md:min-h-[82vh] flex items-center justify-center overflow-hidden bg-black">
-      <div className="absolute inset-0 bg-black">
-        <video className="w-full h-full object-cover" autoPlay loop muted playsInline preload="metadata" poster="/assets/solaranlagen-2BF5y_wA.webp">
-          <source src="/videos/strong-energy-loop-homepage.webm" type="video/webm" />
-          <source src="/videos/strong-energy-loop-homepage.mp4" type="video/mp4" />
-        </video>
-        <div className="absolute inset-0 bg-black/45" />
-      </div>
+    <section className="relative min-h-[78vh] md:min-h-[82vh] flex items-center justify-center overflow-hidden bg-white">
+      <HomeHeroVideo />
 
       <div className="relative z-10 container-wide text-center pt-16 md:pt-20 pb-10 md:pb-12">
         <div className="max-w-4xl mx-auto space-y-4 md:space-y-8">
@@ -37,6 +33,8 @@ export function HomeHero({ lang = "de" }: { lang?: Language }) {
             </Link>
           </div>
         </div>
+
+        <GoogleReviewsWidget loadingLabel={lang === "en" ? "Loading Google reviews…" : "Google-Bewertungen werden geladen…"} />
       </div>
     </section>
   );
