@@ -64,7 +64,7 @@ export const translations = {
       announcement: "Offizieller Vertriebspartner für CNTE & CATL in Europa"
     },
     hero: {
-      subtitle: "Ihr führender Anbieter für fortschrittliche Energiespeicherlösungen für Wohn-, Gewerbe- und Industrieanwendungen.",
+      subtitle: "Ihr führender Anbieter für fortschrittliche Energiespeicherlösungen.",
       products: "Produkte entdecken",
       consultation: "Beratung vereinbaren"
     },
@@ -271,7 +271,7 @@ export const translations = {
       announcement: "Official distribution partner for CNTE & CATL in Europe"
     },
     hero: {
-      subtitle: "Your leading provider of advanced energy storage solutions for residential, commercial and industrial applications.",
+      subtitle: "Your leading provider of advanced energy storage solutions.",
       products: "Discover products",
       consultation: "Book a consultation"
     },

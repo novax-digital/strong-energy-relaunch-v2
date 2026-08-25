@@ -8,18 +8,17 @@ import { localizedPath, translations, type Language } from "@/lib/i18n";
 export function HomeHero({ lang = "de" }: { lang?: Language }) {
   const t = translations[lang].hero;
   return (
-    <section className="relative min-h-[78vh] md:min-h-[82vh] flex items-center justify-center overflow-hidden bg-white">
+    <section className="relative flex min-h-screen items-center justify-center overflow-hidden bg-white md:min-h-[max(100vh,850px)]">
       <HomeHeroVideo />
 
-      <div className="relative z-10 container-wide text-center pt-16 md:pt-20 pb-10 md:pb-12">
-        <div className="max-w-4xl mx-auto space-y-4 md:space-y-8">
-          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight animate-fade-in uppercase tracking-wide">
-            <span className="text-white">WE MAKE GREEN</span><br />
-            <span className="text-white">ENERGY </span>
+      <div className="container-wide relative z-10 w-full pb-8 pt-24 text-center md:pb-12 md:pt-32">
+        <div className="mx-auto max-w-6xl space-y-4 md:space-y-6">
+          <h1 className="animate-fade-in text-[clamp(1.875rem,4.15vw,3.75rem)] font-bold uppercase leading-[1.05] tracking-wide md:whitespace-nowrap">
+            <span className="text-white">WE MAKE GREEN ENERGY </span>
             <span className="text-gradient">STRONG</span>
           </h1>
 
-          <p className="text-base md:text-xl text-white/80 max-w-2xl mx-auto animate-fade-in" style={{ animationDelay: "0.15s" }}>
+          <p className="animate-fade-in mx-auto max-w-3xl text-base text-white/80 md:text-lg" style={{ animationDelay: "0.15s" }}>
             {t.subtitle}
           </p>
 

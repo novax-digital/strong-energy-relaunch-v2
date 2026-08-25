@@ -76,12 +76,14 @@ export function GoogleReviewsWidget({ loadingLabel }: { loadingLabel: string }) 
 
   return (
     <>
-      <div id="rezensionen" className="relative mx-4 mt-6 min-h-[38px] animate-fade-in md:hidden" style={{ animationDelay: "0.4s" }}>
-        <div className={`elfsight-app-a4021fff-f31e-466a-9589-c9d439a52d91 transition-opacity duration-300 ${loaded.mobile ? "opacity-100" : "opacity-0"}`} data-elfsight-app-lazy />
+      <div id="rezensionen" className="relative mx-4 mt-10 min-h-[38px] animate-fade-in md:hidden" style={{ animationDelay: "0.4s" }}>
+        <div className={`elfsight-app-a4021fff-f31e-466a-9589-c9d439a52d91 transition-opacity duration-300 ${loaded.mobile ? "opacity-95" : "opacity-0"}`} data-elfsight-app-lazy />
         <WidgetPreloader label={loadingLabel} loaded={loaded.mobile} />
       </div>
-      <div id="rezensionen-desktop" className="relative mx-auto mt-16 hidden min-h-[267px] max-w-5xl animate-fade-in md:block" style={{ animationDelay: "0.4s" }}>
-        <div className={`elfsight-app-587b08ed-ade3-4b95-a358-6583183f10fe transition-opacity duration-300 ${loaded.desktop ? "opacity-100" : "opacity-0"}`} data-elfsight-app-lazy />
+      <div id="rezensionen-desktop" className="relative mx-auto mt-28 hidden h-[246px] max-w-5xl animate-fade-in md:block" style={{ animationDelay: "0.4s" }}>
+        <div className="absolute left-1/2 top-0 min-h-[267px] w-[108.7%] origin-top -translate-x-1/2 scale-[0.92]">
+          <div className={`elfsight-app-587b08ed-ade3-4b95-a358-6583183f10fe transition-opacity duration-300 ${loaded.desktop ? "opacity-[0.92]" : "opacity-0"}`} data-elfsight-app-lazy />
+        </div>
         <WidgetPreloader label={loadingLabel} loaded={loaded.desktop} />
       </div>
     </>
