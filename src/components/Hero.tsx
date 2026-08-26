@@ -8,10 +8,10 @@ import { localizedPath, translations, type Language } from "@/lib/i18n";
 export function HomeHero({ lang = "de" }: { lang?: Language }) {
   const t = translations[lang].hero;
   return (
-    <section className="relative flex min-h-screen items-center justify-center overflow-hidden bg-white md:min-h-[max(100vh,850px)]">
+    <section className="relative flex min-h-[78vh] items-center justify-center overflow-hidden bg-white md:min-h-[82vh]">
       <HomeHeroVideo />
 
-      <div className="container-wide relative z-10 w-full pb-8 pt-24 text-center md:pb-12 md:pt-32">
+      <div className="container-wide relative z-10 w-full pb-8 pt-24 text-center md:pb-4 md:pt-28">
         <div className="mx-auto max-w-6xl space-y-4 md:space-y-6">
           <h1 className="animate-fade-in text-[clamp(1.875rem,4.15vw,3.75rem)] font-bold uppercase leading-[1.05] tracking-wide md:whitespace-nowrap">
             <span className="text-white">WE MAKE GREEN ENERGY </span>

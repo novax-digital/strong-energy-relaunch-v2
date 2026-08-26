@@ -10,9 +10,14 @@ export function HomeHeroVideo() {
       <video
         autoPlay
         className={`h-full w-full object-cover transition-opacity duration-300 ${ready ? "opacity-100" : "opacity-0"}`}
-        loop
         muted
         onCanPlay={() => setReady(true)}
+        onEnded={(event) => {
+          const video = event.currentTarget;
+          if (Number.isFinite(video.duration)) {
+            video.currentTime = Math.max(0, video.duration - 0.05);
+          }
+        }}
         onPlaying={() => setReady(true)}
         playsInline
         preload="metadata"
