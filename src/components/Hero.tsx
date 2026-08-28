@@ -13,7 +13,7 @@ export function HomeHero({ lang = "de" }: { lang?: Language }) {
 
       <div className="container-wide relative z-10 w-full pb-8 pt-24 text-center md:pb-4 md:pt-28">
         <div className="mx-auto max-w-6xl space-y-4 md:space-y-6">
-          <h1 className="animate-fade-in text-[clamp(1.875rem,4.15vw,3.75rem)] font-bold uppercase leading-[1.05] tracking-wide md:whitespace-nowrap">
+          <h1 className="animate-fade-in text-[clamp(1.875rem,3.88vw,3.5rem)] font-bold uppercase leading-[1.05] tracking-wide md:whitespace-nowrap">
             <span className="text-white">WE MAKE GREEN ENERGY </span>
             <span className="text-gradient">STRONG</span>
           </h1>
@@ -23,11 +23,11 @@ export function HomeHero({ lang = "de" }: { lang?: Language }) {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4 pt-2 md:pt-4 animate-fade-in" style={{ animationDelay: "0.3s" }}>
-            <Link className="btn-gradient px-8 py-3.5 md:px-8 md:py-4 rounded-full text-base md:text-lg font-semibold group flex items-center shadow-lg" href={localizedPath("/produkte", lang)}>
+            <Link className="btn-gradient px-7 py-3 md:px-7 md:py-3.5 rounded-full text-base font-semibold group flex items-center shadow-lg" href={localizedPath("/produkte", lang)}>
               {t.products}
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </Link>
-            <Link className="bg-white/10 hover:bg-white/20 border-2 border-white/30 text-white px-8 py-3.5 md:px-8 md:py-4 rounded-full text-base md:text-lg font-medium transition-all shadow-sm" href={localizedPath("/kontakt", lang)}>
+            <Link className="bg-white/10 hover:bg-white/20 border-2 border-white/30 text-white px-7 py-3 md:px-7 md:py-3.5 rounded-full text-base font-medium transition-all shadow-sm" href={localizedPath("/kontakt", lang)}>
               {t.consultation}
             </Link>
           </div>
