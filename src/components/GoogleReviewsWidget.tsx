@@ -1,19 +1,20 @@
 "use client";
 
-import { LoaderCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const ELFSIGHT_SRC = "https://static.elfsight.com/platform/platform.js";
 
-function WidgetPreloader({ label, loaded }: { label: string; loaded: boolean }) {
+function WidgetPreloader({ label, loaded, cards, className = "inset-0", pill = false }: { label: string; loaded: boolean; cards: number; className?: string; pill?: boolean }) {
   return (
     <div
       aria-hidden={loaded}
-      className={`absolute inset-0 flex items-center justify-center gap-2 rounded-xl border border-white/15 bg-black/15 text-sm text-white/80 backdrop-blur-sm transition-opacity duration-300 ${loaded ? "pointer-events-none opacity-0" : "opacity-100"}`}
+      className={`absolute ${className} flex gap-5 transition-opacity duration-500 ${loaded ? "pointer-events-none opacity-0" : "opacity-100"}`}
       role="status"
     >
-      <LoaderCircle className="h-4 w-4 animate-spin" />
-      <span>{label}</span>
+      {Array.from({ length: cards }, (_, index) => (
+        <div key={index} className={`flex-1 animate-pulse border border-white/10 bg-white/[0.07] backdrop-blur-[2px] ${pill ? "rounded-full" : "rounded-xl"}`} />
+      ))}
+      <span className="sr-only">{label}</span>
     </div>
   );
 }
@@ -78,15 +79,15 @@ export function GoogleReviewsWidget({ loadingLabel }: { loadingLabel: string }) 
     <>
       <div id="rezensionen" className="relative mx-4 mt-10 min-h-[38px] animate-fade-in md:hidden" style={{ animationDelay: "0.4s" }}>
         <div className={`elfsight-app-a4021fff-f31e-466a-9589-c9d439a52d91 transition-opacity duration-300 ${loaded.mobile ? "opacity-95" : "opacity-0"}`} data-elfsight-app-lazy />
-        <WidgetPreloader label={loadingLabel} loaded={loaded.mobile} />
+        <WidgetPreloader cards={1} className="inset-y-0 left-1/2 w-[220px] -translate-x-1/2" label={loadingLabel} loaded={loaded.mobile} pill />
       </div>
-      <div id="rezensionen-desktop" className="relative mx-auto mt-28 hidden h-[219px] w-full max-w-[1088px] overflow-hidden px-8 animate-fade-in md:block" style={{ animationDelay: "0.4s" }}>
-        <div className="absolute inset-x-8 top-0 min-h-[267px]">
-          <div className="absolute left-1/2 top-0 min-h-[267px] w-[121.96%] origin-top -translate-x-1/2 scale-[0.82]">
+      <div id="rezensionen-desktop" className="relative mx-auto mt-40 hidden h-[173px] w-full max-w-[1088px] overflow-hidden px-8 animate-fade-in md:block" style={{ animationDelay: "0.4s" }}>
+        <div className="absolute inset-x-8 top-0 min-h-[211px]">
+          <div className="absolute left-1/2 top-0 min-h-[211px] w-[121.96%] origin-top -translate-x-1/2 scale-[0.82]">
             <div className={`elfsight-app-587b08ed-ade3-4b95-a358-6583183f10fe transition-opacity duration-300 ${loaded.desktop ? "opacity-[0.92]" : "opacity-0"}`} data-elfsight-app-lazy />
           </div>
         </div>
-        <WidgetPreloader label={loadingLabel} loaded={loaded.desktop} />
+        <WidgetPreloader cards={4} className="inset-x-8 inset-y-0" label={loadingLabel} loaded={loaded.desktop} />
       </div>
     </>
   );

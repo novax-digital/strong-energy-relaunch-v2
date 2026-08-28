@@ -1,9 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export function HomeHeroVideo() {
   const [ready, setReady] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    // canPlay/playing can fire before hydration attaches the handlers.
+    if ((videoRef.current?.readyState ?? 0) >= 3) setReady(true);
+  }, []);
 
   return (
     <div className="absolute inset-0 bg-white">
@@ -21,6 +27,7 @@ export function HomeHeroVideo() {
         onPlaying={() => setReady(true)}
         playsInline
         preload="metadata"
+        ref={videoRef}
       >
         <source src="/videos/website_hero_strong_energy.webm" type="video/webm" />
         <source src="/videos/website_hero_strong_energy.mp4" type="video/mp4" />

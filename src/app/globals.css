@@ -1433,3 +1433,19 @@ details p {
     grid-template-columns: 1fr;
   }
 }
+
+/* Elfsight review cards in the hero: trim card height (light-DOM overrides) */
+#rezensionen .es-text-shortener,
+#rezensionen-desktop .es-text-shortener {
+  -webkit-line-clamp: 3;
+}
+
+#rezensionen .es-review-background-container,
+#rezensionen-desktop .es-review-background-container {
+  padding: 18px;
+}
+
+#rezensionen .es-review-author-block-container,
+#rezensionen-desktop .es-review-author-block-container {
+  margin-bottom: 10px;
+}
