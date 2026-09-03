@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { site } from "@/content/site";
 import { getLanguageFromPathname, getMainNavigation, languages, localizedPath, switchLocalePath, translations, type Language } from "@/lib/i18n";
 import { getSupabaseBrowserClient } from "@/lib/supabase/client";
+import { LanguageFlag } from "./LanguageFlag";
 import { TopBar } from "./TopBar";
 
 export function Header() {
@@ -103,8 +104,11 @@ export function Header() {
                 className={`flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium transition-smooth ${iconButtonClass}`}
                 type="button"
                 aria-label={`${lang === "en" ? "Current language" : "Aktuelle Sprache"} ${currentLanguage.label}`}
+                aria-expanded={langDropdownOpen}
+                aria-haspopup="menu"
+                onClick={() => setLangDropdownOpen(true)}
               >
-                <span className="text-lg">{currentLanguage.flag}</span>
+                <LanguageFlag language={lang} />
                 <span className="hidden xl:inline">{currentLanguage.shortLabel}</span>
                 <ChevronDown size={14} className={`transition-transform ${langDropdownOpen ? "rotate-180" : ""}`} />
               </button>
@@ -123,7 +127,7 @@ export function Header() {
                           hrefLang={optionConfig.htmlLang}
                           key={option}
                         >
-                          <span className="text-lg">{optionConfig.flag}</span>
+                          <LanguageFlag language={option} />
                           {optionConfig.label}
                         </Link>
                       );
@@ -182,11 +186,12 @@ export function Header() {
                     const optionConfig = languages[option];
                     return (
                       <Link
-                        className={`rounded-lg border px-3 py-2 text-center text-sm font-semibold ${option === lang ? "border-primary text-primary" : "border-border text-muted-foreground"}`}
+                        className={`flex items-center justify-center gap-2 rounded-lg border px-3 py-2 text-center text-sm font-semibold ${option === lang ? "border-primary text-primary" : "border-border text-muted-foreground"}`}
                         href={switchLocalePath(pathname, option)}
                         key={option}
                       >
-                        {optionConfig.flag} {optionConfig.shortLabel}
+                        <LanguageFlag language={option} />
+                        {optionConfig.shortLabel}
                       </Link>
                     );
                   })}

@@ -2,9 +2,9 @@ import type { Locale, NavItem, SeoContent } from "@/types/content";
 
 export type Language = Locale;
 
-export const languages: Record<Language, { label: string; shortLabel: string; flag: string; htmlLang: string; ogLocale: string }> = {
-  de: { label: "Deutsch", shortLabel: "DE", flag: "🇩🇪", htmlLang: "de-DE", ogLocale: "de_DE" },
-  en: { label: "English", shortLabel: "EN", flag: "🇬🇧", htmlLang: "en-GB", ogLocale: "en_GB" }
+export const languages: Record<Language, { label: string; shortLabel: string; htmlLang: string; ogLocale: string }> = {
+  de: { label: "Deutsch", shortLabel: "DE", htmlLang: "de-DE", ogLocale: "de_DE" },
+  en: { label: "English", shortLabel: "EN", htmlLang: "en-GB", ogLocale: "en_GB" }
 };
 
 const deToEn: Record<string, string> = {
