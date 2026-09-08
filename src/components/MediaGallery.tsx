@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { ChevronLeft, ChevronRight, Play, Search, X } from "lucide-react";
 import { useLiveMedia } from "@/hooks/useLiveMedia";
@@ -11,7 +11,6 @@ import { translations, type Language } from "@/lib/i18n";
 export function MediaGallery({ items, categories, lang = "de" }: { items: MediaItem[]; categories: MediaCategory[]; lang?: Language }) {
   const t = translations[lang].media;
   const liveMedia = useLiveMedia(items, categories);
-  const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const rootCategories = useMemo(() => liveMedia.categories.filter((category) => !category.parent_id).sort((a, b) => a.sort_order - b.sort_order), [liveMedia.categories]);
@@ -128,7 +127,7 @@ export function MediaGallery({ items, categories, lang = "de" }: { items: MediaI
     setLightboxIndex((index) => (index === null || !openableItems.length ? index : (index + 1) % openableItems.length));
   }
 
-  function selectCategory(category: MediaCategory | null) {
+  function categoryHref(category: MediaCategory | null) {
     const params = new URLSearchParams(searchParams.toString());
 
     if (category) {
@@ -138,7 +137,11 @@ export function MediaGallery({ items, categories, lang = "de" }: { items: MediaI
     }
 
     const query = params.toString();
-    router.push(query ? `${pathname}?${query}` : pathname, { scroll: false });
+    return query ? `${pathname}?${query}` : pathname;
+  }
+
+  function selectCategory(category: MediaCategory | null) {
+    window.history.pushState(null, "", categoryHref(category));
   }
 
   return (
