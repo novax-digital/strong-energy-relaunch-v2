@@ -354,6 +354,17 @@ function slugify(value: string) {
     .replace(/^-+|-+$/g, "");
 }
 
+function mediaTitleFromFilename(filename: string) {
+  const nameWithoutExtension = filename.replace(/\.[^.]+$/, "");
+  return nameWithoutExtension.replace(/[_-]+/g, " ").replace(/\s+/g, " ").trim() || filename;
+}
+
+function formatFileSize(bytes: number) {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${Math.round(bytes / 1024)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
 function productLabel(slug: string) {
   return productOptions.find((product) => product.value === slug)?.label || slug;
 }
@@ -1041,9 +1052,14 @@ function MediaSection({ initialTab }: { initialTab: "items" | "categories" }) {
   const [items, setItems] = useState<MediaItem[]>([]);
   const [catDialogOpen, setCatDialogOpen] = useState(false);
   const [itemDialogOpen, setItemDialogOpen] = useState(false);
+  const [bulkDialogOpen, setBulkDialogOpen] = useState(false);
   const [editingCat, setEditingCat] = useState<MediaCategory | null>(null);
   const [editingItem, setEditingItem] = useState<MediaItem | null>(null);
   const [uploading, setUploading] = useState<"file_url" | "thumbnail_url" | null>(null);
+  const [bulkUploading, setBulkUploading] = useState(false);
+  const [bulkFiles, setBulkFiles] = useState<File[]>([]);
+  const [bulkProgress, setBulkProgress] = useState({ completed: 0, total: 0 });
+  const [bulkError, setBulkError] = useState("");
   const [error, setError] = useState("");
   const emptyCatForm = { name_de: "", name_en: "", sort_order: 0, parent_id: "" };
   const emptyItemForm = {
@@ -1062,6 +1078,13 @@ function MediaSection({ initialTab }: { initialTab: "items" | "categories" }) {
   };
   const [catForm, setCatForm] = useState(emptyCatForm);
   const [itemForm, setItemForm] = useState(emptyItemForm);
+  const emptyBulkForm = {
+    category_id: "",
+    product_slugs: [] as string[],
+    is_published: true,
+    sort_order: 0
+  };
+  const [bulkForm, setBulkForm] = useState(emptyBulkForm);
 
   const loadCategories = useCallback(async () => {
     const { data, error: loadError } = await getSupabaseBrowserClient().from("media_categories").select("*").order("sort_order", { ascending: true });
@@ -1144,6 +1167,24 @@ function MediaSection({ initialTab }: { initialTab: "items" | "categories" }) {
     setItemDialogOpen(true);
   }
 
+  function openBulkUpload(fileList: FileList | null) {
+    const files = Array.from(fileList || []);
+    if (!files.length) return;
+    setBulkFiles(files);
+    setBulkForm(emptyBulkForm);
+    setBulkProgress({ completed: 0, total: files.length });
+    setBulkError("");
+    setError("");
+    setBulkDialogOpen(true);
+  }
+
+  function addBulkFiles(fileList: FileList | null) {
+    const files = Array.from(fileList || []);
+    if (!files.length) return;
+    setBulkFiles((previous) => [...previous, ...files]);
+    setBulkError("");
+  }
+
   function openEditItem(item: MediaItem) {
     setEditingItem(item);
     setItemForm({
@@ -1212,6 +1253,80 @@ function MediaSection({ initialTab }: { initialTab: "items" | "categories" }) {
     await loadItems();
   }
 
+  async function saveBulkMedia(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!bulkFiles.length || bulkUploading) return;
+
+    setBulkUploading(true);
+    setBulkError("");
+    setBulkProgress({ completed: 0, total: bulkFiles.length });
+
+    const supabase = getSupabaseBrowserClient();
+    const failedFiles: File[] = [];
+    const failureMessages: string[] = [];
+    let successfulUploads = 0;
+
+    for (const [index, file] of bulkFiles.entries()) {
+      const sanitizedName = file.name.replace(/[^a-zA-Z0-9._-]/g, "-").toLowerCase();
+      const uniquePart = Math.random().toString(36).slice(2, 10);
+      const path = `bulk/${Date.now()}-${uniquePart}-${sanitizedName}`;
+      const { error: uploadError } = await supabase.storage.from("media").upload(path, file, {
+        contentType: file.type || "application/octet-stream",
+        upsert: false
+      });
+
+      if (uploadError) {
+        failedFiles.push(file);
+        failureMessages.push(`${file.name}: ${uploadError.message}`);
+        setBulkProgress((previous) => ({ ...previous, completed: previous.completed + 1 }));
+        continue;
+      }
+
+      const { data } = supabase.storage.from("media").getPublicUrl(path);
+      const title = mediaTitleFromFilename(file.name);
+      const { error: insertError } = await supabase.from("media_items").insert({
+        title_de: title,
+        title_en: title,
+        description_de: null,
+        description_en: null,
+        category_id: bulkForm.category_id || null,
+        media_type: "image",
+        file_url: data.publicUrl,
+        video_url: null,
+        thumbnail_url: null,
+        product_slugs: bulkForm.product_slugs,
+        is_published: bulkForm.is_published,
+        sort_order: Number(bulkForm.sort_order || 0) + index,
+        updated_at: new Date().toISOString()
+      });
+
+      if (insertError) {
+        await supabase.storage.from("media").remove([path]);
+        failedFiles.push(file);
+        failureMessages.push(`${file.name}: ${insertError.message}`);
+      } else {
+        successfulUploads += 1;
+      }
+
+      setBulkProgress((previous) => ({ ...previous, completed: previous.completed + 1 }));
+    }
+
+    setBulkUploading(false);
+    await loadItems();
+
+    if (failedFiles.length) {
+      setBulkFiles(failedFiles);
+      setBulkProgress({ completed: 0, total: failedFiles.length });
+      setBulkError(
+        `${successfulUploads} von ${bulkFiles.length} Dateien wurden hochgeladen. Fehlgeschlagen: ${failureMessages.slice(0, 3).join(" | ")}${failureMessages.length > 3 ? " | …" : ""}`
+      );
+      return;
+    }
+
+    setBulkDialogOpen(false);
+    setBulkFiles([]);
+  }
+
   async function deleteItem(id: string) {
     if (!confirm("Medium wirklich löschen?")) return;
     const { error: deleteError } = await getSupabaseBrowserClient().from("media_items").delete().eq("id", id);
@@ -1238,10 +1353,26 @@ function MediaSection({ initialTab }: { initialTab: "items" | "categories" }) {
         <>
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-bold text-foreground">Medien verwalten</h2>
-            <button className={buttonClass("default", "sm")} onClick={openCreateItem} type="button">
-              <Plus className="h-4 w-4" />
-              Neues Medium
-            </button>
+            <div className="flex flex-wrap justify-end gap-2">
+              <label className={cx(buttonClass("outline", "sm"), "cursor-pointer")}>
+                <Upload className="h-4 w-4" />
+                Mehrere Bilder hochladen
+                <input
+                  className="hidden"
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={(event) => {
+                    openBulkUpload(event.target.files);
+                    event.target.value = "";
+                  }}
+                />
+              </label>
+              <button className={buttonClass("default", "sm")} onClick={openCreateItem} type="button">
+                <Plus className="h-4 w-4" />
+                Neues Medium
+              </button>
+            </div>
           </div>
           <SectionCard>
             <div className="overflow-x-auto">
@@ -1430,6 +1561,105 @@ function MediaSection({ initialTab }: { initialTab: "items" | "categories" }) {
             <div className="flex justify-end gap-3">
               <button className={buttonClass("outline")} onClick={() => setItemDialogOpen(false)} type="button">Abbrechen</button>
               <button className={buttonClass()} type="submit">{editingItem ? "Speichern" : "Erstellen"}</button>
+            </div>
+          </form>
+        </FormDialog>
+      ) : null}
+
+      {bulkDialogOpen ? (
+        <FormDialog title="Mehrere Bilder hochladen" onClose={() => { if (!bulkUploading) setBulkDialogOpen(false); }}>
+          <form className="space-y-5" onSubmit={saveBulkMedia}>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between gap-4">
+                <span className={labelClass}>{bulkFiles.length} {bulkFiles.length === 1 ? "Datei ausgewählt" : "Dateien ausgewählt"}</span>
+                <label className={cx(buttonClass("outline", "sm"), "cursor-pointer")}>
+                  <Plus className="h-4 w-4" />
+                  Weitere auswählen
+                  <input
+                    className="hidden"
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    disabled={bulkUploading}
+                    onChange={(event) => {
+                      addBulkFiles(event.target.files);
+                      event.target.value = "";
+                    }}
+                  />
+                </label>
+              </div>
+              <div className="max-h-56 divide-y divide-border overflow-y-auto rounded-lg border border-border">
+                {bulkFiles.map((file, index) => (
+                  <div className="flex items-center gap-3 px-3 py-2.5" key={`${file.name}-${file.size}-${file.lastModified}-${index}`}>
+                    <ImageIcon className="h-4 w-4 shrink-0 text-muted-foreground" />
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-sm font-medium">{file.name}</p>
+                      <p className="text-xs text-muted-foreground">{formatFileSize(file.size)} · Titel: {mediaTitleFromFilename(file.name)}</p>
+                    </div>
+                    <button
+                      className={buttonClass("ghost", "icon")}
+                      type="button"
+                      aria-label={`${file.name} entfernen`}
+                      disabled={bulkUploading}
+                      onClick={() => setBulkFiles((previous) => previous.filter((_, fileIndex) => fileIndex !== index))}
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+              <p className="text-xs text-muted-foreground">Für jede Bilddatei wird ein eigener Medieneintrag erstellt. Der Titel wird aus dem Dateinamen übernommen.</p>
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-2">
+              <SelectField
+                label="Kategorie für alle Bilder"
+                value={bulkForm.category_id}
+                onChange={(value) => setBulkForm((previous) => ({ ...previous, category_id: value }))}
+                placeholder="Keine"
+                options={categories.flatMap((category) => category.parent_id ? [{ label: `- ${category.name_de}`, value: category.id }] : [{ label: `${category.name_de} (Gesamt)`, value: category.id }])}
+              />
+              <TextField
+                label="Sortierung ab"
+                type="number"
+                value={bulkForm.sort_order}
+                onChange={(value) => setBulkForm((previous) => ({ ...previous, sort_order: Number(value || 0) }))}
+              />
+            </div>
+
+            <div className="grid gap-2">
+              <span className={labelClass}>Produkte für alle Bilder</span>
+              <ProductChipSelector value={bulkForm.product_slugs} onChange={(value) => setBulkForm((previous) => ({ ...previous, product_slugs: value }))} />
+            </div>
+
+            <label className="flex items-center gap-3">
+              <SwitchControl checked={bulkForm.is_published} onChange={(value) => setBulkForm((previous) => ({ ...previous, is_published: value }))} />
+              <span className={labelClass}>Alle Bilder veröffentlichen</span>
+            </label>
+
+            {bulkError ? <p className="rounded-lg border border-destructive/20 bg-destructive/5 px-4 py-3 text-sm text-destructive">{bulkError}</p> : null}
+
+            {bulkUploading ? (
+              <div className="space-y-2">
+                <div className="flex justify-between text-xs font-medium text-muted-foreground">
+                  <span>Upload läuft …</span>
+                  <span>{bulkProgress.completed} / {bulkProgress.total}</span>
+                </div>
+                <div className="h-2 overflow-hidden rounded-full bg-secondary">
+                  <div
+                    className="h-full rounded-full bg-primary transition-[width]"
+                    style={{ width: `${bulkProgress.total ? (bulkProgress.completed / bulkProgress.total) * 100 : 0}%` }}
+                  />
+                </div>
+              </div>
+            ) : null}
+
+            <div className="flex justify-end gap-3">
+              <button className={buttonClass("outline")} disabled={bulkUploading} onClick={() => setBulkDialogOpen(false)} type="button">Abbrechen</button>
+              <button className={buttonClass()} disabled={bulkUploading || !bulkFiles.length} type="submit">
+                {bulkUploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
+                {bulkUploading ? "Wird hochgeladen …" : `${bulkFiles.length} ${bulkFiles.length === 1 ? "Bild" : "Bilder"} hochladen`}
+              </button>
             </div>
           </form>
         </FormDialog>
