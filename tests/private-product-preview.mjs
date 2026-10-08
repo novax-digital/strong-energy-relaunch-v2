@@ -74,7 +74,7 @@ try {
     await page.getByRole("button", { name: "Vorschau öffnen" }).click();
     await page.getByRole("heading", { name: productName, exact: true, level: 1 }).waitFor();
     await page.waitForFunction(() => document.querySelector("video")?.readyState >= 2);
-    assert.ok(await page.locator(`img[src="${mediaPath}/cabinet.webp"]`).first().evaluate((img) => img.complete && img.naturalWidth > 0));
+    assert.ok(await page.locator(`img[src^="${mediaPath}/cabinet.webp"]`).first().evaluate((img) => img.complete && img.naturalWidth > 0));
     await page.getByRole("tab", { name: "Vergleich", exact: true }).click();
     assert.match(await page.getByRole("tabpanel").innerText(), productPattern);
     await page.getByRole("tab", { name: "Technische Daten", exact: true }).click();
