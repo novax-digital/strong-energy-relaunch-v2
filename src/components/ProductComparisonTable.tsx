@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowUpRight, Check, X } from "lucide-react";
+import { ArrowLeftRight, ArrowUpRight, Check, X } from "lucide-react";
 import { localizedPath, type Language } from "@/lib/i18n";
 
 type LocalizedText = {
@@ -126,23 +126,23 @@ const copy = {
     eyebrow: "Produktvergleich",
     title: "Star H und Star Q im direkten Vergleich",
     description: "Die wichtigsten Unterschiede der beiden All-in-One-Gewerbespeicher auf einen Blick.",
-    category: "Kategorie",
     feature: "Merkmal",
     current: "Aktuelle Auswahl",
     yes: "Ja",
     no: "Nein",
-    view: "Produkt ansehen"
+    view: "Produkt ansehen",
+    scroll: "Seitlich scrollen, um alle Produkte zu vergleichen"
   },
   en: {
     eyebrow: "Product comparison",
     title: "Star H and Star Q compared",
     description: "The key differences between the two all-in-one commercial storage systems at a glance.",
-    category: "Category",
     feature: "Feature",
     current: "Current selection",
     yes: "Yes",
     no: "No",
-    view: "View product"
+    view: "View product",
+    scroll: "Scroll sideways to compare all products"
   }
 };
 
@@ -162,58 +162,62 @@ export function ProductComparisonTable({ currentProductSlug, categorySlug, lang,
         <p className="mt-3 text-base leading-relaxed text-muted-foreground md:text-lg">{additionalProduct ? (lang === "de" ? "Die wichtigsten Unterschiede der All-in-One-Gewerbespeicher auf einen Blick." : "The key differences between the all-in-one commercial storage systems at a glance.") : t.description}</p>
       </div>
 
+      <p className={`mb-3 flex items-center gap-2 text-sm text-muted-foreground ${additionalProduct ? "xl:hidden" : "lg:hidden"}`}>
+        <ArrowLeftRight aria-hidden="true" className="h-4 w-4 shrink-0" />
+        {t.scroll}
+      </p>
       <div className="overflow-hidden rounded-2xl border border-border bg-white shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[900px] border-separate border-spacing-0 text-left text-sm md:text-base">
+        <div aria-label={t.eyebrow} className="overflow-x-auto focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary" role="region" tabIndex={0}>
+          <table className={`w-full table-fixed border-separate border-spacing-0 text-left text-sm ${additionalProduct ? "min-w-[calc(300vw-336px)] sm:min-w-[960px]" : "min-w-[calc(200vw-184px)] sm:min-w-[720px]"}`}>
+            <caption className="sr-only">{additionalProduct ? `${products.map((item) => item.name).join(", ")} – ${t.eyebrow}` : t.title}</caption>
+            <colgroup>
+              <col className={additionalProduct ? "w-[120px] sm:w-[22%]" : "w-[120px] sm:w-[28%]"} />
+              {products.map((item) => <col className={additionalProduct ? "sm:w-[26%]" : "sm:w-[36%]"} key={item.slug} />)}
+            </colgroup>
             <thead>
               <tr className="bg-secondary/50">
-                <th className="w-[18%] border-b border-border px-5 py-4 text-xs font-bold uppercase tracking-wider text-muted-foreground">{t.category}</th>
-                <th className="w-[22%] border-b border-border px-5 py-4 text-xs font-bold uppercase tracking-wider text-muted-foreground">{t.feature}</th>
+                <th className="sticky left-0 z-10 border-b border-border bg-secondary px-5 py-6 align-bottom text-xs font-bold uppercase tracking-wider text-muted-foreground" scope="col">{t.feature}</th>
                 {products.map((item) => {
                   const current = currentProductSlug === item.slug;
                   return (
-                    <th className={`w-[30%] border-b border-l border-border px-5 py-4 ${current ? "bg-primary/10" : "bg-white/70"}`} key={item.slug}>
+                    <th className={`border-b border-l border-border px-5 py-6 align-top ${current ? "bg-primary/10" : "bg-white"}`} key={item.slug} scope="col">
                       <Link
                         aria-current={current ? "page" : undefined}
-                        className="group flex items-center justify-between gap-4"
+                        className="group flex items-start justify-between gap-3 rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
                         href={item.href}
                       >
                         <span>
-                          <strong className="block text-xl font-bold text-foreground">{item.name}</strong>
-                          <span className={`mt-1 inline-flex rounded-full px-2.5 py-1 text-xs font-bold ${current ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground"}`}>
+                          <strong className="block break-words text-xl font-bold leading-tight text-foreground">{item.name}</strong>
+                          <span className={`mt-3 inline-flex rounded-full px-2.5 py-1 text-xs font-bold ${current ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground"}`}>
                             {current ? t.current : t.view}
                           </span>
                         </span>
-                        {!current ? <ArrowUpRight aria-hidden="true" className="h-5 w-5 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-primary" /> : null}
+                        {!current ? <ArrowUpRight aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-primary" /> : null}
                       </Link>
                     </th>
                   );
                 })}
               </tr>
             </thead>
-            <tbody>
-              {comparisonGroups.map((group) =>
-                group.rows.map((row, rowIndex) => (
-                  <tr className="group/row" key={`${group.label.de}-${row.label.de}`}>
-                    {rowIndex === 0 ? (
-                      <th
-                        className="border-b border-border bg-secondary/30 px-5 py-5 align-top font-bold text-foreground"
-                        rowSpan={group.rows.length}
-                        scope="rowgroup"
-                      >
-                        {localize(group.label, lang)}
-                      </th>
-                    ) : null}
-                    <th className="border-b border-border px-5 py-5 font-semibold text-foreground transition-colors group-hover/row:bg-secondary/20" scope="row">
+            {comparisonGroups.map((group) => (
+              <tbody key={group.label.en}>
+                <tr>
+                  <th className="border-b border-border bg-secondary/60 px-5 py-3 text-xs font-bold uppercase tracking-wider text-foreground" colSpan={products.length + 1} scope="rowgroup">
+                    <span className="sticky left-5">{localize(group.label, lang)}</span>
+                  </th>
+                </tr>
+                {group.rows.map((row, rowIndex) => (
+                  <tr className={`group/row ${rowIndex % 2 === 0 ? "bg-white" : "bg-slate-50"}`} key={row.label.en}>
+                    <th className={`sticky left-0 z-10 border-b border-r border-border px-5 py-5 align-top font-semibold leading-relaxed text-foreground ${rowIndex % 2 === 0 ? "bg-white" : "bg-slate-50"}`} scope="row">
                       {localize(row.label, lang)}
                     </th>
                     <ComparisonCell current={currentProductSlug === "star-h"} lang={lang} value={row.starH} />
                     <ComparisonCell current={currentProductSlug === "star-q"} lang={lang} value={row.starQ} />
                     {additionalProduct ? <ComparisonCell current={currentProductSlug === additionalProduct.slug} lang={lang} value={additionalProduct.values[row.label.en] || { text: { de: "Nicht angegeben", en: "Not specified" } }} /> : null}
                   </tr>
-                ))
-              )}
-            </tbody>
+                ))}
+              </tbody>
+            ))}
           </table>
         </div>
       </div>
@@ -225,14 +229,14 @@ function ComparisonCell({ value, current, lang }: { value: ComparisonValue; curr
   const t = copy[lang];
   return (
     <td className={`border-b border-l border-border px-5 py-5 align-top transition-colors ${current ? "bg-primary/[0.045]" : "group-hover/row:bg-secondary/20"}`}>
-      <div className="flex flex-wrap items-start gap-2.5">
+      <div className="space-y-2.5 break-words">
         {value.state ? (
           <span className={`inline-flex shrink-0 items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-bold ${value.state === "yes" ? "bg-primary/[0.12] text-primary" : "bg-secondary text-muted-foreground"}`}>
             {value.state === "yes" ? <Check aria-hidden="true" className="h-3.5 w-3.5" strokeWidth={2.5} /> : <X aria-hidden="true" className="h-3.5 w-3.5" strokeWidth={2.5} />}
             {value.state === "yes" ? t.yes : t.no}
           </span>
         ) : null}
-        {value.text ? <span className="min-w-0 flex-1 leading-relaxed text-muted-foreground">{localize(value.text, lang)}</span> : null}
+        {value.text ? <p className="leading-relaxed text-muted-foreground">{localize(value.text, lang)}</p> : null}
       </div>
     </td>
   );
