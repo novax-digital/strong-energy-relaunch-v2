@@ -67,7 +67,7 @@ Deno.serve(async (request) => {
       const content = JSON.parse(await data.text());
       return json(content[body.lang === "en" ? "en" : "de"]);
     }
-    if (body.action !== "media" || !["hero.mp4", "cabinet.webp"].includes(body.asset)) return json({ success: false }, 404);
+    if (body.action !== "media" || !["hero.mp4", "hero-original.mp4", "cabinet.webp"].includes(body.asset)) return json({ success: false }, 404);
     const { data, error } = await storage.download(`${previewId}/${body.asset}`);
     if (error || !data) return json({ success: false }, 503);
     const file = new Uint8Array(await data.arrayBuffer());
