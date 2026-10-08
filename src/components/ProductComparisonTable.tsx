@@ -12,6 +12,13 @@ type ComparisonValue = {
   state?: "yes" | "no";
 };
 
+export type AdditionalComparisonProduct = {
+  slug: string;
+  name: string;
+  href: string;
+  values: Record<string, ComparisonValue>;
+};
+
 type ComparisonRow = {
   label: LocalizedText;
   starH: ComparisonValue;
@@ -139,19 +146,20 @@ const copy = {
   }
 };
 
-export function ProductComparisonTable({ currentProductSlug, categorySlug, lang }: { currentProductSlug: string; categorySlug: string; lang: Language }) {
+export function ProductComparisonTable({ currentProductSlug, categorySlug, lang, additionalProduct }: { currentProductSlug: string; categorySlug: string; lang: Language; additionalProduct?: AdditionalComparisonProduct }) {
   const t = copy[lang];
   const products = [
-    { slug: "star-h", name: "Star H" },
-    { slug: "star-q", name: "Star Q" }
+    { slug: "star-h", name: "Star H", href: `${localizedPath(`/produkte/${categorySlug}/star-h`, lang)}#${lang === "de" ? "vergleich" : "comparison"}` },
+    { slug: "star-q", name: "Star Q", href: `${localizedPath(`/produkte/${categorySlug}/star-q`, lang)}#${lang === "de" ? "vergleich" : "comparison"}` },
+    ...(additionalProduct ? [additionalProduct] : [])
   ];
 
   return (
     <div>
       <div className="mb-7 max-w-3xl">
         <p className="text-sm font-bold uppercase tracking-[0.16em] text-primary">{t.eyebrow}</p>
-        <h2 className="mt-2 text-2xl font-bold leading-tight text-foreground md:text-3xl">{t.title}</h2>
-        <p className="mt-3 text-base leading-relaxed text-muted-foreground md:text-lg">{t.description}</p>
+        <h2 className="mt-2 text-2xl font-bold leading-tight text-foreground md:text-3xl">{additionalProduct ? `${products.map((item) => item.name).join(", ")} ${lang === "de" ? "im Vergleich" : "compared"}` : t.title}</h2>
+        <p className="mt-3 text-base leading-relaxed text-muted-foreground md:text-lg">{additionalProduct ? (lang === "de" ? "Die wichtigsten Unterschiede der All-in-One-Gewerbespeicher auf einen Blick." : "The key differences between the all-in-one commercial storage systems at a glance.") : t.description}</p>
       </div>
 
       <div className="overflow-hidden rounded-2xl border border-border bg-white shadow-sm">
@@ -168,7 +176,7 @@ export function ProductComparisonTable({ currentProductSlug, categorySlug, lang 
                       <Link
                         aria-current={current ? "page" : undefined}
                         className="group flex items-center justify-between gap-4"
-                        href={`${localizedPath(`/produkte/${categorySlug}/${item.slug}`, lang)}#${lang === "de" ? "vergleich" : "comparison"}`}
+                        href={item.href}
                       >
                         <span>
                           <strong className="block text-xl font-bold text-foreground">{item.name}</strong>
@@ -201,6 +209,7 @@ export function ProductComparisonTable({ currentProductSlug, categorySlug, lang 
                     </th>
                     <ComparisonCell current={currentProductSlug === "star-h"} lang={lang} value={row.starH} />
                     <ComparisonCell current={currentProductSlug === "star-q"} lang={lang} value={row.starQ} />
+                    {additionalProduct ? <ComparisonCell current={currentProductSlug === additionalProduct.slug} lang={lang} value={additionalProduct.values[row.label.en] || { text: { de: "Nicht angegeben", en: "Not specified" } }} /> : null}
                   </tr>
                 ))
               )}

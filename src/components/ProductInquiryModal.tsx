@@ -221,7 +221,7 @@ function ProductInquiryModal({ product, lang, onClose }: { product: Product; lan
   const formRef = useRef<HTMLFormElement>(null);
   const requestIdRef = useRef("");
   const requestIdInputRef = useRef<HTMLInputElement>(null);
-  const isCommercialStorage = COMMERCIAL_STORAGE_SLUGS.includes(product.slug);
+  const isCommercialStorage = COMMERCIAL_STORAGE_SLUGS.includes(product.slug) || ["gewerbespeicher-aio", "commercial-storage-aio"].includes(product.categorySlug);
   const [step, setStep] = useState<1 | 2>(isCommercialStorage ? 1 : 2);
   const [customerType, setCustomerType] = useState(isCommercialStorage ? "gewerbe" : "installateur");
   const [goal, setGoal] = useState("");

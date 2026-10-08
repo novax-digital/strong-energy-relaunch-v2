@@ -1,5 +1,6 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import { isPrivateProductPath, PRIVATE_RESPONSE_HEADERS } from "@/lib/privateProductPreview";
 import {
   fetchSiteProtectionEnabled,
   isSiteProtectionBypassedPath,
@@ -9,6 +10,12 @@ import {
 
 export async function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
+
+  if (isPrivateProductPath(pathname) || pathname.startsWith("/api/private-preview/")) {
+    const response = NextResponse.next();
+    for (const [key, value] of Object.entries(PRIVATE_RESPONSE_HEADERS)) response.headers.set(key, value);
+    return response;
+  }
 
   if (isSiteProtectionBypassedPath(pathname)) {
     return NextResponse.next();

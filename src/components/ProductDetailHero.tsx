@@ -9,13 +9,13 @@ export function ProductDetailHero({ product, lang = "de" }: { product: Product; 
   const t = translations[lang].products;
   return (
     <section className="relative h-[65vh] md:h-[65vh] w-full overflow-hidden bg-black">
-      {product.heroVideoWebm ? (
+      {product.heroVideoWebm || product.heroVideo ? (
         <video className="absolute inset-0 w-full h-full object-cover" autoPlay loop muted playsInline preload="metadata" poster={image}>
-          <source src={product.heroVideoWebm} type="video/webm" />
+          {product.heroVideoWebm ? <source src={product.heroVideoWebm} type="video/webm" /> : null}
           {product.heroVideo ? <source src={product.heroVideo} type="video/mp4" /> : null}
         </video>
       ) : (
-        <Image src={image} alt={product.name} fill priority sizes="100vw" className="object-cover" />
+        <Image src={image} unoptimized={image.startsWith("/api/private-preview/")} alt={product.name} fill priority sizes="100vw" className="object-cover" />
       )}
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/35 to-black/25" />
       <div className="absolute inset-0 z-10 flex items-center justify-center text-center pt-[40%] md:pt-28">

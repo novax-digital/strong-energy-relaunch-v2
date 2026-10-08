@@ -61,6 +61,7 @@ export function Header() {
   const transparentPath =
     pathname === "/de" ||
     pathname === "/en" ||
+    /^\/(de|en)\/private-preview\//.test(pathname) ||
     /^\/de\/produkte\/[^/]+\/[^/]+$/.test(pathname) ||
     /^\/en\/products\/[^/]+\/[^/]+$/.test(pathname) ||
     ["/de/gewerbespeicher", "/de/gewerbespeicher-hubspot", "/de/commercial", "/de/commercial-hubspot", "/en/commercial-storage", "/en/commercial-storage-hubspot", "/en/commercial", "/en/commercial-hubspot"].includes(pathname);

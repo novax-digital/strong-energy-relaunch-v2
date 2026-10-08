@@ -100,7 +100,7 @@ export function ProductImageGallery({
               onClick={() => setLightboxIndex(activeGalleryIndex)}
               type="button"
             >
-              <Image src={activeItem.src} alt={name} fill sizes="(min-width: 1024px) 45vw, 100vw" className="object-cover" priority />
+              <Image src={activeItem.src} unoptimized={activeItem.src.startsWith("/api/private-preview/")} alt={name} fill sizes="(min-width: 1024px) 45vw, 100vw" className={activeItem.src.startsWith("/api/private-preview/") ? "object-contain" : "object-cover"} priority />
             </button>
           ) : (
             <ProductModelViewer className="h-full w-full" model={activeItem.model} title={activeItem.alt} />
@@ -130,7 +130,7 @@ export function ProductImageGallery({
                 onClick={() => setActiveIndex(index)}
                 type="button"
               >
-                <Image src={image} alt={`${name} ${index + 1}`} fill sizes="96px" className="object-cover" />
+                <Image src={image} unoptimized={image.startsWith("/api/private-preview/")} alt={`${name} ${index + 1}`} fill sizes="96px" className="object-cover" />
               </button>
             );
           })}
@@ -207,7 +207,7 @@ export function ProductImageGallery({
                 }}
                 type="button"
               >
-                <Image src={lightboxItem.src} alt={lightboxItem.alt} fill sizes="100vw" className="object-contain" priority />
+                <Image src={lightboxItem.src} unoptimized={lightboxItem.src.startsWith("/api/private-preview/")} alt={lightboxItem.alt} fill sizes="100vw" className="object-contain" priority />
               </button>
             ) : (
               <div className="h-full w-full overflow-hidden rounded-xl bg-white">

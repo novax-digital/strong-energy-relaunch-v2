@@ -5,3 +5,6 @@ verify_jwt = false
 
 [functions.generate-blog-post]
 verify_jwt = true
+
+[functions.private-product-preview]
+verify_jwt = false

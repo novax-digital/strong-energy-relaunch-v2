@@ -2,7 +2,7 @@
 
 import { useId, useMemo, useSyncExternalStore } from "react";
 import { Download } from "lucide-react";
-import { ProductComparisonTable } from "@/components/ProductComparisonTable";
+import { ProductComparisonTable, type AdditionalComparisonProduct } from "@/components/ProductComparisonTable";
 import { ProductFeatureIcon } from "@/components/ProductFeatureIcon";
 import type { DownloadItem, Product, SpecGroup, SpecRow, SpecSection } from "@/types/content";
 import { useLiveDownloads } from "@/hooks/useLiveDownloads";
@@ -39,7 +39,7 @@ const tabsByHash: Record<string, ProductTab> = {
   downloads: "downloads"
 };
 
-export function ProductDetailTabs({ downloads, product, lang = "de" }: { downloads: DownloadItem[]; product: Product; lang?: Language }) {
+export function ProductDetailTabs({ downloads, product, lang = "de", additionalComparisonProduct }: { downloads: DownloadItem[]; product: Product; lang?: Language; additionalComparisonProduct?: AdditionalComparisonProduct }) {
   const liveDownloads = useLiveDownloads(downloads, product.slug);
   const downloadsWithFile = useMemo(() => liveDownloads.filter((download) => hasDownloadFile(download, lang)), [lang, liveDownloads]);
   const baseId = useId();
@@ -53,9 +53,9 @@ export function ProductDetailTabs({ downloads, product, lang = "de" }: { downloa
       { id: "downloads", label: t.tabs.downloads }
     ];
     const hasSpecs = Boolean(product.specs?.length || product.specsSections?.length || product.specsTable);
-    const hasComparison = product.slug === "star-h" || product.slug === "star-q";
+    const hasComparison = product.slug === "star-h" || product.slug === "star-q" || Boolean(additionalComparisonProduct);
     return tabLabels.filter((tab) => (tab.id !== "specs" || hasSpecs) && (tab.id !== "comparison" || hasComparison));
-  }, [product.slug, product.specs?.length, product.specsSections?.length, product.specsTable, t.tabs.comparison, t.tabs.description, t.tabs.downloads, t.tabs.features, t.tabs.specs]);
+  }, [additionalComparisonProduct, product.slug, product.specs?.length, product.specsSections?.length, product.specsTable, t.tabs.comparison, t.tabs.description, t.tabs.downloads, t.tabs.features, t.tabs.specs]);
   const urlHash = useSyncExternalStore(subscribeToUrlHash, getUrlHash, getServerUrlHash);
   const requestedTab = tabsByHash[urlHash];
   const activeTab = requestedTab && tabs.some((tab) => tab.id === requestedTab) ? requestedTab : "description";
@@ -109,7 +109,7 @@ export function ProductDetailTabs({ downloads, product, lang = "de" }: { downloa
         {activeTab === "description" ? <DescriptionPanel product={product} /> : null}
         {activeTab === "features" ? <FeaturesPanel product={product} /> : null}
         {activeTab === "specs" ? <TechnicalPanel product={product} lang={lang} /> : null}
-        {activeTab === "comparison" ? <ProductComparisonTable categorySlug={product.categorySlug} currentProductSlug={product.slug} lang={lang} /> : null}
+        {activeTab === "comparison" ? <ProductComparisonTable categorySlug={product.categorySlug} currentProductSlug={product.slug} lang={lang} additionalProduct={additionalComparisonProduct} /> : null}
         {activeTab === "downloads" ? <DownloadsPanel downloads={downloadsWithFile} lang={lang} /> : null}
       </div>
     </section>
