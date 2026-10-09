@@ -20,12 +20,11 @@ function WidgetPreloader({ label, loaded, cards, className = "inset-0", pill = f
 }
 
 export function GoogleReviewsWidget({ loadingLabel }: { loadingLabel: string }) {
-  const [loaded, setLoaded] = useState({ mobile: false, desktop: false });
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     const mobileTarget = document.getElementById("rezensionen");
-    const desktopTarget = document.getElementById("rezensionen-desktop");
-    const targets = [mobileTarget, desktopTarget].filter(
+    const targets = [mobileTarget].filter(
       (target): target is HTMLElement => Boolean(target)
     );
     if (!targets.length) return;
@@ -41,11 +40,7 @@ export function GoogleReviewsWidget({ loadingLabel }: { loadingLabel: string }) 
 
     const markLoadedWidgets = () => {
       const mobile = Boolean(mobileTarget?.querySelector(".es-embed-root")?.textContent?.trim());
-      const desktop = Boolean(desktopTarget?.querySelector(".es-embed-root")?.textContent?.trim());
-      setLoaded((current) => {
-        const next = { mobile: current.mobile || mobile, desktop: current.desktop || desktop };
-        return next.mobile === current.mobile && next.desktop === current.desktop ? current : next;
-      });
+      if (mobile) setLoaded(true);
     };
 
     const contentObserver = new MutationObserver(markLoadedWidgets);
@@ -76,19 +71,9 @@ export function GoogleReviewsWidget({ loadingLabel }: { loadingLabel: string }) 
   }, []);
 
   return (
-    <>
-      <div id="rezensionen" className="relative mx-4 mt-10 min-h-[38px] animate-fade-in md:hidden" style={{ animationDelay: "0.4s" }}>
-        <div className={`elfsight-app-a4021fff-f31e-466a-9589-c9d439a52d91 transition-opacity duration-300 ${loaded.mobile ? "opacity-95" : "opacity-0"}`} data-elfsight-app-lazy />
-        <WidgetPreloader cards={1} className="inset-y-0 left-1/2 w-[220px] -translate-x-1/2" label={loadingLabel} loaded={loaded.mobile} pill />
-      </div>
-      <div id="rezensionen-desktop" className="relative mx-auto mt-40 hidden h-[173px] w-full max-w-[1088px] overflow-hidden px-8 animate-fade-in md:block" style={{ animationDelay: "0.4s" }}>
-        <div className="absolute inset-x-8 top-0 min-h-[211px]">
-          <div className="absolute left-1/2 top-0 min-h-[211px] w-[121.96%] origin-top -translate-x-1/2 scale-[0.82]">
-            <div className={`elfsight-app-587b08ed-ade3-4b95-a358-6583183f10fe transition-opacity duration-300 ${loaded.desktop ? "opacity-[0.92]" : "opacity-0"}`} data-elfsight-app-lazy />
-          </div>
-        </div>
-        <WidgetPreloader cards={4} className="inset-x-8 inset-y-0" label={loadingLabel} loaded={loaded.desktop} />
-      </div>
-    </>
+    <div id="rezensionen" className="relative mx-4 mt-10 min-h-[38px] animate-fade-in md:hidden" style={{ animationDelay: "0.4s" }}>
+      <div className={`elfsight-app-a4021fff-f31e-466a-9589-c9d439a52d91 transition-opacity duration-300 ${loaded ? "opacity-95" : "opacity-0"}`} data-elfsight-app-lazy />
+      <WidgetPreloader cards={1} className="inset-y-0 left-1/2 w-[220px] -translate-x-1/2" label={loadingLabel} loaded={loaded} pill />
+    </div>
   );
 }

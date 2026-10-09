@@ -3,12 +3,16 @@ import type { ReactNode } from "react";
 import { ArrowRight } from "lucide-react";
 import { GoogleReviewsWidget } from "@/components/GoogleReviewsWidget";
 import { HomeHeroVideo } from "@/components/HomeHeroVideo";
+import { ProductReviewsCarousel } from "@/components/ProductReviewsCarousel";
+import { getGoogleReviews, googleReviewsProfileUrl } from "@/lib/content/getGoogleReviews";
 import { localizedPath, translations, type Language } from "@/lib/i18n";
 
-export function HomeHero({ lang = "de" }: { lang?: Language }) {
+export async function HomeHero({ lang = "de" }: { lang?: Language }) {
   const t = translations[lang].hero;
+  const reviews = await getGoogleReviews();
+  // Add the review area's extra 87px below the original centered content.
   return (
-    <section className="relative flex min-h-[78vh] items-center justify-center overflow-hidden bg-white md:min-h-[82vh]">
+    <section className={`relative flex min-h-[78vh] items-center justify-center overflow-hidden bg-white ${reviews.length ? "md:min-h-[calc(82vh+87px)]" : "md:min-h-[82vh]"}`}>
       <HomeHeroVideo />
 
       <div className="container-wide relative z-10 w-full pb-8 pt-24 text-center md:pb-4 md:pt-28">
@@ -34,6 +38,7 @@ export function HomeHero({ lang = "de" }: { lang?: Language }) {
         </div>
 
         <GoogleReviewsWidget loadingLabel={lang === "en" ? "Loading Google reviews…" : "Google-Bewertungen werden geladen…"} />
+        {reviews.length ? <ProductReviewsCarousel reviews={reviews} profileUrl={googleReviewsProfileUrl} lang={lang} variant="hero" /> : null}
       </div>
     </section>
   );
