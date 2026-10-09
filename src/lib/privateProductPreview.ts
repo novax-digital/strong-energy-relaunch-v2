@@ -24,13 +24,18 @@ export async function requestPrivatePreview(body: Record<string, unknown>) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
   if (!url || !key) return new Response(null, { status: 503 });
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 15_000);
   try {
     return await fetch(`${url}/functions/v1/private-product-preview`, {
       method: "POST", headers: { apikey: key, "Content-Type": "application/json" },
-      body: JSON.stringify(body), cache: "no-store", signal: AbortSignal.timeout(15_000)
+      body: JSON.stringify(body), cache: "no-store", signal: controller.signal
     });
   } catch {
     return new Response(null, { status: 503 });
+  } finally {
+    // Limit time to response headers without interrupting an ongoing video stream.
+    clearTimeout(timer);
   }
 }
 

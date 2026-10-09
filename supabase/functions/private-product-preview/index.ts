@@ -67,21 +67,30 @@ Deno.serve(async (request) => {
       const content = JSON.parse(await data.text());
       return json(content[body.lang === "en" ? "en" : "de"]);
     }
-    if (body.action !== "media" || !["hero.mp4", "hero-original.mp4", "cabinet.webp"].includes(body.asset)) return json({ success: false }, 404);
-    const { data, error } = await storage.download(`${previewId}/${body.asset}`);
-    if (error || !data) return json({ success: false }, 503);
-    const file = new Uint8Array(await data.arrayBuffer());
+    if (body.action !== "media" || !["hero.mp4", "hero-original.mp4", "hero-fullhd.mp4", "cabinet.webp"].includes(body.asset)) return json({ success: false }, 404);
     const mediaHeaders = { ...headers, "Content-Type": body.asset.endsWith(".mp4") ? "video/mp4" : "image/webp", "Accept-Ranges": "bytes", "X-Content-Type-Options": "nosniff" };
-    if (body.range) {
-      const match = /^bytes=(\d*)-(\d*)$/.exec(body.range);
-      const start = match?.[1] ? Number(match[1]) : Math.max(0, file.length - Number(match?.[2]));
-      const end = match?.[1] && match[2] ? Math.min(Number(match[2]), file.length - 1) : file.length - 1;
-      if (!match || (!match[1] && !match[2]) || !Number.isSafeInteger(start) || !Number.isSafeInteger(end) || start < 0 || start >= file.length || end < start) {
-        return new Response(null, { status: 416, headers: { ...mediaHeaders, "Content-Range": `bytes */${file.length}` } });
+    const storageHeaders: Record<string, string> = { Authorization: `Bearer ${serviceKey}`, apikey: serviceKey };
+    if (body.range != null) {
+      const match = typeof body.range === "string" ? /^bytes=(\d*)-(\d*)$/.exec(body.range) : null;
+      if (!match || (!match[1] && !match[2]) || (match[1] && !Number.isSafeInteger(Number(match[1])))
+        || (match[2] && !Number.isSafeInteger(Number(match[2]))) || (!match[1] && Number(match[2]) === 0)
+        || (match[1] && match[2] && Number(match[2]) < Number(match[1]))) {
+        return new Response(null, { status: 416, headers: mediaHeaders });
       }
-      return new Response(file.subarray(start, end + 1), { status: 206, headers: { ...mediaHeaders, "Content-Range": `bytes ${start}-${end}/${file.length}`, "Content-Length": String(end - start + 1) } });
+      storageHeaders.Range = body.range;
     }
-    return new Response(file, { headers: { ...mediaHeaders, "Content-Length": String(file.length) } });
+    // Stream only the requested bytes after authorization, keeping large videos out of memory.
+    const upstream = await fetch(`${url}/storage/v1/object/authenticated/private-product-previews/${previewId}/${body.asset}`, { headers: storageHeaders });
+    if (![200, 206, 416].includes(upstream.status)) {
+      await upstream.body?.cancel();
+      return json({ success: false }, 503);
+    }
+    const responseHeaders = new Headers(mediaHeaders);
+    for (const name of ["Content-Length", "Content-Range"]) {
+      const value = upstream.headers.get(name);
+      if (value) responseHeaders.set(name, value);
+    }
+    return new Response(upstream.body, { status: upstream.status, headers: responseHeaders });
   } catch {
     return json({ success: false }, 503);
   }
