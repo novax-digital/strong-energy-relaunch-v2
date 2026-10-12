@@ -59,6 +59,7 @@ const team = [
   ["Michael Müller", "Head of Marketing", "m.muller@strong-energy.eu", "/assets/michael-mueller-BnLIIN3Z.jpg"],
   ["Mohamed Abdellah Soukrassi", "Technical Sales Engineer", "msoukrassi@strong-energy.eu", "/assets/mohamed-abdellah-soukrassi.png"],
   ["Sophie Song", "Technical Support Engineer", "ssong@strong-energy.eu", "/assets/sophie-song.png"],
+  ["Nader Soumri", "Technical Support Engineer", "nsoumri@strong-energy.eu", "/assets/nader-soumri.webp"],
   ["Farideh M. Nezamabadi", "Order Operation Management", "fnezamabadi@strong-eu.com", "/assets/farideh-nezamabadi-DrisO523.jpg"]
 ];
 

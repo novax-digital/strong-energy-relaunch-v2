@@ -63,7 +63,7 @@ export function ProductReviewsCarousel({ reviews, profileUrl, lang, variant = "p
   const reviewTrack = (
     <ul aria-label={t.eyebrow} className={`grid snap-x snap-mandatory auto-cols-[100%] grid-flow-col gap-4 overflow-x-auto rounded-2xl pb-2 [scrollbar-width:none] sm:auto-cols-[calc((100%-1rem)/2)] ${hero ? "md:auto-cols-[calc((100%-3rem)/4)] text-left" : "lg:auto-cols-[calc((100%-3rem)/4)]"} [&::-webkit-scrollbar]:hidden`} id={`${id}-track`} onScroll={updateControls} ref={track} tabIndex={0}>
       {reviews.map((review) => (
-        <li className={`flex min-w-0 snap-start flex-col border ${hero ? "h-[234px] rounded-lg border-white/70 bg-white/90 p-[18px]" : "rounded-2xl border-border/50 bg-white p-5"}`} key={review.id}>
+        <li className={`flex min-w-0 snap-start flex-col border ${hero ? "h-[234px] rounded-lg border-white/50 bg-white/80 p-[18px]" : "rounded-2xl border-border/50 bg-white p-5"}`} key={review.id}>
           <div className="flex min-w-0 items-center gap-2.5">
             <span aria-hidden="true" className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/15 text-xs font-bold text-primary">{review.author.trim().charAt(0).toUpperCase()}</span>
             <div className="min-w-0">
