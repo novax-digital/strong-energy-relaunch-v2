@@ -315,7 +315,7 @@ export function CommercialLanding({ variant = "form" }: CommercialLandingProps) 
               { label: "Leistung", value: "50 kW" },
               { label: "Kapazität", value: "109,7 kWh" },
               { label: "Skalierbar", value: "x 6" },
-              { label: "Garantie", value: "bis 10 J." }
+              { label: "Garantie, individuell erweiterbar", value: "10 Jahre" }
             ],
             highlights: starQ.highlights.slice(0, 4),
             align: "left"
@@ -413,7 +413,7 @@ export function CommercialLanding({ variant = "form" }: CommercialLandingProps) 
           <Reveal delay={240}>
             <p className="mx-auto mt-5 max-w-xl px-2 text-sm leading-relaxed text-white drop-shadow sm:px-0 sm:text-base">
               Von 50 kW bis 232 kWh. Kompakte All-in-One Systeme mit CATL Zellen.
-              <br className="hidden sm:block" /> Integriertes Feuerlöschsystem, bis zu 10 Jahren Garantie. Direkt verfügbar.
+              <br className="hidden sm:block" /> Integriertes Feuerlöschsystem. 10 Jahre Garantie, individuell erweiterbar. Direkt verfügbar.
             </p>
           </Reveal>
           <Reveal delay={360}>
@@ -439,7 +439,7 @@ export function CommercialLanding({ variant = "form" }: CommercialLandingProps) 
               {[
                 { value: "50 - 115 kW", label: "Leistungsklasse" },
                 { value: "CATL LFP", label: "Premium-Zellen" },
-                { value: "10 Jahre", label: "Garantie möglich" },
+                { value: "10 Jahre Garantie", label: "Individuell erweiterbar" },
                 { value: "Outdoor", label: "IP54 - IP67" }
               ].map((stat) => (
                 <div key={stat.label} className="min-w-0 bg-black/35 px-3 py-2.5 backdrop-blur sm:py-3.5">
@@ -620,8 +620,8 @@ export function CommercialLanding({ variant = "form" }: CommercialLandingProps) 
               text: "Rauchdetektor, Gasdetektor, Aerosol-Löschsystem bei jedem System ab Werk."
             },
             {
-              title: "Bis 10 Jahre Garantie",
-              text: "3 Jahre Standardgarantie, erweiterbar auf bis zu 10 Jahre. Deutschsprachiger Support."
+              title: "10 Jahre Garantie",
+              text: "Individuell erweiterbar. Deutschsprachiger Support."
             },
             {
               title: "Made for Outdoor",

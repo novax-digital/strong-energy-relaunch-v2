@@ -111,8 +111,8 @@
     "name": "Star Q",
     "subtitle": "Gewerbespeicher",
     "tagline": "Gewerbespeicher Komplettsystem",
-    "shortDescription": "50 kW | 109,7 kWh | Bodenmontage | Outdoor – skalierbare Gewerbespeicherlösung für Industrie und Gewerbe.",
-    "description": "Der Star Q ist ein leistungsstarkes Komplettsystem mit integriertem Hybrid-Wechselrichter (Solis S6-EH3P50K-H), entwickelt für Industrie- und Gewerbeanwendungen. Mit 7 CATL-Batteriemodulen (je 15,7 kWh, 306 Ah), integriertem Feuerlöschsystem und Schutzklassen IP66 (Wechselrichter) sowie IP67 (Batteriemodule) bietet er höchste Sicherheit und Zuverlässigkeit. Das System unterstützt Peak-Shaving, Eigenverbrauchsoptimierung, Backup (50 kW) und ist schwarzstartfähig. Skalierbar bis 6 Systeme im Master/Slave-Betrieb. Strong Energy ist offizieller Vertriebspartner für CNTE und CATL Gewerbespeicher in Europa.",
+    "shortDescription": "50 kW | 109,7 kWh | Bodenmontage | Outdoor – skalierbare Gewerbespeicherlösung für Industrie und Gewerbe. 10 Jahre Garantie, individuell erweiterbar.",
+    "description": "Der Star Q ist ein leistungsstarkes Komplettsystem mit integriertem Hybrid-Wechselrichter (Solis S6-EH3P50K-H), entwickelt für Industrie- und Gewerbeanwendungen. Mit 7 CATL-Batteriemodulen (je 15,7 kWh, 306 Ah), integriertem Feuerlöschsystem und Schutzklassen IP66 (Wechselrichter) sowie IP67 (Batteriemodule) bietet er höchste Sicherheit und Zuverlässigkeit. Das System unterstützt Peak-Shaving, Eigenverbrauchsoptimierung, Backup (50 kW) und ist schwarzstartfähig. Skalierbar bis 6 Systeme im Master/Slave-Betrieb. Strong Energy ist offizieller Vertriebspartner für CNTE und CATL Gewerbespeicher in Europa.\n\n10 Jahre Garantie, individuell erweiterbar.",
     "images": [
       "/assets/star-q-wand-2wyd-H1y.jpg",
       "/assets/star-q-freisteller-DZaKVFge.jpg",
@@ -151,8 +151,8 @@
       },
       {
         "icon": "HeadphonesIcon",
-        "title": "Bis 10 Jahre Garantie",
-        "text": "3 Jahre Garantie, gegen Aufpreis erweiterbar auf max. 10 Jahre"
+        "title": "10 Jahre Garantie",
+        "text": "Individuell erweiterbar"
       }
     ],
     "specs": [],
@@ -537,7 +537,7 @@
           {
             "label": "Garantie",
             "values": [
-              "3 Jahre, gegen Aufpreis erweiterbar auf max. 10 Jahre"
+              "10 Jahre Garantie, individuell erweiterbar."
             ]
           },
           {
@@ -557,8 +557,8 @@
     "name": "Star H",
     "subtitle": "Gewerbespeicher",
     "tagline": "Gewerbespeicher Komplettsystem",
-    "shortDescription": "115 kW | 232,5 kWh | Bodenmontage | Outdoor – skalierbare Gewerbespeicherlösung für Industrie und Gewerbe.",
-    "description": "Der Star H-232 ist ein leistungsstarkes Komplettsystem mit YUNT MARS-125KT Wechselrichter (reduziert auf 115 kW), entwickelt für Industrie- und Gewerbeanwendungen. Mit 5 CATL-Batteriemodulen (je 46,5 kWh, 280 Ah), integriertem Feuerlöschsystem und Schutzklassen IP20 (Wechselrichter), IP54 (Schaltschrank) sowie IP65 (Batteriefach) bietet er höchste Sicherheit und Zuverlässigkeit. Skalierbar bis 12 Systeme im Master/Slave-Betrieb. Strong Energy ist offizieller Vertriebspartner für CNTE und CATL Gewerbespeicher in Europa.",
+    "shortDescription": "115 kW | 232,5 kWh | Bodenmontage | Outdoor – skalierbare Gewerbespeicherlösung für Industrie und Gewerbe. 10 Jahre Garantie, individuell erweiterbar.",
+    "description": "Der Star H-232 ist ein leistungsstarkes Komplettsystem mit YUNT MARS-125KT Wechselrichter (reduziert auf 115 kW), entwickelt für Industrie- und Gewerbeanwendungen. Mit 5 CATL-Batteriemodulen (je 46,5 kWh, 280 Ah), integriertem Feuerlöschsystem und Schutzklassen IP20 (Wechselrichter), IP54 (Schaltschrank) sowie IP65 (Batteriefach) bietet er höchste Sicherheit und Zuverlässigkeit. Skalierbar bis 12 Systeme im Master/Slave-Betrieb. Strong Energy ist offizieller Vertriebspartner für CNTE und CATL Gewerbespeicher in Europa.\n\n10 Jahre Garantie, individuell erweiterbar.",
     "images": [
       "/assets/star-h-outside-nz-mxvlP.webp",
       "/assets/star-h-freisteller-DUgu-b_H.jpg",
@@ -595,8 +595,8 @@
       },
       {
         "icon": "HeadphonesIcon",
-        "title": "Bis 10 Jahre Garantie",
-        "text": "3 Jahre Garantie, gegen Aufpreis erweiterbar auf max. 10 Jahre"
+        "title": "10 Jahre Garantie",
+        "text": "Individuell erweiterbar"
       }
     ],
     "specs": [],
@@ -834,7 +834,7 @@
           {
             "label": "Garantie",
             "values": [
-              "3 Jahre, gegen Aufpreis erweiterbar auf max. 10 Jahre"
+              "10 Jahre Garantie, individuell erweiterbar."
             ]
           },
           {

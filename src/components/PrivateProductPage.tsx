@@ -8,6 +8,7 @@ import { ProductFeatureIcon } from "@/components/ProductFeatureIcon";
 import { ProductImageGallery } from "@/components/ProductImageGallery";
 import { ProductInquiryButton } from "@/components/ProductInquiryModal";
 import { ProductVideoButton } from "@/components/ProductVideoButton";
+import { OnovoModelViewer } from "@/components/OnovoModelViewer";
 import { PrivateProductPasswordForm } from "@/components/PrivateProductPasswordForm";
 import { PrivateProductReviews } from "@/components/PrivateProductReviews";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
@@ -68,6 +69,7 @@ export async function PrivateProductPage({ lang, preview }: { lang: Language; pr
             </div>
           </div>
         </section>
+        {product.slug === "onovo-kunstor" ? <OnovoModelViewer lang={lang} src={`/api/private-preview/model/${preview}`} /> : null}
         <ProductDetailTabs downloads={downloads} product={product} lang={lang} additionalComparisonProduct={comparison} />
       </div>
       <Suspense fallback={null}>

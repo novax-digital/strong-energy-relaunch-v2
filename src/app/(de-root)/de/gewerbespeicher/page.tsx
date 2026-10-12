@@ -6,7 +6,7 @@ export const metadata: Metadata = createMetadata({
   path: "/de/gewerbespeicher",
   title: "Gewerbespeicher | All-in-One Systeme | Strong Energy",
   description:
-    "Industrie- und Gewerbespeicher von Strong Energy: Star Q und Star H mit CATL Zellen, integriertem Feuerlöschsystem und bis zu 10 Jahren Garantie.",
+    "Industrie- und Gewerbespeicher von Strong Energy: Star Q und Star H mit CATL Zellen und integriertem Feuerlöschsystem. 10 Jahre Garantie, individuell erweiterbar.",
   image: "/videos/gewerbespeicher_v3_poster.jpg"
 });
 

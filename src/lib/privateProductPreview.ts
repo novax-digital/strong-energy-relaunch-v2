@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import type { Language } from "@/lib/i18n";
 import type { Product } from "@/types/content";
 import type { AdditionalComparisonProduct } from "@/components/ProductComparisonTable";
+import { commercialWarranty } from "@/content/commercialWarranty";
 
 export const PREVIEW_COOKIE = "strong-energy-private-product";
 export const PREVIEW_MAX_AGE = 60 * 60 * 8;
@@ -46,6 +47,26 @@ export async function getPrivateProductPreview(preview: string, lang: Language) 
   const response = await requestPrivatePreview({ action: "content", preview, session, lang });
   if (!response.ok) return null;
   const content = await response.json() as { product: Product; comparison: AdditionalComparisonProduct };
+  if (content.product.slug === "onovo-kunstor") {
+    const warranty = commercialWarranty[lang];
+    const isWarranty = (label: string) => /garantie|warranty/i.test(label);
+    content.product.highlights = [
+      ...content.product.highlights.filter((item) => !isWarranty(item.title)),
+      { icon: "HeadphonesIcon", title: warranty.title, text: warranty.text }
+    ];
+    const sections = content.product.specsSections || [];
+    content.product.specs = content.product.specs.filter((row) => !isWarranty(row.label));
+    content.product.specsSections = [
+      ...sections.map((section) => ({
+        ...section,
+        rows: section.rows?.filter((row) => !isWarranty(row.label)),
+        groups: section.groups?.map((group) => ({ ...group, rows: group.rows.filter((row) => !isWarranty(row.label)) }))
+      })),
+      { title: warranty.label, rows: [{ label: warranty.label, values: [warranty.sentence] }] }
+    ];
+    content.product.shortDescription += ` ${warranty.sentence}`;
+    content.product.description += `\n\n${warranty.sentence}`;
+  }
   const mediaPath = `/api/private-preview/media/${preview}/`;
   const replaceMediaPath = (path: string) => path.replace("/api/private-preview/media/", mediaPath);
   content.product.images = content.product.images.map(replaceMediaPath);
