@@ -1,15 +1,21 @@
 import Image from "next/image";
 import { ArrowDown } from "lucide-react";
 import { ProductInquiryButton } from "@/components/ProductInquiryModal";
+import { SegmentLoopVideo } from "@/components/SegmentLoopVideo";
 import type { Product } from "@/types/content";
 import { translations, type Language } from "@/lib/i18n";
 
-export function ProductDetailHero({ product, lang = "de" }: { product: Product; lang?: Language }) {
+export function ProductDetailHero({ product, lang = "de", videoLoopSegment }: { product: Product; lang?: Language; videoLoopSegment?: { start: number; end: number } }) {
   const image = product.heroImage || product.images[0];
   const t = translations[lang].products;
   return (
     <section className="relative h-[65vh] md:h-[65vh] w-full overflow-hidden bg-black">
-      {product.heroVideoWebm || product.heroVideo ? (
+      {product.heroVideoWebm || product.heroVideo ? videoLoopSegment ? (
+        <SegmentLoopVideo start={videoLoopSegment.start} end={videoLoopSegment.end} poster={image}>
+          {product.heroVideoWebm ? <source src={product.heroVideoWebm} type="video/webm" /> : null}
+          {product.heroVideo ? <source src={product.heroVideo} type="video/mp4" /> : null}
+        </SegmentLoopVideo>
+      ) : (
         <video className="absolute inset-0 w-full h-full object-cover" autoPlay loop muted playsInline preload="metadata" poster={image}>
           {product.heroVideoWebm ? <source src={product.heroVideoWebm} type="video/webm" /> : null}
           {product.heroVideo ? <source src={product.heroVideo} type="video/mp4" /> : null}
