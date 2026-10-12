@@ -7,7 +7,6 @@ import { ProductDetailTabs } from "@/components/ProductDetailTabs";
 import { ProductFeatureIcon } from "@/components/ProductFeatureIcon";
 import { ProductImageGallery } from "@/components/ProductImageGallery";
 import { ProductInquiryButton } from "@/components/ProductInquiryModal";
-import { ProductVideoButton } from "@/components/ProductVideoButton";
 import { OnovoModelViewer } from "@/components/OnovoModelViewer";
 import { PrivateProductPasswordForm } from "@/components/PrivateProductPasswordForm";
 import { PrivateProductReviews } from "@/components/PrivateProductReviews";
@@ -64,7 +63,6 @@ export async function PrivateProductPage({ lang, preview }: { lang: Language; pr
               </div>
               <div className="mt-7 flex flex-col gap-4 sm:flex-row">
                 <ProductInquiryButton product={product} lang={lang} label={t.inquireNow} />
-                <ProductVideoButton product={product} label={t.productVideo} />
               </div>
             </div>
           </div>
