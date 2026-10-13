@@ -11,6 +11,13 @@ import {
 export async function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
 
+  if (pathname.startsWith("/3d/") || pathname.startsWith("/api/model-share/")) {
+    const response = NextResponse.next();
+    for (const [key, value] of Object.entries(PRIVATE_RESPONSE_HEADERS)) response.headers.set(key, value);
+    response.headers.set("Referrer-Policy", "no-referrer");
+    return response;
+  }
+
   if (isPrivateProductPath(pathname) || pathname.startsWith("/api/private-preview/")) {
     const response = NextResponse.next();
     for (const [key, value] of Object.entries(PRIVATE_RESPONSE_HEADERS)) response.headers.set(key, value);

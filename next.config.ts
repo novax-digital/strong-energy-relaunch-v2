@@ -3,7 +3,8 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   trailingSlash: false,
   outputFileTracingIncludes: {
-    "/api/private-preview/model/*": ["./private-assets/onovo-kunstor/Onovo-Kunstor.glb"]
+    "/api/private-preview/model/*": ["./private-assets/onovo-kunstor/Onovo-Kunstor.glb"],
+    "/api/model-share/*": ["./private-assets/onovo-kunstor/Onovo-Kunstor.glb"]
   },
   images: {
     remotePatterns: [

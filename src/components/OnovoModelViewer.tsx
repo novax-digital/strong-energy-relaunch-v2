@@ -72,7 +72,7 @@ function interpolate(value: number, clip: Clip, input: 0 | 1) {
   return Math.abs(value - points[0][input]) < Math.abs(value - points.at(-1)![input]) ? points[0][output] : points.at(-1)![output];
 }
 
-export function OnovoModelViewer({ lang, src }: { lang: Language; src: string }) {
+export function OnovoModelViewer({ lang, src, standalone = false }: { lang: Language; src: string; standalone?: boolean }) {
   const t = copy[lang];
   const id = useId();
   const viewerRef = useRef<ModelViewerElement | null>(null);
@@ -261,12 +261,12 @@ export function OnovoModelViewer({ lang, src }: { lang: Language; src: string })
   const buttonClass = "flex min-h-[60px] min-w-0 flex-col items-center justify-center gap-1 rounded-xl border border-border bg-white px-2 py-2 text-xs font-semibold leading-snug text-foreground transition-colors hover:border-primary/50 hover:bg-primary/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-wait disabled:opacity-50 sm:flex-row sm:gap-2 sm:text-sm";
 
   return (
-    <section id={lang === "de" ? "3d-modell" : "3d-model"} className="container-wide my-12 scroll-mt-28" aria-labelledby={`${id}-title`} data-onovo-viewer ref={sectionRef}>
+    <section id={lang === "de" ? "3d-modell" : "3d-model"} className={`container-wide w-full ${standalone ? "my-0" : "my-12 scroll-mt-28"}`} aria-labelledby={`${id}-title`} data-onovo-viewer ref={sectionRef}>
       <div className="min-w-0 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-secondary/60 via-white to-secondary/30 p-4 sm:p-6 lg:p-8">
         <div className="mb-5 flex flex-col justify-between gap-3 sm:flex-row sm:items-start">
           <div className="max-w-2xl">
             <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-primary"><Box aria-hidden="true" className="h-4 w-4" />{t.eyebrow}</p>
-            <h2 className="mt-2 text-2xl font-bold text-foreground md:text-3xl" id={`${id}-title`}>{t.title}</h2>
+            {createElement(standalone ? "h1" : "h2", { className: "mt-2 text-2xl font-bold text-foreground md:text-3xl", id: `${id}-title` }, t.title)}
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{t.description}</p>
           </div>
           <p className="shrink-0 text-xs font-medium text-primary" role="status" aria-live="polite" data-model-status>
