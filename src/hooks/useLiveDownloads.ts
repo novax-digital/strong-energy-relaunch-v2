@@ -29,9 +29,18 @@ export function useLiveDownloads(initialDownloads: DownloadItem[], productSlug?:
 
         if (error || !Array.isArray(data)) return;
 
-        const nextDownloads = (data as DownloadRow[])
-          .map((row) => normalizeDownload(row, localFilesById.get(row.id)))
-          .filter((download) => !productSlug || download.product_slugs.includes(productSlug));
+        const cmsDownloads = (data as DownloadRow[]).map((row) => normalizeDownload(row, localFilesById.get(row.id)));
+        const cmsIds = new Set(cmsDownloads.map((download) => download.id));
+        // Keep PDFs bundled with the site alongside downloads managed in the CMS.
+        const bundledDownloads = Array.from(localFilesById.values()).filter((download) =>
+          download.is_published &&
+          !download.file_url_de && !download.file_url_en &&
+          Boolean(download.local_file_url_de || download.local_file_url_en) &&
+          !cmsIds.has(download.id)
+        );
+        const nextDownloads = [...bundledDownloads, ...cmsDownloads]
+          .filter((download) => !productSlug || download.product_slugs.includes(productSlug))
+          .sort((a, b) => a.sort_order - b.sort_order);
 
         if (active && nextDownloads.length) {
           setDownloads(nextDownloads);

@@ -8,6 +8,25 @@
   },
   "items": [
     {
+      "id": "aaea130c-1f5a-4bd3-a8bd-cf9954bd08f3",
+      "title_de": "Onovo Kunstor – Solar-Carport",
+      "title_en": "Onovo Kunstor – solar carport",
+      "description_de": null,
+      "description_en": null,
+      "category_id": "f3dbdd7e-7969-4365-88da-40c69bdc7fe5",
+      "media_type": "image",
+      "file_url": "/assets/products/onovo-kunstor/onovo-carport.jpg",
+      "video_url": null,
+      "thumbnail_url": "/assets/products/onovo-kunstor/onovo-carport.jpg",
+      "local_file_url": "/assets/products/onovo-kunstor/onovo-carport.jpg",
+      "local_thumbnail_url": "/assets/products/onovo-kunstor/onovo-carport.jpg",
+      "product_slugs": [
+        "onovo-kunstor"
+      ],
+      "is_published": true,
+      "sort_order": 0
+    },
+    {
       "id": "b164dfc0-c1e9-4524-ad7b-d0b8e5c99c87",
       "title_de": "Onovo Kunstor – Büro außen",
       "title_en": "Onovo Kunstor – outside an office",
@@ -20,25 +39,6 @@
       "thumbnail_url": "/assets/products/onovo-kunstor/onovo-office.jpg",
       "local_file_url": "/assets/products/onovo-kunstor/onovo-office.jpg",
       "local_thumbnail_url": "/assets/products/onovo-kunstor/onovo-office.jpg",
-      "product_slugs": [
-        "onovo-kunstor"
-      ],
-      "is_published": true,
-      "sort_order": 0
-    },
-    {
-      "id": "aaea130c-1f5a-4bd3-a8bd-cf9954bd08f3",
-      "title_de": "Onovo Kunstor – Wallboxen",
-      "title_en": "Onovo Kunstor – EV charging stations",
-      "description_de": null,
-      "description_en": null,
-      "category_id": "f3dbdd7e-7969-4365-88da-40c69bdc7fe5",
-      "media_type": "image",
-      "file_url": "/assets/products/onovo-kunstor/onovo-wallboxes.jpg",
-      "video_url": null,
-      "thumbnail_url": "/assets/products/onovo-kunstor/onovo-wallboxes.jpg",
-      "local_file_url": "/assets/products/onovo-kunstor/onovo-wallboxes.jpg",
-      "local_thumbnail_url": "/assets/products/onovo-kunstor/onovo-wallboxes.jpg",
       "product_slugs": [
         "onovo-kunstor"
       ],

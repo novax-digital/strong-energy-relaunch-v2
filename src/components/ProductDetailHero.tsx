@@ -2,6 +2,7 @@ import Image from "next/image";
 import { ArrowDown } from "lucide-react";
 import { ProductInquiryButton } from "@/components/ProductInquiryModal";
 import { SegmentLoopVideo } from "@/components/SegmentLoopVideo";
+import { ProductAvailability } from "@/components/ProductAvailability";
 import type { Product } from "@/types/content";
 import { translations, type Language } from "@/lib/i18n";
 
@@ -32,6 +33,7 @@ export function ProductDetailHero({ product, lang = "de", videoLoopSegment }: { 
           <h1 className="text-3xl sm:text-5xl md:text-5xl lg:text-6xl font-bold text-white leading-[0.95] tracking-normal drop-shadow-2xl">
             {product.name}
           </h1>
+          <ProductAvailability label={product.availabilityLabel} className="justify-center text-white/90" />
           <p className="text-sm md:text-xl text-white/80 mt-3 md:mt-4 max-w-xl mx-auto drop-shadow-lg">{product.subtitle}</p>
           {product.tagline ? <p className="text-xs md:text-base text-white/60 mt-1 md:mt-2 max-w-xl mx-auto drop-shadow-lg">{product.tagline}</p> : null}
           <div className="flex flex-col sm:flex-row justify-center items-center gap-2 md:gap-3 mt-5 md:mt-8">

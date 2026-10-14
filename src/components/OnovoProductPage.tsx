@@ -7,6 +7,8 @@ import { ProductDetailTabs } from "@/components/ProductDetailTabs";
 import { ProductFeatureIcon } from "@/components/ProductFeatureIcon";
 import { ProductImageGallery } from "@/components/ProductImageGallery";
 import { ProductInquiryButton } from "@/components/ProductInquiryModal";
+import { ProductVideoButton } from "@/components/ProductVideoButton";
+import { ProductAvailability } from "@/components/ProductAvailability";
 import { OnovoModelViewer } from "@/components/OnovoModelViewer";
 import { PrivateProductReviews } from "@/components/PrivateProductReviews";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
@@ -39,6 +41,7 @@ export function OnovoProductPage({ lang, product }: { lang: Language; product: P
             <div className="flex flex-col justify-center">
               <span className="text-sm font-semibold uppercase tracking-wider text-primary">{product.category}</span>
               <h2 className="mt-2 text-3xl font-bold text-foreground md:text-4xl lg:text-[2.5rem]">{product.name}</h2>
+              <ProductAvailability label={product.availabilityLabel} />
               <p className="mt-2 text-lg font-medium text-muted-foreground">{product.subtitle}</p>
               <p className="mt-6 whitespace-pre-line text-base leading-[1.625] text-muted-foreground">{product.shortDescription}</p>
               <div className="mt-7 grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -56,6 +59,7 @@ export function OnovoProductPage({ lang, product }: { lang: Language; product: P
               </div>
               <div className="mt-7 flex flex-col gap-4 sm:flex-row">
                 <ProductInquiryButton product={product} lang={lang} label={t.inquireNow} />
+                {lang === "de" ? <ProductVideoButton product={product} portrait /> : null}
               </div>
             </div>
           </div>

@@ -2,10 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Battery, CheckCircle2, ChevronDown, Clock, HeadphonesIcon, Link as LinkIcon, Shield, X, Zap } from "lucide-react";
+import { ArrowRight, Battery, CheckCircle2, ChevronDown, Clock, HeadphonesIcon, Link as LinkIcon, Shield, Zap } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { ReactNode } from "react";
-import { ContactForm } from "@/components/ContactForm";
+import { ProductInquiryModal, type ProductInquiryTarget } from "@/components/ProductInquiryModal";
+import { ProductAvailability } from "@/components/ProductAvailability";
 import { HubSpotCtaModal } from "@/components/HubSpotCtaModal";
 import { products } from "@/content/products";
 import type { ProductHighlight } from "@/types/content";
@@ -24,6 +25,7 @@ type ProductFeatureSection = {
   categorySlug: string;
   eyebrow: string;
   name: string;
+  availabilityLabel?: string;
   tagline: string;
   description: string;
   images: string[];
@@ -243,54 +245,8 @@ function CommercialProductGallery({ alt, eyebrow, images }: { alt: string; eyebr
   );
 }
 
-function InquiryModal({
-  onClose,
-  productName,
-  productSlug
-}: {
-  onClose: () => void;
-  productName?: string;
-  productSlug?: string;
-}) {
-  const defaultMessage = `Hallo Strong Energy Team,\n\nich interessiere mich für ${productName ?? "eine Gewerbespeicher Beratung"} und möchte ein konkretes Angebot besprechen.`;
-
-  useEffect(() => {
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onClose();
-    };
-    document.addEventListener("keydown", onKey);
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = "";
-    };
-  }, [onClose]);
-
-  return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto bg-black/60 p-4 backdrop-blur-sm" onClick={onClose} role="dialog" aria-modal="true">
-      <div className="relative my-8 w-full max-w-3xl rounded-3xl bg-background shadow-2xl" onClick={(event) => event.stopPropagation()}>
-        <button className="absolute right-4 top-4 z-10 rounded-full bg-white/90 p-2 shadow-sm transition-colors hover:bg-white" onClick={onClose} aria-label="Schließen" type="button">
-          <X className="h-5 w-5" />
-        </button>
-        <div className="h-1.5 rounded-t-3xl bg-gradient-to-r from-[#d7d42f] to-[#28a795]" />
-        <div className="p-4 pt-10 sm:p-6 sm:pt-12">
-          <ContactForm
-            customerType="gewerbe"
-            defaultMessage={defaultMessage}
-            defaultTopic="Gewerbespeicher Beratung"
-            intent="inquiry"
-            productName={productName}
-            productSlug={productSlug}
-            submitLabel="Anfrage senden"
-          />
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export function CommercialLanding({ variant = "form" }: CommercialLandingProps) {
-  const [formProduct, setFormProduct] = useState<{ name?: string; slug?: string }>({});
+  const [formProduct, setFormProduct] = useState<ProductInquiryTarget>({ name: "Gewerbespeicher", slug: "gewerbespeicher-beratung", categorySlug: "gewerbespeicher-aio" });
   const [heroVideoReady, setHeroVideoReady] = useState(false);
   const [scrollY, setScrollY] = useState(0);
   const [showForm, setShowForm] = useState(false);
@@ -308,6 +264,7 @@ export function CommercialLanding({ variant = "form" }: CommercialLandingProps) 
             categorySlug: onovo.categorySlug,
             eyebrow: "All-in-One · 125 kW",
             name: onovo.name,
+            availabilityLabel: onovo.availabilityLabel,
             tagline: "Hybrid. Flüssiggekühlt. Für Gewerbe und Industrie.",
             description: onovo.shortDescription,
             images: onovo.images,
@@ -373,9 +330,11 @@ export function CommercialLanding({ variant = "form" }: CommercialLandingProps) 
 
   const heroFade = Math.max(0, 1 - scrollY / 500);
   const openForm = (name?: string, slug?: string) => {
-    setFormProduct({
-      name: name ?? "Gewerbespeicher Beratung",
-      slug: slug ?? "gewerbespeicher-beratung"
+    const product = products.find((item) => item.slug === slug);
+    setFormProduct(product ?? {
+      name: name ?? "Gewerbespeicher",
+      slug: slug ?? "gewerbespeicher-beratung",
+      categorySlug: "gewerbespeicher-aio"
     });
     if (variant === "hubspot") {
       setShowHubspot(true);
@@ -433,7 +392,7 @@ export function CommercialLanding({ variant = "form" }: CommercialLandingProps) 
           <Reveal delay={240}>
             <p className="mx-auto mt-5 max-w-xl px-2 text-sm leading-relaxed text-white drop-shadow sm:px-0 sm:text-base">
               Von 50 kW bis 232 kWh. Kompakte All-in-One Systeme mit CATL Zellen.
-              <br className="hidden sm:block" /> Integriertes Feuerlöschsystem. 10 Jahre Garantie, individuell erweiterbar. Direkt verfügbar.
+              <br className="hidden sm:block" /> Integriertes Feuerlöschsystem. 10 Jahre Garantie, individuell erweiterbar. Star Q und Star H direkt verfügbar.
             </p>
           </Reveal>
           <Reveal delay={360}>
@@ -521,6 +480,7 @@ export function CommercialLanding({ variant = "form" }: CommercialLandingProps) 
               <div>
                 <Reveal delay={100} direction={section.align === "right" ? "left" : "right"}>
                   <h2 className="text-5xl font-bold leading-[0.95] tracking-tight text-foreground sm:text-6xl md:text-7xl">{section.name}</h2>
+                  <ProductAvailability label={section.availabilityLabel} />
                 </Reveal>
                 <Reveal delay={180}>
                   <p className="mt-4 bg-gradient-to-r from-[#d7d42f] to-[#28a795] bg-clip-text text-xl font-medium text-transparent sm:text-2xl">{section.tagline}</p>
@@ -703,7 +663,7 @@ export function CommercialLanding({ variant = "form" }: CommercialLandingProps) 
         </button>
       </div>
 
-      {showForm ? <InquiryModal productName={formProduct.name} productSlug={formProduct.slug} onClose={() => setShowForm(false)} /> : null}
+      {showForm ? <ProductInquiryModal product={formProduct} lang="de" onClose={() => setShowForm(false)} /> : null}
       {showHubspot ? <HubSpotCtaModal productName={formProduct.name} onClose={() => setShowHubspot(false)} /> : null}
     </div>
   );

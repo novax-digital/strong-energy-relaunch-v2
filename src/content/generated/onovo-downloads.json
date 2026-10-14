@@ -1,0 +1,17 @@
+[
+  {
+    "id": "b347a793-6bac-4be9-b020-8b8123d30af1",
+    "title_de": "Onovo Kunstor – Datenblatt",
+    "title_en": "Onovo Kunstor – Datasheet",
+    "description_de": null,
+    "description_en": null,
+    "category": "Datenblatt",
+    "file_url_de": null,
+    "file_url_en": null,
+    "local_file_url_de": "/assets/downloads/STRONG_Onovo_Kunstor_Datenblatt_DE.pdf",
+    "local_file_url_en": "/assets/downloads/STRONG_Onovo_Kunstor_Datasheet_EN.pdf",
+    "product_slugs": ["onovo-kunstor"],
+    "is_published": true,
+    "sort_order": 0
+  }
+]

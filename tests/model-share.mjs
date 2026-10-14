@@ -42,7 +42,7 @@ try {
     page.on("pageerror", (error) => errors.push(error.message));
     await page.goto(pagePath);
     await page.getByRole("heading", { name: "Onovo Kunstor in 3D", level: 1 }).waitFor();
-    await page.waitForFunction(() => document.querySelector("[data-model-status]")?.textContent === "Bereit zum Erkunden", undefined, { timeout: 90_000 });
+    await page.waitForFunction(() => document.querySelector("[data-model-status]")?.getAttribute("data-model-status") === "ready", undefined, { timeout: 90_000 });
     assert.equal(await page.locator("header, footer, nav, video").count(), 0);
     assert.equal((await context.cookies()).some((cookie) => cookie.name.startsWith("strong-energy-")), false);
 
@@ -60,7 +60,7 @@ try {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.reload();
-    await page.waitForFunction(() => document.querySelector("[data-model-status]")?.textContent === "Bereit zum Erkunden");
+    await page.waitForFunction(() => document.querySelector("[data-model-status]")?.getAttribute("data-model-status") === "ready");
     await page.getByRole("slider", { name: "Türöffnung" }).fill("60");
     await page.waitForFunction(() => document.querySelector("[data-door-angle]")?.textContent === "60°");
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);

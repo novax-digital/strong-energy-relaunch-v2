@@ -8,6 +8,7 @@ import type { Product } from "@/types/content";
 import type { Language } from "@/lib/i18n";
 
 const initialState: ContactState = { ok: false, message: "" };
+export type ProductInquiryTarget = Pick<Product, "name" | "slug" | "categorySlug">;
 
 const COMMERCIAL_STORAGE_SLUGS = ["onovo-kunstor", "star-q", "star-h", "enerc", "enerc-plus", "gewerbespeicher-kompakt"];
 const UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_content"] as const;
@@ -193,7 +194,7 @@ export function ProductInquiryButton({
   label,
   className
 }: {
-  product: Product;
+  product: ProductInquiryTarget;
   lang?: Language;
   label?: string;
   className?: string;
@@ -215,10 +216,11 @@ export function ProductInquiryButton({
   );
 }
 
-function ProductInquiryModal({ product, lang, onClose }: { product: Product; lang: Language; onClose: () => void }) {
+export function ProductInquiryModal({ product, lang, onClose }: { product: ProductInquiryTarget; lang: Language; onClose: () => void }) {
   const t = labels[lang];
   const [state, formAction, pending] = useActionState(sendProductInquiry, initialState);
   const formRef = useRef<HTMLFormElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
   const requestIdRef = useRef("");
   const requestIdInputRef = useRef<HTMLInputElement>(null);
   const isCommercialStorage = COMMERCIAL_STORAGE_SLUGS.includes(product.slug) || ["gewerbespeicher-aio", "commercial-storage-aio"].includes(product.categorySlug);
@@ -242,11 +244,31 @@ function ProductInquiryModal({ product, lang, onClose }: { product: Product; lan
 
   useEffect(() => {
     const previousOverflow = document.body.style.overflow;
+    const previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     document.body.style.overflow = "hidden";
+    dialogRef.current?.focus();
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
+      if (event.key !== "Tab") return;
+      const elements = dialogRef.current?.querySelectorAll<HTMLElement>('button:not(:disabled), input:not([type="hidden"]):not(:disabled), select:not(:disabled), a[href]');
+      const focusable = Array.from(elements ?? []).filter((element) => element.getClientRects().length > 0);
+      const first = focusable[0];
+      const last = focusable.at(-1);
+      if (event.shiftKey && (document.activeElement === first || document.activeElement === dialogRef.current)) {
+        event.preventDefault();
+        last?.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first?.focus();
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
     return () => {
       document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", onKeyDown);
+      previousFocus?.focus();
     };
-  }, []);
+  }, [onClose]);
 
   useEffect(() => {
     if (!state.ok || state.requestId !== requestIdRef.current) return;
@@ -262,10 +284,15 @@ function ProductInquiryModal({ product, lang, onClose }: { product: Product; lan
   return (
     <div className="fixed inset-0 z-[120] flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm" onMouseDown={onClose}>
       <div
-        className="w-full max-w-lg overflow-hidden rounded-[24px] border border-white/70 bg-white text-left shadow-[0_28px_80px_-20px_rgba(0,0,0,0.45)]"
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label={`${t.inquiryFor} ${product.name}`}
+        tabIndex={-1}
+        className="flex max-h-[calc(100dvh-2rem)] w-full max-w-lg flex-col overflow-hidden rounded-[24px] border border-white/70 bg-white text-left shadow-[0_28px_80px_-20px_rgba(0,0,0,0.45)]"
         onMouseDown={(event) => event.stopPropagation()}
       >
-        <div className="relative px-7 pb-5 pt-7">
+        <div className="relative shrink-0 px-7 pb-5 pt-7">
           <button
             type="button"
             className="absolute right-5 top-5 flex h-9 w-9 items-center justify-center rounded-full text-slate-500 transition hover:bg-slate-100 hover:text-slate-900"
@@ -280,11 +307,11 @@ function ProductInquiryModal({ product, lang, onClose }: { product: Product; lan
           </p>
         </div>
 
-        <div className="h-px bg-slate-100" />
+        <div className="h-px shrink-0 bg-slate-100" />
 
         <form
           action={formAction}
-          className="max-h-[calc(90vh-116px)] space-y-5 overflow-y-auto px-7 py-7"
+          className="min-h-0 space-y-5 overflow-y-auto px-7 py-7"
           ref={formRef}
           onSubmit={(event) => {
             requestIdRef.current ||= crypto.randomUUID();

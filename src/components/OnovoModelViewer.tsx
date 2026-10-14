@@ -10,7 +10,7 @@ const copy = {
   de: {
     eyebrow: "Interaktives 3D-Modell", title: "Onovo Kunstor in 3D",
     description: "Betrachten Sie das Gehäuse, die Batteriemodule und die Anschlüsse aus jeder Perspektive – auch bei geöffneter Tür.",
-    loading: "3D-Modell wird geladen", ready: "Bereit zum Erkunden", progress: "Ladefortschritt des 3D-Modells",
+    loading: "3D-Modell wird geladen", progress: "Ladefortschritt des 3D-Modells",
     open: "Tür öffnen", close: "Tür schließen",
     left: "Links drehen", right: "Rechts drehen", zoomIn: "Hineinzoomen", zoomOut: "Herauszoomen",
     doorAngle: "Türöffnung", angleValue: (angle: number) => `${angle} Grad`, reset: "Ansicht zurücksetzen",
@@ -30,7 +30,7 @@ const copy = {
   en: {
     eyebrow: "Interactive 3D model", title: "Onovo Kunstor in 3D",
     description: "Explore the cabinet, battery modules and connections from every angle – including with the door open.",
-    loading: "Loading 3D model", ready: "Ready to explore", progress: "3D model loading progress",
+    loading: "Loading 3D model", progress: "3D model loading progress",
     open: "Open door", close: "Close door",
     left: "Rotate left", right: "Rotate right", zoomIn: "Zoom in", zoomOut: "Zoom out",
     doorAngle: "Door opening", angleValue: (angle: number) => `${angle} degrees`, reset: "Reset view",
@@ -261,7 +261,7 @@ export function OnovoModelViewer({ lang, src, standalone = false }: { lang: Lang
   const buttonClass = "flex min-h-[60px] min-w-0 flex-col items-center justify-center gap-1 rounded-xl border border-border bg-white px-2 py-2 text-xs font-semibold leading-snug text-foreground transition-colors hover:border-primary/50 hover:bg-primary/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-wait disabled:opacity-50 sm:flex-row sm:gap-2 sm:text-sm";
 
   return (
-    <section id={lang === "de" ? "3d-modell" : "3d-model"} className={`container-wide w-full ${standalone ? "my-0" : "my-12 scroll-mt-28"}`} aria-labelledby={`${id}-title`} data-onovo-viewer ref={sectionRef}>
+    <section id={lang === "de" ? "3d-modell" : "3d-model"} className={`container-wide w-full ${standalone ? "my-0" : "my-12 scroll-mt-28"}`} aria-labelledby={`${id}-title`} data-onovo-viewer data-model-status={status} ref={sectionRef}>
       <div className="min-w-0 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-secondary/60 via-white to-secondary/30 p-4 sm:p-6 lg:p-8">
         <div className="mb-5 flex flex-col justify-between gap-3 sm:flex-row sm:items-start">
           <div className="max-w-2xl">
@@ -269,8 +269,8 @@ export function OnovoModelViewer({ lang, src, standalone = false }: { lang: Lang
             {createElement(standalone ? "h1" : "h2", { className: "mt-2 text-2xl font-bold text-foreground md:text-3xl", id: `${id}-title` }, t.title)}
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{t.description}</p>
           </div>
-          <p className="shrink-0 text-xs font-medium text-primary" role="status" aria-live="polite" data-model-status>
-            {status === "ready" ? t.ready : status === "error" ? "" : `${t.loading}… ${progress}%`}
+          <p className="shrink-0 text-xs font-medium text-primary" role="status" aria-live="polite">
+            {status === "loading" ? `${t.loading}… ${progress}%` : ""}
           </p>
         </div>
         <div className="relative h-[360px] w-full overflow-hidden rounded-2xl border border-border/60 bg-white sm:h-[440px] lg:h-[500px]" data-model-stage aria-busy={status === "loading"}>

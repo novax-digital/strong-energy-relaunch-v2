@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import type { Product } from "@/types/content";
+import { ProductAvailability } from "@/components/ProductAvailability";
 import { localizedPath, translations, type Language } from "@/lib/i18n";
 
 export function ProductCard({ product, priority = false, lang = "de" }: { product: Product; priority?: boolean; lang?: Language }) {
@@ -16,6 +17,7 @@ export function ProductCard({ product, priority = false, lang = "de" }: { produc
         <div className="p-6">
           <p className="text-xs font-semibold text-primary uppercase tracking-wider">{product.category}</p>
           <h2 className="text-xl font-bold text-foreground mt-2">{product.name}</h2>
+          <ProductAvailability label={product.availabilityLabel} />
           <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{product.subtitle}</p>
           <span className="flex items-center gap-2 mt-4 text-primary text-sm font-semibold group-hover:gap-3 transition-all">
             {t.viewDetails}

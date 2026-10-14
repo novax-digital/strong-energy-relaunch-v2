@@ -9,12 +9,12 @@
     "shortDescription": "125 kW | 261 kWh | Flüssigkühlung | Outdoor – Hybrid-Komplettsystem für Gewerbe und Industrie mit PV, Netz, Generator und Backup in einem integrierten System. 10 Jahre Garantie, individuell erweiterbar.",
     "description": "Onovo Kunstor verbindet 261 kWh Batteriespeicher mit einem leistungsstarken 125-kW-Hybrid-Wechselrichter in einem kompakten All-in-One-Energiesystem. Das System integriert Solarenergie, Speicher und Generator für flexible Microgrid-Anwendungen im Netz- und Inselbetrieb. Bis zu 250 kW PV-Eingangsleistung, 10 MPPT und 20 Strings ermöglichen die Einbindung leistungsstarker Photovoltaikanlagen.\n\nDie intelligente Flüssigkühlung unterstützt eine lange Lebensdauer der 314-Ah-Grade-A-LFP-Zellen (Hersteller: REPT) mit mehr als 15 Jahren Zelllebensdauer. Ein mehrstufiges Schutzkonzept mit intelligentem BMS, CO-, Rauch- und Temperaturüberwachung sowie Aerosol-Löschsystem schützt Zellen, Packs und Gehäuse. IP55 und C5-Korrosionsschutz machen das System für unterschiedliche Außenstandorte geeignet.\n\nEigenverbrauchsoptimierung, Peak Shaving, Einspeisepriorität und Backup-Priorität lassen sich über das integrierte Energiemanagement abbilden. Echtzeitüberwachung ermöglicht die Verwaltung von verschiedenen Standorten aus. Der Backup-Ausgang liefert 125 kW, schaltet in weniger als 10 ms um und unterstützt 150 % Überlast für 10 Sekunden.\n\nMit rund 1,6 m² Stellfläche vereinfacht das integrierte Design die Installation. Bis zu 6 Systeme im Inselbetrieb und bis zu 24 Systeme im Netzbetrieb lassen sich kombinieren; der Hybrid-Wechselrichter unterstützt bis zu 6 parallele Einheiten. Die BESS-Kapazität lässt sich für Anwendungen mit 2 und 4 Stunden erweitern.\n\n10 Jahre Garantie, individuell erweiterbar.",
     "images": [
+      "/assets/products/onovo-kunstor/onovo-carport.jpg",
       "/assets/products/onovo-kunstor/onovo-office.jpg",
-      "/assets/products/onovo-kunstor/onovo-wallboxes.jpg",
       "/assets/products/onovo-kunstor/onovo-warehouse.jpg",
       "/assets/products/onovo-kunstor/cabinet.webp"
     ],
-    "heroImage": "/assets/products/onovo-kunstor/onovo-office.jpg",
+    "heroImage": "/assets/products/onovo-kunstor/onovo-carport.jpg",
     "heroVideo": "/assets/products/onovo-kunstor/hero-fullhd.mp4",
     "specs": [],
     "specsSections": [
@@ -87,7 +87,7 @@
           },
           {
             "label": "Zertifizierungen",
-            "value": "IEC 62619, IEC 62477, IEC 61000, UN 38.3, MSDS"
+            "value": "IEC 62619, IEC 62477, IEC 61000, UN 38.3, MSDS, ZEREZ"
           }
         ]
       },
@@ -266,7 +266,9 @@
         "title": "10 Jahre Garantie",
         "text": "Individuell erweiterbar"
       }
-    ]
+    ],
+    "availabilityLabel": "Lieferbar ab November 2026",
+    "productVideo": "/assets/products/onovo-kunstor/niklas-erklaert-onovo.mp4"
   },
   "en": {
     "slug": "onovo-kunstor",
@@ -278,12 +280,12 @@
     "shortDescription": "125 kW | 261 kWh | Liquid cooling | Outdoor – a complete hybrid system for commercial and industrial use, combining PV, grid, generator and backup in one integrated system. 10-year warranty, individually extendable.",
     "description": "Onovo Kunstor combines 261 kWh of battery storage with a powerful 125 kW hybrid inverter in a compact all-in-one energy storage system. The system integrates solar power, storage and a generator for flexible microgrid applications in grid-connected and off-grid operation. Up to 250 kW of PV input power, 10 MPPTs and 20 strings enable integration with high-capacity photovoltaic installations.\n\nIntelligent liquid cooling supports the long service life of the 314 Ah Grade-A LFP cells (manufacturer: REPT) with a cell service life of more than 15 years. Multi-layer protection with a smart BMS, CO, smoke and temperature detection, and aerosol fire suppression protects cells, packs and the enclosure. IP55 and C5 corrosion resistance suit a range of outdoor installation environments.\n\nIntegrated energy management supports self-consumption, peak shaving, feed-in priority and backup priority. Real-time monitoring enables management from different locations. The backup output delivers 125 kW, transfers in less than 10 ms and supports 150% overload for 10 seconds.\n\nWith an installation footprint of approximately 1.6 m², the integrated design simplifies installation. Up to 6 systems off-grid and up to 24 systems on-grid can be combined; the hybrid inverter supports up to 6 parallel units. BESS capacity can be expanded for 2-hour and 4-hour applications.\n\n10-year warranty, individually extendable.",
     "images": [
+      "/assets/products/onovo-kunstor/onovo-carport.jpg",
       "/assets/products/onovo-kunstor/onovo-office.jpg",
-      "/assets/products/onovo-kunstor/onovo-wallboxes.jpg",
       "/assets/products/onovo-kunstor/onovo-warehouse.jpg",
       "/assets/products/onovo-kunstor/cabinet.webp"
     ],
-    "heroImage": "/assets/products/onovo-kunstor/onovo-office.jpg",
+    "heroImage": "/assets/products/onovo-kunstor/onovo-carport.jpg",
     "heroVideo": "/assets/products/onovo-kunstor/hero-fullhd.mp4",
     "specs": [],
     "specsSections": [
@@ -356,7 +358,7 @@
           },
           {
             "label": "Certifications",
-            "value": "IEC 62619, IEC 62477, IEC 61000, UN 38.3, MSDS"
+            "value": "IEC 62619, IEC 62477, IEC 61000, UN 38.3, MSDS, ZEREZ"
           }
         ]
       },
@@ -535,7 +537,8 @@
         "title": "10-Year Warranty",
         "text": "Individually extendable"
       }
-    ]
+    ],
+    "availabilityLabel": "Available from November 2026"
   },
   "comparison": {
     "slug": "onovo-kunstor",

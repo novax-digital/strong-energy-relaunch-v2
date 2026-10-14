@@ -44,6 +44,7 @@ export interface Product {
   slug: string;
   name: string;
   subtitle: string;
+  availabilityLabel?: string;
   tagline?: string;
   shortDescription: string;
   description: string;

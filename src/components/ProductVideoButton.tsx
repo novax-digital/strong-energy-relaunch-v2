@@ -7,10 +7,12 @@ import type { Product } from "@/types/content";
 export function ProductVideoButton({
   className,
   label = "Produktvideo",
+  portrait = false,
   product
 }: {
   className?: string;
   label?: string;
+  portrait?: boolean;
   product: Product;
 }) {
   const [open, setOpen] = useState(false);
@@ -68,8 +70,8 @@ export function ProductVideoButton({
           >
             <X className="h-5 w-5" />
           </button>
-          <div className="w-full max-w-6xl overflow-hidden rounded-xl bg-black shadow-2xl" onClick={(event) => event.stopPropagation()}>
-            <video autoPlay className="aspect-video w-full bg-black" controls playsInline poster={poster} preload="metadata">
+          <div className={`w-full overflow-hidden rounded-xl bg-black shadow-2xl ${portrait ? "max-w-[min(480px,47.8125dvh)]" : "max-w-6xl"}`} onClick={(event) => event.stopPropagation()}>
+            <video autoPlay className={`${portrait ? "aspect-[9/16]" : "aspect-video"} w-full bg-black`} controls playsInline poster={poster} preload="metadata">
               {product.productVideoWebm ? <source src={product.productVideoWebm} type="video/webm" /> : null}
               {product.productVideo ? <source src={product.productVideo} type="video/mp4" /> : null}
             </video>
