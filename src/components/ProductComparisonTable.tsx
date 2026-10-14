@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowLeftRight, ArrowUpRight, Check, X } from "lucide-react";
 import { localizedPath, type Language } from "@/lib/i18n";
+import { getOnovoComparison } from "@/content/onovo";
 
 type LocalizedText = {
   de: string;
@@ -148,6 +149,7 @@ const copy = {
 
 export function ProductComparisonTable({ currentProductSlug, categorySlug, lang, additionalProduct }: { currentProductSlug: string; categorySlug: string; lang: Language; additionalProduct?: AdditionalComparisonProduct }) {
   const t = copy[lang];
+  additionalProduct ??= getOnovoComparison(lang);
   const products = [
     { slug: "star-h", name: "Star H", href: `${localizedPath(`/produkte/${categorySlug}/star-h`, lang)}#${lang === "de" ? "vergleich" : "comparison"}` },
     { slug: "star-q", name: "Star Q", href: `${localizedPath(`/produkte/${categorySlug}/star-q`, lang)}#${lang === "de" ? "vergleich" : "comparison"}` },

@@ -1,0 +1,609 @@
+{
+  "de": {
+    "slug": "onovo-kunstor",
+    "name": "Onovo Kunstor",
+    "subtitle": "All in one - Hybrid Gewerbespeicher",
+    "tagline": "125 kW Leistung · 261 kWh Speicherkapazität",
+    "category": "All-in-One Gewerbespeicher",
+    "categorySlug": "gewerbespeicher-aio",
+    "shortDescription": "125 kW | 261 kWh | Flüssigkühlung | Outdoor – Hybrid-Komplettsystem für Gewerbe und Industrie mit PV, Netz, Generator und Backup in einem integrierten System. 10 Jahre Garantie, individuell erweiterbar.",
+    "description": "Onovo Kunstor verbindet 261 kWh Batteriespeicher mit einem leistungsstarken 125-kW-Hybrid-Wechselrichter in einem kompakten All-in-One-Energiesystem. Das System integriert Solarenergie, Speicher und Generator für flexible Microgrid-Anwendungen im Netz- und Inselbetrieb. Bis zu 250 kW PV-Eingangsleistung, 10 MPPT und 20 Strings ermöglichen die Einbindung leistungsstarker Photovoltaikanlagen.\n\nDie intelligente Flüssigkühlung unterstützt eine lange Lebensdauer der 314-Ah-Grade-A-LFP-Zellen (Hersteller: REPT) mit mehr als 15 Jahren Zelllebensdauer. Ein mehrstufiges Schutzkonzept mit intelligentem BMS, CO-, Rauch- und Temperaturüberwachung sowie Aerosol-Löschsystem schützt Zellen, Packs und Gehäuse. IP55 und C5-Korrosionsschutz machen das System für unterschiedliche Außenstandorte geeignet.\n\nEigenverbrauchsoptimierung, Peak Shaving, Einspeisepriorität und Backup-Priorität lassen sich über das integrierte Energiemanagement abbilden. Echtzeitüberwachung ermöglicht die Verwaltung von verschiedenen Standorten aus. Der Backup-Ausgang liefert 125 kW, schaltet in weniger als 10 ms um und unterstützt 150 % Überlast für 10 Sekunden.\n\nMit rund 1,6 m² Stellfläche vereinfacht das integrierte Design die Installation. Bis zu 6 Systeme im Inselbetrieb und bis zu 24 Systeme im Netzbetrieb lassen sich kombinieren; der Hybrid-Wechselrichter unterstützt bis zu 6 parallele Einheiten. Die BESS-Kapazität lässt sich für Anwendungen mit 2 und 4 Stunden erweitern.\n\n10 Jahre Garantie, individuell erweiterbar.",
+    "images": [
+      "/assets/products/onovo-kunstor/onovo-office.jpg",
+      "/assets/products/onovo-kunstor/onovo-wallboxes.jpg",
+      "/assets/products/onovo-kunstor/onovo-warehouse.jpg",
+      "/assets/products/onovo-kunstor/cabinet.webp"
+    ],
+    "heroImage": "/assets/products/onovo-kunstor/onovo-office.jpg",
+    "heroVideo": "/assets/products/onovo-kunstor/hero-fullhd.mp4",
+    "specs": [],
+    "specsSections": [
+      {
+        "title": "Batteriesystem & Gehäuse",
+        "rows": [
+          {
+            "label": "Nennkapazität",
+            "value": "261 kWh"
+          },
+          {
+            "label": "Zelltechnologie",
+            "value": "Grade-A LFP, 314 Ah (Hersteller: REPT)"
+          },
+          {
+            "label": "Nennspannung",
+            "value": "832 V DC"
+          },
+          {
+            "label": "Spannungsbereich",
+            "value": "702–949 V DC"
+          },
+          {
+            "label": "Kommunikation",
+            "value": "CAN / RS485 / Ethernet, Modbus"
+          },
+          {
+            "label": "Kühlung",
+            "value": "Flüssigkühlung"
+          },
+          {
+            "label": "Brandschutz",
+            "value": "CO-, Rauch- und Temperaturüberwachung; Aerosol in Pack und Rack; Trockenleitung; optionale Explosionsentlastung"
+          },
+          {
+            "label": "Schutzart",
+            "value": "IP55 – Außenaufstellung"
+          },
+          {
+            "label": "Korrosionsschutz",
+            "value": "C5"
+          },
+          {
+            "label": "Betriebstemperatur",
+            "value": "−20 °C bis +55 °C"
+          },
+          {
+            "label": "Lagertemperatur",
+            "value": "−30 °C bis +60 °C"
+          },
+          {
+            "label": "Luftfeuchtigkeit",
+            "value": "5–95 % (nicht kondensierend)"
+          },
+          {
+            "label": "Aufstellhöhe",
+            "value": "≤ 3.000 m; Leistungsreduzierung oberhalb 2.000 m"
+          },
+          {
+            "label": "Geräuschpegel",
+            "value": "< 65 dB"
+          },
+          {
+            "label": "Abmessungen (B × H × T)",
+            "value": "1.100 × 2.250 × 1.400 mm"
+          },
+          {
+            "label": "Gewicht",
+            "value": "ca. 3.000 kg"
+          },
+          {
+            "label": "Zertifizierungen",
+            "value": "IEC 62619, IEC 62477, IEC 61000, UN 38.3, MSDS"
+          }
+        ]
+      },
+      {
+        "title": "Hybrid-Wechselrichter – PV-Eingang",
+        "rows": [
+          {
+            "label": "Max. PV-Eingangsleistung",
+            "value": "250 kW"
+          },
+          {
+            "label": "MPPT-Spannungsbereich",
+            "value": "150–950 V DC"
+          },
+          {
+            "label": "MPPT / Strings",
+            "value": "10 / 20"
+          },
+          {
+            "label": "Max. Eingangsstrom",
+            "value": "42 A × 10"
+          }
+        ]
+      },
+      {
+        "title": "Hybrid-Wechselrichter – Netzanschluss",
+        "rows": [
+          {
+            "label": "Nennspannung / Frequenz",
+            "value": "380 / 400 / 415 V AC; 50 / 60 Hz; 3P + N + PE"
+          },
+          {
+            "label": "Nennleistung",
+            "value": "125 kW"
+          },
+          {
+            "label": "Max. Scheinleistung",
+            "value": "137,5 kVA"
+          },
+          {
+            "label": "THDi",
+            "value": "2 %"
+          },
+          {
+            "label": "Leistungsfaktor",
+            "value": "> 0,99 (−0,8 bis +0,8)"
+          }
+        ]
+      },
+      {
+        "title": "Hybrid-Wechselrichter – Backup",
+        "rows": [
+          {
+            "label": "Nennspannung / Frequenz",
+            "value": "380 / 400 / 415 V AC; 50 / 60 Hz; 3P + N + PE"
+          },
+          {
+            "label": "Nennleistung",
+            "value": "125 kW"
+          },
+          {
+            "label": "Überlastfähigkeit",
+            "value": "150 % für 10 s"
+          },
+          {
+            "label": "THDu",
+            "value": "2 %"
+          },
+          {
+            "label": "Umschaltzeit",
+            "value": "< 10 ms"
+          }
+        ]
+      },
+      {
+        "title": "Hybrid-Wechselrichter – Allgemeine Daten",
+        "rows": [
+          {
+            "label": "Smart Port",
+            "value": "Generator / Smart Load / PV-Wechselrichter"
+          },
+          {
+            "label": "Max. Wirkungsgrad",
+            "value": "97,8 %"
+          },
+          {
+            "label": "Parallelschaltung (Wechselrichter)",
+            "value": "≤ 6"
+          },
+          {
+            "label": "Schutzart",
+            "value": "IP66"
+          },
+          {
+            "label": "Schutzklasse",
+            "value": "Klasse I"
+          },
+          {
+            "label": "Kommunikation",
+            "value": "Ethernet / Wi-Fi / 4G (optional) / RS485 / CAN"
+          },
+          {
+            "label": "Abmessungen (B × H × T)",
+            "value": "971,5 × 880 × 311 mm"
+          },
+          {
+            "label": "Gewicht",
+            "value": "< 150 kg"
+          },
+          {
+            "label": "Zertifizierungen",
+            "value": "IEC 62477, IEC 61000, IEC 62109, EN 50549, VDE-4105, VDE-4110, G99/G100, PTPiREE, C10/C11, NTS 631:2021, UNE, CEI 021/16, TOR Erzeuger"
+          }
+        ]
+      },
+      {
+        "title": "Garantie",
+        "rows": [
+          {
+            "label": "Garantie",
+            "values": [
+              "10 Jahre Garantie, individuell erweiterbar."
+            ]
+          }
+        ]
+      }
+    ],
+    "highlights": [
+      {
+        "icon": "Zap",
+        "title": "125 kW · 261 kWh",
+        "text": "Hybrid-Wechselrichter und Batteriespeicher in einem All-in-One-System."
+      },
+      {
+        "icon": "Battery",
+        "title": "Flüssiggekühlte LFP-Zellen",
+        "text": "314-Ah-Grade-A-Zellen; mehr als 15 Jahre Zelllebensdauer.\nHersteller: REPT, REPT Battero 5 × 52,2 kWh"
+      },
+      {
+        "icon": "Shield",
+        "title": "Mehrstufige Sicherheit",
+        "text": "Intelligentes BMS, CO-, Rauch- und Temperaturüberwachung; Aerosol-Löschsystem in Pack und Rack."
+      },
+      {
+        "icon": "Link",
+        "title": "PV, Netz, Generator & Backup",
+        "text": "250 kW PV-Eingang, 10 MPPT / 20 Strings und Smart Port für flexible Hybrid-Anwendungen."
+      },
+      {
+        "icon": "Clock",
+        "title": "Backup in weniger als 10 ms",
+        "text": "125 kW Backup-Leistung; 150 % Überlast für 10 Sekunden."
+      },
+      {
+        "icon": "Settings",
+        "title": "Intelligentes Energiemanagement",
+        "text": "Eigenverbrauch, Peak Shaving, Einspeise- und Backup-Priorität mit Echtzeitüberwachung."
+      },
+      {
+        "icon": "ShieldCheck",
+        "title": "Für den Außenbereich",
+        "text": "IP55, C5-Korrosionsschutz und Betrieb bei −20 °C bis +55 °C."
+      },
+      {
+        "icon": "Building2",
+        "title": "Kompakt & integriert",
+        "text": "Solar-Speicher-Generator-Microgrid auf rund 1,6 m² Stellfläche; einfache Installation."
+      },
+      {
+        "icon": "Network",
+        "title": "Skalierbare Systemarchitektur",
+        "text": "Bis 6 Systeme off-grid / 24 Systeme on-grid; Kapazitätserweiterung für 2- und 4-Stunden-Anwendungen."
+      },
+      {
+        "icon": "HeadphonesIcon",
+        "title": "10 Jahre Garantie",
+        "text": "Individuell erweiterbar"
+      }
+    ]
+  },
+  "en": {
+    "slug": "onovo-kunstor",
+    "name": "Onovo Kunstor",
+    "subtitle": "All in one - Hybrid Commercial Energy Storage",
+    "tagline": "125 kW output · 261 kWh storage capacity",
+    "category": "All-in-One Commercial Storage",
+    "categorySlug": "gewerbespeicher-aio",
+    "shortDescription": "125 kW | 261 kWh | Liquid cooling | Outdoor – a complete hybrid system for commercial and industrial use, combining PV, grid, generator and backup in one integrated system. 10-year warranty, individually extendable.",
+    "description": "Onovo Kunstor combines 261 kWh of battery storage with a powerful 125 kW hybrid inverter in a compact all-in-one energy storage system. The system integrates solar power, storage and a generator for flexible microgrid applications in grid-connected and off-grid operation. Up to 250 kW of PV input power, 10 MPPTs and 20 strings enable integration with high-capacity photovoltaic installations.\n\nIntelligent liquid cooling supports the long service life of the 314 Ah Grade-A LFP cells (manufacturer: REPT) with a cell service life of more than 15 years. Multi-layer protection with a smart BMS, CO, smoke and temperature detection, and aerosol fire suppression protects cells, packs and the enclosure. IP55 and C5 corrosion resistance suit a range of outdoor installation environments.\n\nIntegrated energy management supports self-consumption, peak shaving, feed-in priority and backup priority. Real-time monitoring enables management from different locations. The backup output delivers 125 kW, transfers in less than 10 ms and supports 150% overload for 10 seconds.\n\nWith an installation footprint of approximately 1.6 m², the integrated design simplifies installation. Up to 6 systems off-grid and up to 24 systems on-grid can be combined; the hybrid inverter supports up to 6 parallel units. BESS capacity can be expanded for 2-hour and 4-hour applications.\n\n10-year warranty, individually extendable.",
+    "images": [
+      "/assets/products/onovo-kunstor/onovo-office.jpg",
+      "/assets/products/onovo-kunstor/onovo-wallboxes.jpg",
+      "/assets/products/onovo-kunstor/onovo-warehouse.jpg",
+      "/assets/products/onovo-kunstor/cabinet.webp"
+    ],
+    "heroImage": "/assets/products/onovo-kunstor/onovo-office.jpg",
+    "heroVideo": "/assets/products/onovo-kunstor/hero-fullhd.mp4",
+    "specs": [],
+    "specsSections": [
+      {
+        "title": "Battery system & enclosure",
+        "rows": [
+          {
+            "label": "Nominal capacity",
+            "value": "261 kWh"
+          },
+          {
+            "label": "Cell technology",
+            "value": "Grade-A LFP, 314 Ah (manufacturer: REPT)"
+          },
+          {
+            "label": "Nominal voltage",
+            "value": "832 V DC"
+          },
+          {
+            "label": "Voltage range",
+            "value": "702–949 V DC"
+          },
+          {
+            "label": "Communication",
+            "value": "CAN / RS485 / Ethernet, Modbus"
+          },
+          {
+            "label": "Cooling",
+            "value": "Liquid cooling"
+          },
+          {
+            "label": "Fire suppression",
+            "value": "CO, smoke and temperature detection; aerosol in pack and rack; dry pipe; optional deflagration vent"
+          },
+          {
+            "label": "Ingress protection",
+            "value": "IP55 – outdoor installation"
+          },
+          {
+            "label": "Corrosion resistance",
+            "value": "C5"
+          },
+          {
+            "label": "Operating temperature",
+            "value": "−20 °C to +55 °C"
+          },
+          {
+            "label": "Storage temperature",
+            "value": "−30 °C to +60 °C"
+          },
+          {
+            "label": "Operating humidity",
+            "value": "5–95 % (non-condensing)"
+          },
+          {
+            "label": "Operating altitude",
+            "value": "≤ 3,000 m; derating above 2,000 m"
+          },
+          {
+            "label": "Noise level",
+            "value": "< 65 dB"
+          },
+          {
+            "label": "Dimensions (W × H × D)",
+            "value": "1,100 × 2,250 × 1,400 mm"
+          },
+          {
+            "label": "Weight",
+            "value": "approx. 3,000 kg"
+          },
+          {
+            "label": "Certifications",
+            "value": "IEC 62619, IEC 62477, IEC 61000, UN 38.3, MSDS"
+          }
+        ]
+      },
+      {
+        "title": "Hybrid inverter – PV input",
+        "rows": [
+          {
+            "label": "Max. PV input power",
+            "value": "250 kW"
+          },
+          {
+            "label": "MPPT voltage range",
+            "value": "150–950 V DC"
+          },
+          {
+            "label": "MPPTs / strings",
+            "value": "10 / 20"
+          },
+          {
+            "label": "Max. input current",
+            "value": "42 A × 10"
+          }
+        ]
+      },
+      {
+        "title": "Hybrid inverter – AC grid",
+        "rows": [
+          {
+            "label": "Rated voltage / frequency",
+            "value": "380 / 400 / 415 V AC; 50 / 60 Hz; 3P + N + PE"
+          },
+          {
+            "label": "Rated output power",
+            "value": "125 kW"
+          },
+          {
+            "label": "Max. apparent power",
+            "value": "137.5 kVA"
+          },
+          {
+            "label": "THDi",
+            "value": "2 %"
+          },
+          {
+            "label": "Power factor",
+            "value": "> 0.99 (−0.8 to +0.8)"
+          }
+        ]
+      },
+      {
+        "title": "Hybrid inverter – AC backup",
+        "rows": [
+          {
+            "label": "Rated voltage / frequency",
+            "value": "380 / 400 / 415 V AC; 50 / 60 Hz; 3P + N + PE"
+          },
+          {
+            "label": "Rated output power",
+            "value": "125 kW"
+          },
+          {
+            "label": "Overload capacity",
+            "value": "150 % for 10 s"
+          },
+          {
+            "label": "THDu",
+            "value": "2 %"
+          },
+          {
+            "label": "Transfer time",
+            "value": "< 10 ms"
+          }
+        ]
+      },
+      {
+        "title": "Hybrid inverter – general specifications",
+        "rows": [
+          {
+            "label": "Smart port",
+            "value": "Generator / smart load / PV inverter"
+          },
+          {
+            "label": "Max. efficiency",
+            "value": "97.8 %"
+          },
+          {
+            "label": "Parallel connection (inverter)",
+            "value": "≤ 6"
+          },
+          {
+            "label": "Ingress protection",
+            "value": "IP66"
+          },
+          {
+            "label": "Protection class",
+            "value": "Class I"
+          },
+          {
+            "label": "Communication",
+            "value": "Ethernet / Wi-Fi / 4G (optional) / RS485 / CAN"
+          },
+          {
+            "label": "Dimensions (W × H × D)",
+            "value": "971.5 × 880 × 311 mm"
+          },
+          {
+            "label": "Weight",
+            "value": "< 150 kg"
+          },
+          {
+            "label": "Certifications",
+            "value": "IEC 62477, IEC 61000, IEC 62109, EN 50549, VDE-4105, VDE-4110, G99/G100, PTPiREE, C10/C11, NTS 631:2021, UNE, CEI 021/16, TOR Erzeuger"
+          }
+        ]
+      },
+      {
+        "title": "Warranty",
+        "rows": [
+          {
+            "label": "Warranty",
+            "values": [
+              "10-year warranty, individually extendable."
+            ]
+          }
+        ]
+      }
+    ],
+    "highlights": [
+      {
+        "icon": "Zap",
+        "title": "125 kW · 261 kWh",
+        "text": "Hybrid inverter and battery storage combined in one all-in-one system."
+      },
+      {
+        "icon": "Battery",
+        "title": "Liquid-cooled LFP cells",
+        "text": "314 Ah Grade-A cells; more than 15 years of cell service life.\nManufacturer: REPT, REPT Battero 5 × 52.2 kWh"
+      },
+      {
+        "icon": "Shield",
+        "title": "Multi-layer safety",
+        "text": "Smart BMS, CO, smoke and temperature detection; aerosol fire suppression in pack and rack."
+      },
+      {
+        "icon": "Link",
+        "title": "PV, grid, generator & backup",
+        "text": "250 kW PV input, 10 MPPTs / 20 strings and a smart port for flexible hybrid applications."
+      },
+      {
+        "icon": "Clock",
+        "title": "Backup in less than 10 ms",
+        "text": "125 kW backup output; 150% overload for 10 seconds."
+      },
+      {
+        "icon": "Settings",
+        "title": "Smart energy management",
+        "text": "Self-consumption, peak shaving, feed-in and backup priority with real-time monitoring."
+      },
+      {
+        "icon": "ShieldCheck",
+        "title": "Designed for outdoor use",
+        "text": "IP55, C5 corrosion resistance and operation at −20 °C to +55 °C."
+      },
+      {
+        "icon": "Building2",
+        "title": "Compact & integrated",
+        "text": "Solar-storage-generator microgrid with an approximately 1.6 m² footprint; straightforward installation."
+      },
+      {
+        "icon": "Network",
+        "title": "Scalable system architecture",
+        "text": "Up to 6 systems off-grid / 24 systems on-grid; capacity expansion for 2-hour and 4-hour applications."
+      },
+      {
+        "icon": "HeadphonesIcon",
+        "title": "10-Year Warranty",
+        "text": "Individually extendable"
+      }
+    ]
+  },
+  "comparison": {
+    "slug": "onovo-kunstor",
+    "name": "Onovo Kunstor",
+    "values": {
+      "Capacity": {
+        "text": {
+          "de": "261 kWh",
+          "en": "261 kWh"
+        }
+      },
+      "Max. AC output": {
+        "text": {
+          "de": "125 kW nominal / 137,5 kVA max.",
+          "en": "125 kW rated / 137.5 kVA max."
+        }
+      },
+      "Voltage": {
+        "text": {
+          "de": "380 / 400 / 415 V~ 3 Ph + N + PE",
+          "en": "380 / 400 / 415 V~ 3-phase + N + PE"
+        }
+      },
+      "Grid-connected": {
+        "state": "yes"
+      },
+      "Backup during grid failure": {
+        "state": "yes",
+        "text": {
+          "de": "125 kW; Umschaltzeit < 10 ms",
+          "en": "125 kW; transfer time < 10 ms"
+        }
+      },
+      "Off-grid": {
+        "state": "yes",
+        "text": {
+          "de": "Bis zu 6 Systeme",
+          "en": "Up to 6 systems"
+        }
+      },
+      "PV string connection": {
+        "state": "yes",
+        "text": {
+          "de": "250 kW; 10 MPPT / 20 Strings",
+          "en": "250 kW; 10 MPPTs / 20 strings"
+        }
+      },
+      "Generator connection": {
+        "state": "yes",
+        "text": {
+          "de": "Über Smart Port",
+          "en": "Via smart port"
+        }
+      },
+      "Internal EMS": {
+        "state": "yes",
+        "text": {
+          "de": "Eigenverbrauch, Peak Shaving, Einspeise- und Backup-Priorität; Echtzeitüberwachung",
+          "en": "Self-consumption, peak shaving, feed-in and backup priority; real-time monitoring"
+        }
+      },
+      "External EMS": {
+        "state": "yes",
+        "text": {
+          "de": "Consolinno EMS",
+          "en": "Consolinno EMS"
+        }
+      }
+    }
+  }
+}

@@ -9,7 +9,7 @@ import type { Language } from "@/lib/i18n";
 
 const initialState: ContactState = { ok: false, message: "" };
 
-const COMMERCIAL_STORAGE_SLUGS = ["star-q", "star-h", "enerc", "enerc-plus", "gewerbespeicher-kompakt"];
+const COMMERCIAL_STORAGE_SLUGS = ["onovo-kunstor", "star-q", "star-h", "enerc", "enerc-plus", "gewerbespeicher-kompakt"];
 const UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_content"] as const;
 
 const labels = {
@@ -270,7 +270,7 @@ function ProductInquiryModal({ product, lang, onClose }: { product: Product; lan
             type="button"
             className="absolute right-5 top-5 flex h-9 w-9 items-center justify-center rounded-full text-slate-500 transition hover:bg-slate-100 hover:text-slate-900"
             onClick={onClose}
-            aria-label="Formular schließen"
+            aria-label={lang === "en" ? "Close form" : "Formular schließen"}
           >
             <X className="h-5 w-5" />
           </button>

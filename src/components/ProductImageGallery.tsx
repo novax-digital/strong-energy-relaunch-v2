@@ -4,6 +4,7 @@ import { createElement, useCallback, useEffect, useMemo, useState } from "react"
 import Image from "next/image";
 import { Box, ChevronLeft, ChevronRight, Maximize2, X } from "lucide-react";
 import type { Product } from "@/types/content";
+import type { Language } from "@/lib/i18n";
 
 type ProductModelAsset = NonNullable<Product["modelAssets"]>[number];
 
@@ -22,12 +23,18 @@ type GalleryItem =
 export function ProductImageGallery({
   images,
   modelAssets = [],
-  name
+  name,
+  lang = "de",
+  imageFit = "cover"
 }: {
   images: string[];
   modelAssets?: Product["modelAssets"];
   name: string;
+  lang?: Language;
+  imageFit?: "contain" | "cover";
 }) {
+  const en = lang === "en";
+  const enlarge = `${name} ${en ? "enlarge image" : "Bild vergrößern"}`;
   const [activeIndex, setActiveIndex] = useState(0);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const galleryItems = useMemo<GalleryItem[]>(
@@ -95,18 +102,18 @@ export function ProductImageGallery({
         <div className="group relative aspect-square w-full overflow-hidden rounded-[1.35rem] border border-border bg-secondary/40 shadow-sm">
           {activeItem.type === "image" ? (
             <button
-              aria-label={`${name} Bild vergrößern`}
+              aria-label={enlarge}
               className="absolute inset-0 block text-left"
               onClick={() => setLightboxIndex(activeGalleryIndex)}
               type="button"
             >
-              <Image src={activeItem.src} unoptimized={activeItem.src.startsWith("/api/private-preview/")} alt={name} fill sizes="(min-width: 1024px) 45vw, 100vw" className={activeItem.src.startsWith("/api/private-preview/") ? "object-contain" : "object-cover"} priority />
+              <Image src={activeItem.src} unoptimized={activeItem.src.startsWith("/api/private-preview/")} alt={name} fill sizes="(min-width: 1024px) 45vw, 100vw" className={imageFit === "contain" || activeItem.src.startsWith("/api/private-preview/") ? "object-contain" : "object-cover"} priority />
             </button>
           ) : (
             <ProductModelViewer className="h-full w-full" model={activeItem.model} title={activeItem.alt} />
           )}
           <button
-            aria-label={activeItem.type === "model" ? `${activeItem.alt} in Lightbox öffnen` : `${name} Bild vergrößern`}
+            aria-label={activeItem.type === "model" ? `${activeItem.alt} ${en ? "open in lightbox" : "in Lightbox öffnen"}` : enlarge}
             className="absolute bottom-4 right-4 z-10 inline-flex h-11 w-11 items-center justify-center rounded-full bg-black/55 text-white opacity-0 shadow-lg backdrop-blur-sm transition-opacity hover:bg-black/70 group-hover:opacity-100 group-focus-within:opacity-100 focus-visible:opacity-100"
             onClick={() => setLightboxIndex(activeGalleryIndex)}
             type="button"
@@ -121,7 +128,7 @@ export function ProductImageGallery({
             const selected = index === activeIndex;
             return (
               <button
-                aria-label={`${name} Bild ${index + 1} anzeigen`}
+                aria-label={`${name} ${en ? `show image ${index + 1}` : `Bild ${index + 1} anzeigen`}`}
                 aria-pressed={selected}
                 className={`relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-xl border-2 bg-white shadow-sm transition-all md:h-20 md:w-20 ${
                   selected ? "border-primary shadow-md" : "border-border hover:border-primary/50"
@@ -142,7 +149,7 @@ export function ProductImageGallery({
               const selected = itemIndex === activeIndex;
               return (
                 <button
-                  aria-label={`${model.label} anzeigen`}
+                  aria-label={`${model.label} ${en ? "show" : "anzeigen"}`}
                   aria-pressed={selected}
                   className={`flex h-16 w-16 flex-shrink-0 flex-col items-center justify-center gap-1 rounded-xl border-2 bg-white text-primary shadow-sm transition-all md:h-20 md:w-20 ${
                     selected ? "border-primary shadow-md" : "border-border hover:border-primary/50"
@@ -169,10 +176,10 @@ export function ProductImageGallery({
           }}
           role="dialog"
           aria-modal="true"
-          aria-label={`${name} Bildergalerie`}
+          aria-label={`${name} ${en ? "image gallery" : "Bildergalerie"}`}
         >
           <button
-            aria-label="Lightbox schließen"
+            aria-label={en ? "Close lightbox" : "Lightbox schließen"}
             className="absolute right-4 top-4 z-20 inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur transition-colors hover:bg-white/20"
             onClick={() => setLightboxIndex(null)}
             type="button"
@@ -181,7 +188,7 @@ export function ProductImageGallery({
           </button>
           {galleryItems.length > 1 ? (
             <button
-              aria-label="Vorheriges Element"
+              aria-label={en ? "Previous item" : "Vorheriges Element"}
               className="absolute left-4 top-1/2 z-20 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur transition-colors hover:bg-white/20"
               onClick={(event) => {
                 event.stopPropagation();
@@ -195,7 +202,7 @@ export function ProductImageGallery({
           <div className="h-[82vh] w-full max-w-6xl" onClick={(event) => event.stopPropagation()}>
             {lightboxItem.type === "image" ? (
               <button
-                aria-label={galleryItems.length > 1 ? "Nächstes Element anzeigen" : "Lightbox schließen"}
+                aria-label={galleryItems.length > 1 ? (en ? "Show next item" : "Nächstes Element anzeigen") : (en ? "Close lightbox" : "Lightbox schließen")}
                 className={`relative h-full w-full ${galleryItems.length > 1 ? "cursor-pointer" : "cursor-zoom-out"}`}
                 onClick={(event) => {
                   event.stopPropagation();
@@ -217,7 +224,7 @@ export function ProductImageGallery({
           </div>
           {galleryItems.length > 1 ? (
             <button
-              aria-label="Nächstes Element"
+              aria-label={en ? "Next item" : "Nächstes Element"}
               className="absolute right-4 top-1/2 z-20 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur transition-colors hover:bg-white/20"
               onClick={(event) => {
                 event.stopPropagation();

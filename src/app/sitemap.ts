@@ -42,7 +42,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [...staticPaths, ...categoryPaths, ...productPaths, ...blogPaths, ...legalPaths, ...staticPathsEn, ...categoryPathsEn, ...productPathsEn, ...blogPathsEn, ...legalPathsEn].map((path) => ({
     url: `${site.baseUrl}${path}`,
-    lastModified: new Date("2026-04-17"),
+    lastModified: new Date(path.endsWith("/onovo-kunstor") ? "2026-10-14" : "2026-04-17"),
     changeFrequency: path.includes("/blog") ? "daily" : "weekly",
     priority: path === "/de" ? 1 : path.includes("/produkte") ? 0.8 : 0.6
   }));

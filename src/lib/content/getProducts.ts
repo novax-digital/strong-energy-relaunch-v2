@@ -2,8 +2,9 @@ import { products, productCategories } from "@/content/products";
 import productTranslationsEnJson from "@/content/generated/product-translations-en.json";
 import type { Product, ProductCategory } from "@/types/content";
 import { reverseCategorySlug, translateCategorySlug, type Language } from "@/lib/i18n";
+import { onovoProducts } from "@/content/onovo";
 
-const productTranslationsEn = productTranslationsEnJson as Record<string, Partial<Product>>;
+const productTranslationsEn = { ...productTranslationsEnJson, "onovo-kunstor": onovoProducts.en } as Record<string, Partial<Product>>;
 const productCategoryImages: Record<string, string> = {
   solaranlagen: "/assets/solaranlagen-2BF5y_wA.webp",
   "gewerbespeicher-aio": "/assets/gewerbespeicher-aio-kachel-YpXwZeiG.jpg",

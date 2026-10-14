@@ -11,10 +11,12 @@ import { ProductInquiryButton } from "@/components/ProductInquiryModal";
 import { ProductVideoButton } from "@/components/ProductVideoButton";
 import { SEOJsonLd } from "@/components/SEOJsonLd";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { OnovoProductPage } from "@/components/OnovoProductPage";
 import { getDownloadsByProduct } from "@/lib/content/getDownloads";
 import { getProductByPath } from "@/lib/content/getProductBySlug";
 import { getProducts } from "@/lib/content/getProducts";
 import { absoluteUrl, breadcrumbJsonLd, createMetadata } from "@/lib/seo";
+import { onovoLanguageAlternates } from "@/content/onovo";
 
 export function generateStaticParams() {
   return getProducts().map((product) => ({ category: product.categorySlug, slug: product.slug }));
@@ -24,12 +26,13 @@ export async function generateMetadata({ params }: { params: Promise<{ category:
   const { category, slug } = await params;
   const product = getProductByPath(category, slug);
   if (!product) return {};
-  return createMetadata({
+  const metadata = createMetadata({
     title: `${product.name} – ${product.subtitle} | Strong Energy`,
     description: product.shortDescription,
     path: `/de/produkte/${product.categorySlug}/${product.slug}`,
     image: product.heroImage || product.images[0]
   });
+  return product.slug === "onovo-kunstor" ? { ...metadata, alternates: onovoLanguageAlternates("de") } : metadata;
 }
 
 export default async function ProductDetailPage({ params }: { params: Promise<{ category: string; slug: string }> }) {
@@ -54,6 +57,10 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
     { name: product.category, path: `/de/produkte/${product.categorySlug}` },
     { name: product.name, path: `/de/produkte/${product.categorySlug}/${product.slug}` }
   ]);
+
+  if (product.slug === "onovo-kunstor") {
+    return <><SEOJsonLd data={[productJsonLd, breadcrumbs]} /><OnovoProductPage product={product} lang="de" /></>;
+  }
 
   return (
     <>

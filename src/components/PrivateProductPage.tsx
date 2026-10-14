@@ -1,4 +1,5 @@
 import "server-only";
+import { permanentRedirect } from "next/navigation";
 import { Suspense } from "react";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
@@ -14,8 +15,10 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { getDownloads } from "@/lib/content/getDownloads";
 import { getPrivateProductPreview } from "@/lib/privateProductPreview";
 import { localizedPath, translations, type Language } from "@/lib/i18n";
+import { onovoLegacyPreviewId, onovoProductPath } from "@/content/onovo";
 
 export async function PrivateProductPage({ lang, preview }: { lang: Language; preview: string }) {
+  if (preview === onovoLegacyPreviewId) permanentRedirect(onovoProductPath(lang));
   // Authorize before loading or serializing any unpublished product data.
   const content = await getPrivateProductPreview(preview, lang);
   if (!content) return <PrivateProductPasswordForm lang={lang} preview={preview} />;

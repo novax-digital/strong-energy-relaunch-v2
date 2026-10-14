@@ -297,10 +297,30 @@ export function CommercialLanding({ variant = "form" }: CommercialLandingProps) 
   const [showHubspot, setShowHubspot] = useState(false);
 
   const sections = useMemo<ProductFeatureSection[]>(() => {
+    const onovo = products.find((product) => product.slug === "onovo-kunstor");
     const starQ = products.find((product) => product.slug === "star-q");
     const starH = products.find((product) => product.slug === "star-h");
 
     return [
+      onovo
+        ? {
+            slug: onovo.slug,
+            categorySlug: onovo.categorySlug,
+            eyebrow: "All-in-One · 125 kW",
+            name: onovo.name,
+            tagline: "Hybrid. Flüssiggekühlt. Für Gewerbe und Industrie.",
+            description: onovo.shortDescription,
+            images: onovo.images,
+            stats: [
+              { label: "Leistung", value: "125 kW" },
+              { label: "Kapazität", value: "261 kWh" },
+              { label: "Zellhersteller", value: "REPT" },
+              { label: "Garantie, individuell erweiterbar", value: "10 Jahre" }
+            ],
+            highlights: onovo.highlights.slice(0, 4),
+            align: "left"
+          }
+        : null,
       starQ
         ? {
             slug: "star-q",
@@ -318,7 +338,7 @@ export function CommercialLanding({ variant = "form" }: CommercialLandingProps) 
               { label: "Garantie, individuell erweiterbar", value: "10 Jahre" }
             ],
             highlights: starQ.highlights.slice(0, 4),
-            align: "left"
+            align: "right"
           }
         : null,
       starH
@@ -338,7 +358,7 @@ export function CommercialLanding({ variant = "form" }: CommercialLandingProps) 
               { label: "Temp.", value: "-40 / +60°C" }
             ],
             highlights: starH.highlights.slice(0, 4),
-            align: "right"
+            align: "left"
           }
         : null
     ].filter(Boolean) as ProductFeatureSection[];
@@ -426,7 +446,7 @@ export function CommercialLanding({ variant = "form" }: CommercialLandingProps) 
                 Beratungstermin buchen <ArrowRight className="h-5 w-5" />
               </button>
               <button
-                onClick={() => document.getElementById("product-star-q")?.scrollIntoView({ behavior: "smooth" })}
+                onClick={() => document.getElementById("product-onovo-kunstor")?.scrollIntoView({ behavior: "smooth" })}
                 className="inline-flex items-center justify-center gap-1.5 text-sm font-medium text-white/90 underline-offset-4 transition-colors hover:text-white hover:underline"
                 type="button"
               >
@@ -437,8 +457,8 @@ export function CommercialLanding({ variant = "form" }: CommercialLandingProps) 
           <Reveal delay={500}>
             <div className="mx-auto mt-10 grid max-w-3xl grid-cols-2 gap-px overflow-hidden rounded-xl border border-white/15 bg-white/5 backdrop-blur sm:grid-cols-4">
               {[
-                { value: "50 - 115 kW", label: "Leistungsklasse" },
-                { value: "CATL LFP", label: "Premium-Zellen" },
+                { value: "50 - 125 kW", label: "Leistungsklasse" },
+                { value: "REPT / CATL LFP", label: "Premium-Zellen" },
                 { value: "10 Jahre Garantie", label: "Individuell erweiterbar" },
                 { value: "Outdoor", label: "IP54 - IP67" }
               ].map((stat) => (
@@ -531,7 +551,7 @@ export function CommercialLanding({ variant = "form" }: CommercialLandingProps) 
                           </div>
                           <div className="min-w-0">
                             <p className="text-sm font-semibold text-foreground sm:text-base">{highlight.title}</p>
-                            <p className="break-words text-xs leading-relaxed text-muted-foreground sm:text-sm">{highlight.text}</p>
+                            <p className="whitespace-pre-line break-words text-xs leading-relaxed text-muted-foreground sm:text-sm">{highlight.text}</p>
                           </div>
                         </li>
                       );

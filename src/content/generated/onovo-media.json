@@ -1,0 +1,87 @@
+{
+  "category": {
+    "id": "f3dbdd7e-7969-4365-88da-40c69bdc7fe5",
+    "name_de": "Onovo Kunstor",
+    "name_en": "Onovo Kunstor",
+    "parent_id": "6550e969-ee30-41ce-b6a7-6b23fb0c1ba9",
+    "sort_order": 1
+  },
+  "items": [
+    {
+      "id": "b164dfc0-c1e9-4524-ad7b-d0b8e5c99c87",
+      "title_de": "Onovo Kunstor – Büro außen",
+      "title_en": "Onovo Kunstor – outside an office",
+      "description_de": null,
+      "description_en": null,
+      "category_id": "f3dbdd7e-7969-4365-88da-40c69bdc7fe5",
+      "media_type": "image",
+      "file_url": "/assets/products/onovo-kunstor/onovo-office.jpg",
+      "video_url": null,
+      "thumbnail_url": "/assets/products/onovo-kunstor/onovo-office.jpg",
+      "local_file_url": "/assets/products/onovo-kunstor/onovo-office.jpg",
+      "local_thumbnail_url": "/assets/products/onovo-kunstor/onovo-office.jpg",
+      "product_slugs": [
+        "onovo-kunstor"
+      ],
+      "is_published": true,
+      "sort_order": 0
+    },
+    {
+      "id": "aaea130c-1f5a-4bd3-a8bd-cf9954bd08f3",
+      "title_de": "Onovo Kunstor – Wallboxen",
+      "title_en": "Onovo Kunstor – EV charging stations",
+      "description_de": null,
+      "description_en": null,
+      "category_id": "f3dbdd7e-7969-4365-88da-40c69bdc7fe5",
+      "media_type": "image",
+      "file_url": "/assets/products/onovo-kunstor/onovo-wallboxes.jpg",
+      "video_url": null,
+      "thumbnail_url": "/assets/products/onovo-kunstor/onovo-wallboxes.jpg",
+      "local_file_url": "/assets/products/onovo-kunstor/onovo-wallboxes.jpg",
+      "local_thumbnail_url": "/assets/products/onovo-kunstor/onovo-wallboxes.jpg",
+      "product_slugs": [
+        "onovo-kunstor"
+      ],
+      "is_published": true,
+      "sort_order": 1
+    },
+    {
+      "id": "238b054b-c9ce-4453-ba1e-f317910a245e",
+      "title_de": "Onovo Kunstor – Lagerhaus",
+      "title_en": "Onovo Kunstor – warehouse",
+      "description_de": null,
+      "description_en": null,
+      "category_id": "f3dbdd7e-7969-4365-88da-40c69bdc7fe5",
+      "media_type": "image",
+      "file_url": "/assets/products/onovo-kunstor/onovo-warehouse.jpg",
+      "video_url": null,
+      "thumbnail_url": "/assets/products/onovo-kunstor/onovo-warehouse.jpg",
+      "local_file_url": "/assets/products/onovo-kunstor/onovo-warehouse.jpg",
+      "local_thumbnail_url": "/assets/products/onovo-kunstor/onovo-warehouse.jpg",
+      "product_slugs": [
+        "onovo-kunstor"
+      ],
+      "is_published": true,
+      "sort_order": 2
+    },
+    {
+      "id": "96340397-0351-47ed-a715-4f625403ac7f",
+      "title_de": "Onovo Kunstor – Produktmotiv",
+      "title_en": "Onovo Kunstor – product image",
+      "description_de": null,
+      "description_en": null,
+      "category_id": "f3dbdd7e-7969-4365-88da-40c69bdc7fe5",
+      "media_type": "image",
+      "file_url": "/assets/products/onovo-kunstor/cabinet.webp",
+      "video_url": null,
+      "thumbnail_url": "/assets/products/onovo-kunstor/cabinet.webp",
+      "local_file_url": "/assets/products/onovo-kunstor/cabinet.webp",
+      "local_thumbnail_url": "/assets/products/onovo-kunstor/cabinet.webp",
+      "product_slugs": [
+        "onovo-kunstor"
+      ],
+      "is_published": true,
+      "sort_order": 3
+    }
+  ]
+}

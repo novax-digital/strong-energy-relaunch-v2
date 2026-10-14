@@ -53,7 +53,7 @@ export function ProductDetailTabs({ downloads, product, lang = "de", additionalC
       { id: "downloads", label: t.tabs.downloads }
     ];
     const hasSpecs = Boolean(product.specs?.length || product.specsSections?.length || product.specsTable);
-    const hasComparison = product.slug === "star-h" || product.slug === "star-q" || Boolean(additionalComparisonProduct);
+    const hasComparison = ["star-h", "star-q", "onovo-kunstor"].includes(product.slug) || Boolean(additionalComparisonProduct);
     return tabLabels.filter((tab) => (tab.id !== "specs" || hasSpecs) && (tab.id !== "comparison" || hasComparison));
   }, [additionalComparisonProduct, product.slug, product.specs?.length, product.specsSections?.length, product.specsTable, t.tabs.comparison, t.tabs.description, t.tabs.downloads, t.tabs.features, t.tabs.specs]);
   const urlHash = useSyncExternalStore(subscribeToUrlHash, getUrlHash, getServerUrlHash);
@@ -155,7 +155,7 @@ function FeaturesPanel({ product }: { product: Product }) {
             <ProductFeatureIcon className="h-7 w-7" icon={item.icon} strokeWidth={1.8} />
           </div>
           <h3 className="mt-6 text-lg font-bold leading-snug text-foreground">{item.title}</h3>
-          <p className="mt-3 text-base leading-relaxed text-muted-foreground">{item.text}</p>
+          <p className="mt-3 whitespace-pre-line text-base leading-relaxed text-muted-foreground">{item.text}</p>
         </article>
       ))}
     </div>

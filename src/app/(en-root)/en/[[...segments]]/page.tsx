@@ -18,6 +18,7 @@ import { PartnerApplicationForm } from "@/components/PartnerApplicationForm";
 import { PartnerGrid } from "@/components/PartnerGrid";
 import { PresentationEmbed } from "@/components/PresentationEmbed";
 import { ProductDetailHero } from "@/components/ProductDetailHero";
+import { OnovoProductPage } from "@/components/OnovoProductPage";
 import { ProductDetailTabs } from "@/components/ProductDetailTabs";
 import { ProductFeatureIcon } from "@/components/ProductFeatureIcon";
 import { ProductImageGallery } from "@/components/ProductImageGallery";
@@ -37,6 +38,7 @@ import { getProductByPath } from "@/lib/content/getProductBySlug";
 import { getProductCategories, getProductCategoryImage, getProducts } from "@/lib/content/getProducts";
 import { localizeLegalSlug, localizedPath, normalizeLegalSlug, translations } from "@/lib/i18n";
 import { absoluteUrl, breadcrumbJsonLd, createMetadata } from "@/lib/seo";
+import { onovoLanguageAlternates } from "@/content/onovo";
 
 const lang = "en" as const;
 const t = translations.en;
@@ -169,12 +171,13 @@ export async function generateMetadata({ params }: EnglishPageProps): Promise<Me
   if (section === "products" && second && third) {
     const product = getProductByPath(second, third, lang);
     if (!product) return {};
-    return createMetadata({
+    const metadata = createMetadata({
       title: `${product.name} - ${product.subtitle} | Strong Energy`,
       description: product.shortDescription,
       path: `/en/products/${product.categorySlug}/${product.slug}`,
       image: product.heroImage || product.images[0]
     });
+    return product.slug === "onovo-kunstor" ? { ...metadata, alternates: onovoLanguageAlternates(lang) } : metadata;
   }
   if (section === "blog" && !second) return seo.blog;
   if (section === "blog" && second) {
@@ -356,6 +359,10 @@ function ProductDetailPageContent({ categorySlug, productSlug }: { categorySlug:
     { name: product.category, path: localizedPath(`/produkte/${product.categorySlug}`, lang) },
     { name: product.name, path: productUrl }
   ]);
+
+  if (product.slug === "onovo-kunstor") {
+    return <><SEOJsonLd data={[productJsonLd, breadcrumbs]} /><OnovoProductPage product={product} lang={lang} /></>;
+  }
 
   return (
     <>
