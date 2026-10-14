@@ -34,7 +34,14 @@ export function useLiveMedia(initialItems: MediaItem[], initialCategories: Media
         if (categoriesResult.error || itemsResult.error || !Array.isArray(categoriesResult.data) || !Array.isArray(itemsResult.data)) return;
 
         const nextCategories = categoriesResult.data as MediaCategory[];
-        const nextItems = (itemsResult.data as MediaItemRow[]).map((row) => normalizeMediaItem(row, localItemsById.get(row.id)));
+        const cmsItems = (itemsResult.data as MediaItemRow[]).map((row) => normalizeMediaItem(row, localItemsById.get(row.id)));
+        const cmsIds = new Set(cmsItems.map((item) => item.id));
+        // Retain media bundled with the site when the live CMS refreshes the gallery.
+        const bundledItems = Array.from(localItemsById.values()).filter((item) =>
+          item.is_published && !item.file_url && !item.video_url && !item.thumbnail_url &&
+          Boolean(item.local_file_url || item.local_thumbnail_url) && !cmsIds.has(item.id)
+        );
+        const nextItems = [...cmsItems, ...bundledItems];
 
         if (active) {
           setLiveMedia({ items: nextItems, categories: nextCategories });
@@ -63,6 +70,7 @@ function normalizeMediaItem(row: MediaItemRow, fallback?: MediaItem): MediaItem 
     description_en: row.description_en || null,
     category_id: row.category_id || null,
     media_type: row.media_type === "video" ? "video" : "image",
+    videoOrientation: fallback?.videoOrientation,
     file_url: row.file_url || fallback?.file_url || null,
     video_url: row.video_url || fallback?.video_url || null,
     thumbnail_url: row.thumbnail_url || fallback?.thumbnail_url || null,

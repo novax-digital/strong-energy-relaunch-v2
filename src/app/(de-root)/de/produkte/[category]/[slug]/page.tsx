@@ -17,6 +17,7 @@ import { getProductByPath } from "@/lib/content/getProductBySlug";
 import { getProducts } from "@/lib/content/getProducts";
 import { absoluteUrl, breadcrumbJsonLd, createMetadata } from "@/lib/seo";
 import { onovoLanguageAlternates } from "@/content/onovo";
+import { alfredExplainerVideo } from "@/content/alfred";
 
 export function generateStaticParams() {
   return getProducts().map((product) => ({ category: product.categorySlug, slug: product.slug }));
@@ -132,9 +133,18 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                   </div>
                 ))}
               </div>
-              <div className="mt-7 flex flex-col gap-4 sm:flex-row">
+              <div className="mt-7 flex flex-col gap-4 sm:flex-row sm:flex-wrap">
                 <ProductInquiryButton product={product} label="Angebot anfragen" />
                 <ProductVideoButton product={product} />
+                {product.slug === "alfred-10" ? (
+                  <ProductVideoButton
+                    product={product}
+                    label="Produktvideo 2"
+                    videoSrc={alfredExplainerVideo.local_file_url}
+                    posterSrc={alfredExplainerVideo.local_thumbnail_url}
+                    portrait
+                  />
+                ) : null}
               </div>
             </div>
           </div>

@@ -1,0 +1,20 @@
+[
+  {
+    "id": "c1ea2d2d-6049-4ed4-bd74-e521c96da73e",
+    "title_de": "ALFRED Produktvideo 2 – Niklas erklärt den ALFRED AIO",
+    "title_en": "ALFRED product video 2 – Niklas explains the ALFRED AIO (German)",
+    "description_de": "Produktvorstellung auf Deutsch.",
+    "description_en": "Product presentation in German.",
+    "category_id": "76919dbb-6972-4822-acf2-7f38fafdf70c",
+    "media_type": "video",
+    "videoOrientation": "portrait",
+    "file_url": null,
+    "video_url": null,
+    "thumbnail_url": null,
+    "local_file_url": "/videos/niklas-erklaert-alfred.mp4",
+    "local_thumbnail_url": "/videos/niklas-erklaert-alfred-poster.jpg",
+    "product_slugs": ["alfred-10"],
+    "is_published": true,
+    "sort_order": 0
+  }
+]

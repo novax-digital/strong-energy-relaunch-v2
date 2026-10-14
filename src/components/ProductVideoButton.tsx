@@ -8,16 +8,22 @@ export function ProductVideoButton({
   className,
   label = "Produktvideo",
   portrait = false,
+  videoSrc,
+  posterSrc,
   product
 }: {
   className?: string;
   label?: string;
   portrait?: boolean;
+  videoSrc?: string;
+  posterSrc?: string;
   product: Product;
 }) {
   const [open, setOpen] = useState(false);
-  const poster = product.heroImage || product.images[0];
-  const hasVideo = Boolean(product.productVideo || product.productVideoWebm);
+  const poster = posterSrc || product.heroImage || product.images[0];
+  const mp4 = videoSrc || product.productVideo;
+  const webm = videoSrc ? undefined : product.productVideoWebm;
+  const hasVideo = Boolean(mp4 || webm);
 
   useEffect(() => {
     if (!open) return;
@@ -72,8 +78,8 @@ export function ProductVideoButton({
           </button>
           <div className={`w-full overflow-hidden rounded-xl bg-black shadow-2xl ${portrait ? "max-w-[min(480px,47.8125dvh)]" : "max-w-6xl"}`} onClick={(event) => event.stopPropagation()}>
             <video autoPlay className={`${portrait ? "aspect-[9/16]" : "aspect-video"} w-full bg-black`} controls playsInline poster={poster} preload="metadata">
-              {product.productVideoWebm ? <source src={product.productVideoWebm} type="video/webm" /> : null}
-              {product.productVideo ? <source src={product.productVideo} type="video/mp4" /> : null}
+              {webm ? <source src={webm} type="video/webm" /> : null}
+              {mp4 ? <source src={mp4} type="video/mp4" /> : null}
             </video>
           </div>
         </div>

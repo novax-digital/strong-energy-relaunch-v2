@@ -109,6 +109,7 @@ export interface MediaItem {
   description_en: string | null;
   category_id: string | null;
   media_type: "image" | "video";
+  videoOrientation?: "portrait" | "landscape";
   file_url: string | null;
   video_url: string | null;
   thumbnail_url: string | null;

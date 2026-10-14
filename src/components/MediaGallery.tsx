@@ -24,7 +24,8 @@ export function MediaGallery({ items, categories, lang = "de" }: { items: MediaI
       ["Besuch bei Alfred", 3],
       ["INTERSOLAR 2025", 4],
       ["CNTE Gewerbespeicher powered by Strong Energy", 5],
-      ["ALFRED Produktvideo", 6]
+      ["ALFRED Produktvideo", 6],
+      ["ALFRED Produktvideo 2 – Niklas erklärt den ALFRED AIO", 7]
     ]);
     return [...liveMedia.items].sort((a, b) => {
       const ai = a.media_type === "video" ? videoOrder.get(a.title_de) ?? 100 : 100 + a.sort_order;
@@ -330,8 +331,8 @@ function MediaLightbox({
         {description ? <p className="sr-only">{description}</p> : null}
         {item.media_type === "video" ? (
           <div
-            className="relative aspect-video overflow-hidden rounded-lg shadow-2xl"
-            style={{ width: "min(92vw, 1180px, calc(82vh * 16 / 9))" }}
+            className={`relative overflow-hidden rounded-lg shadow-2xl ${item.videoOrientation === "portrait" ? "aspect-[9/16]" : "aspect-video"}`}
+            style={{ width: item.videoOrientation === "portrait" ? "min(82vw, 480px, calc(82dvh * 9 / 16))" : "min(92vw, 1180px, calc(82vh * 16 / 9))" }}
           >
             <LightboxVideo source={source} title={title} />
           </div>
