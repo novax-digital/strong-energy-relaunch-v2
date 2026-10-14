@@ -75,15 +75,15 @@ export function ProductDetailTabs({ downloads, product, lang = "de", additionalC
       {tabs.filter((tab) => tab.id !== "description").map((tab) => (
         <span aria-hidden="true" className="absolute top-0 scroll-mt-28 md:scroll-mt-32" id={tabHashes[lang][tab.id]} key={`${tab.id}-anchor`} />
       ))}
-      <div className="overflow-x-auto rounded-2xl bg-secondary/45 p-1">
-        <div aria-label="Produktdetails" className="flex min-w-max gap-1 md:min-w-0" role="tablist">
-          {tabs.map((tab) => {
+      <div className="rounded-2xl bg-secondary/45 p-1">
+        <div aria-label={lang === "en" ? "Product details" : "Produktdetails"} className="grid grid-cols-2 gap-1 md:flex" role="tablist">
+          {tabs.map((tab, index) => {
             const selected = activeTab === tab.id;
             return (
               <button
                 aria-controls={`${baseId}-${tab.id}`}
                 aria-selected={selected}
-                className={`min-h-11 min-w-[10rem] rounded-xl px-6 text-sm font-bold transition-all md:min-w-0 md:flex-1 md:px-8 ${
+                className={`min-h-12 min-w-0 rounded-xl px-3 py-2 text-sm font-bold leading-tight transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary md:min-h-11 md:flex-1 md:px-8 ${tabs.length % 2 !== 0 && index === tabs.length - 1 ? "col-span-2 md:col-span-1" : ""} ${
                   selected ? "border-2 border-primary bg-white text-foreground shadow-sm" : "border-2 border-transparent text-muted-foreground hover:text-foreground"
                 }`}
                 id={`${baseId}-${tab.id}-tab`}

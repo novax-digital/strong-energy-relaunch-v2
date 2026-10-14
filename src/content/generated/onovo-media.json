@@ -82,6 +82,26 @@
       ],
       "is_published": true,
       "sort_order": 3
+    },
+    {
+      "id": "f6423442-2271-444a-815a-8ae9114e4fa6",
+      "title_de": "Onovo Kunstor – Produktvideo: Niklas erklärt Onovo",
+      "title_en": "Onovo Kunstor – product video: Niklas explains Onovo (German)",
+      "description_de": "Niklas stellt den Onovo Kunstor im Produkt-Reel vor.",
+      "description_en": "Niklas introduces the Onovo Kunstor in this product reel. Audio in German.",
+      "category_id": "76919dbb-6972-4822-acf2-7f38fafdf70c",
+      "media_type": "video",
+      "file_url": "https://jguraczvnxkjrrcpigzf.supabase.co/storage/v1/object/public/media/onovo-kunstor/niklas-erklaert-onovo.mp4",
+      "video_url": null,
+      "thumbnail_url": "https://jguraczvnxkjrrcpigzf.supabase.co/storage/v1/object/public/media/onovo-kunstor/niklas-erklaert-onovo-poster.jpg",
+      "product_slugs": [
+        "onovo-kunstor"
+      ],
+      "is_published": true,
+      "sort_order": 1,
+      "videoOrientation": "portrait",
+      "local_file_url": null,
+      "local_thumbnail_url": null
     }
   ]
 }

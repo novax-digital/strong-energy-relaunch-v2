@@ -31,9 +31,11 @@ function fileNameFromUrl(url, fallback = "asset") {
   const parsed = new URL(url);
   const rawName = decodeURIComponent(path.basename(parsed.pathname) || fallback);
   const ext = path.extname(rawName) || ".bin";
+  // JFIF is JPEG; use .jpg so static hosting serves it as image/jpeg.
+  const servedExt = ext.toLowerCase() === ".jfif" ? ".jpg" : ext.toLowerCase();
   const base = slugify(rawName.replace(ext, "")) || fallback;
   const hash = createHash("sha1").update(url).digest("hex").slice(0, 8);
-  return `${base}-${hash}${ext.toLowerCase()}`;
+  return `${base}-${hash}${servedExt}`;
 }
 
 async function fetchJson(table, query = "select=*") {
