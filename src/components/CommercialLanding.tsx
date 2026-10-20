@@ -551,13 +551,14 @@ export function CommercialLanding({ variant = "form" }: CommercialLandingProps) 
           </Reveal>
 
           <Reveal delay={120}>
-            <div className="no-scrollbar mt-12 overflow-x-auto">
-              <table className="w-full text-sm sm:text-base">
+            <p className="mt-8 text-center text-xs text-muted-foreground sm:hidden">Für alle drei Systeme die Tabelle seitlich wischen <span aria-hidden="true">↔</span></p>
+            <div className="mt-4 overflow-x-auto sm:mt-12" role="region" aria-label="Vergleich der Gewerbespeicher" tabIndex={0}>
+              <table className="w-full min-w-[680px] table-fixed text-sm sm:text-base">
                 <thead>
                   <tr className="border-b border-foreground/10">
-                    <th className="py-4 pr-4 text-left font-medium text-muted-foreground" />
-                    {["Star Q", "Star H"].map((name) => (
-                      <th key={name} className="px-3 py-4 text-left font-bold text-foreground">
+                    <th className="sticky left-0 z-10 w-[120px] bg-background py-4 pr-4 text-left font-medium text-muted-foreground" />
+                    {["Star Q", "Star H", "Onovo Kunstor"].map((name) => (
+                      <th key={name} scope="col" className="px-3 py-4 text-left font-bold text-foreground">
                         {name}
                       </th>
                     ))}
@@ -565,15 +566,15 @@ export function CommercialLanding({ variant = "form" }: CommercialLandingProps) 
                 </thead>
                 <tbody className="text-foreground">
                   {[
-                    ["Leistung", "50 kW", "115 kW"],
-                    ["Kapazität", "109,7 kWh", "232,5 kWh"],
-                    ["Bauform", "All-in-One", "All-in-One"],
-                    ["Zellen", "CATL 306 Ah", "CATL 280 Ah"],
-                    ["Skalierung", "bis 6 Systeme", "bis 12 Systeme"],
-                    ["Schutz", "IP66 / IP67", "IP54 / IP65"]
+                    ["Leistung", "50 kW", "115 kW", "125 kW"],
+                    ["Kapazität", "109,7 kWh", "232,5 kWh", "261 kWh"],
+                    ["Bauform", "All-in-One", "All-in-One", "All-in-One"],
+                    ["Zellen", "CATL 306 Ah", "CATL 280 Ah", "REPT 314 Ah"],
+                    ["Skalierung", "bis 6 Systeme", "bis 12 Systeme", "bis 24 Systeme (Netz) / bis 6 (Insel)"],
+                    ["Schutz", "IP66 / IP67", "IP54 / IP65", "IP55"]
                   ].map((row) => (
                     <tr key={row[0]} className="border-b border-foreground/5">
-                      <td className="py-4 pr-4 font-medium text-muted-foreground">{row[0]}</td>
+                      <th scope="row" className="sticky left-0 z-10 bg-background py-4 pr-4 text-left font-medium text-muted-foreground">{row[0]}</th>
                       {row.slice(1).map((value, valueIndex) => (
                         <td key={`${row[0]}-${valueIndex}`} className="px-3 py-4">
                           {value}

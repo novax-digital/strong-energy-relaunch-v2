@@ -29,6 +29,12 @@ try {
     page.on("pageerror", (error) => errors.push(error.message));
     await page.goto(path);
     await page.getByRole("heading", { level: 1, name: "Onovo Kunstor", exact: true }).waitFor();
+    const heroVideo = page.locator("section").first().locator("video");
+    await heroVideo.evaluate((video) => video.readyState >= 2 || new Promise((resolve) => video.addEventListener("loadeddata", resolve, { once: true })));
+    const heroState = await heroVideo.evaluate((video) => ({ src: video.currentSrc, duration: video.duration, loop: video.loop, muted: video.muted, inline: video.playsInline }));
+    assert.ok(heroState.src.endsWith("/assets/products/onovo-kunstor/hero-banner.mp4"));
+    assert.ok(heroState.duration > 9 && heroState.duration < 11);
+    assert.equal(heroState.loop && heroState.muted && heroState.inline, true);
     const cookieButton = page.getByRole("button", { name: lang === "de" ? "Nur notwendige" : "Necessary only", exact: true });
     if (await cookieButton.isVisible()) await cookieButton.click();
     assert.doesNotMatch(await page.locator('meta[name="robots"]').getAttribute("content"), /noindex/);
@@ -117,7 +123,7 @@ try {
   for (const name of ["onovo-carport.jpg", "onovo-office.jpg", "onovo-warehouse.jpg", "cabinet.webp"]) {
     assert.equal((await api.head(`/assets/products/onovo-kunstor/${name}`)).status(), 200);
   }
-  const video = await api.get("/assets/products/onovo-kunstor/hero-fullhd.mp4", { headers: { Range: "bytes=0-1023" } });
+  const video = await api.get("/assets/products/onovo-kunstor/hero-banner.mp4", { headers: { Range: "bytes=0-1023" } });
   assert.equal(video.status(), 206);
   assert.equal((await video.body()).length, 1024);
   const explanation = await api.get("/assets/products/onovo-kunstor/niklas-erklaert-onovo.mp4", { headers: { Range: "bytes=0-1023" } });
@@ -136,6 +142,16 @@ try {
   const commercialCookies = commercialPage.getByRole("button", { name: "Nur notwendige", exact: true });
   await commercialCookies.waitFor();
   await commercialCookies.click();
+  const commercialComparison = commercialPage.getByRole("region", { name: "Vergleich der Gewerbespeicher", exact: true });
+  assert.equal(await commercialComparison.getByRole("columnheader").count(), 4);
+  const comparisonRows = await commercialComparison.getByRole("row").all();
+  assert.deepEqual(await Promise.all(comparisonRows.slice(1).map((row) => row.getByRole("cell").last().innerText())), ["125 kW", "261 kWh", "All-in-One", "REPT 314 Ah", "bis 24 Systeme (Netz) / bis 6 (Insel)", "IP55"]);
+  await commercialComparison.scrollIntoViewIfNeeded();
+  await commercialComparison.evaluate((element) => new Promise((resolve) => {
+    const check = () => getComputedStyle(element.parentElement).opacity === "1" ? resolve() : requestAnimationFrame(check);
+    check();
+  }));
+  await commercialComparison.screenshot({ path: "/tmp/onovo-commercial-comparison-desktop.png" });
   for (const target of [
     { name: "Gewerbespeicher", slug: "gewerbespeicher-beratung", button: "Beratungstermin buchen" },
     { name: "Onovo Kunstor", slug: "onovo-kunstor", button: "Onovo Kunstor anfragen" },
@@ -164,6 +180,11 @@ try {
     assert.equal(await dialog.count(), 0);
   }
   await commercialPage.setViewportSize({ width: 390, height: 844 });
+  await commercialComparison.scrollIntoViewIfNeeded();
+  assert.equal(await commercialComparison.evaluate((element) => element.scrollWidth > element.clientWidth), true);
+  await commercialComparison.evaluate((element) => { element.scrollLeft = element.scrollWidth; });
+  assert.equal(await commercialPage.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+  await commercialComparison.screenshot({ path: "/tmp/onovo-commercial-comparison-mobile.png" });
   await commercialPage.getByRole("button", { name: "Beratungstermin buchen", exact: true }).last().click();
   const mobileDialog = commercialPage.getByRole("dialog", { name: "Anfrage für Gewerbespeicher", exact: true });
   await mobileDialog.waitFor();

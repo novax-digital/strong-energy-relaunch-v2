@@ -22,7 +22,7 @@ export function OnovoProductPage({ lang, product }: { lang: Language; product: P
 
   return (
     <>
-      <ProductDetailHero product={product} lang={lang} videoLoopSegment={{ start: 10, end: 16 }} />
+      <ProductDetailHero product={product} lang={lang} />
       <div className="relative scroll-mt-28 overflow-hidden pb-20 pt-12 md:scroll-mt-32" id="beschreibung">
         <div className="container-wide mb-8 flex flex-wrap items-center gap-3 text-sm">
           <Link href={localizedPath("/produkte", lang)} className="inline-flex items-center gap-1 text-muted-foreground transition-colors hover:text-foreground">
