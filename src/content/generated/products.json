@@ -30,7 +30,7 @@
       },
       {
         "icon": "Battery",
-        "title": "9,6 – 24 kWh Speicher",
+        "title": "7,2 – 24 kWh Speicher",
         "text": "Modular erweiterbar, 10.000 Ladezyklen"
       },
       {
@@ -76,11 +76,11 @@
       },
       {
         "label": "Anzahl Batteriemodule",
-        "value": "4 bis 10"
+        "value": "3 bis 10"
       },
       {
         "label": "Nennkapazität",
-        "value": "9,6 – 24 kWh"
+        "value": "7,2 – 24 kWh"
       },
       {
         "label": "Max. Lade-/Entladeleistung",
