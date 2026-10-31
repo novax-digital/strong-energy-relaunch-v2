@@ -529,7 +529,7 @@
     "subtitle": "Commercial Storage",
     "tagline": "Commercial Storage Complete System",
     "shortDescription": "115 kW | 232.5 kWh | Floor mounted | Outdoor – scalable commercial storage solution for industry and business. 10-year warranty, individually extendable.",
-    "description": "The Star H-232 is a powerful complete system with YUNT MARS-125KT inverter (reduced to 115 kW), designed for industrial and commercial applications. With 5 CATL battery modules (46.5 kWh each, 280 Ah), integrated fire suppression system and protection classes IP20 (inverter), IP54 (cabinet) and IP65 (battery compartment), it offers the highest safety and reliability. Scalable up to 12 systems in master/slave operation. Strong Energy is the official distribution partner for CNTE and CATL commercial storage in Europe.\n\n10-year warranty, individually extendable.",
+    "description": "The Star H-232 is a powerful complete system with YUNT MARS-125KT inverter (reduced to 115 kW), designed for industrial and commercial applications. With 5 CATL battery modules (46.5 kWh each, 280 Ah), integrated fire suppression system and protection classes IP20 (inverter), IP54 (cabinet) and IP65 (battery compartment), it offers the highest safety and reliability. Scalable in master/slave operation. Strong Energy is the official distribution partner for CNTE and CATL commercial storage in Europe.\n\n10-year warranty, individually extendable.",
     "highlights": [
       {
         "icon": "Shield",
@@ -539,12 +539,12 @@
       {
         "icon": "Zap",
         "title": "115 kW Power",
-        "text": "232.5 kWh storage capacity, scalable up to 12 systems"
+        "text": "232.5 kWh storage capacity, scalable in master/slave operation"
       },
       {
         "icon": "Battery",
         "title": "CATL Cells / Modules",
-        "text": "LFP technology, 8,000 cycles, 280 Ah"
+        "text": "LFP technology, 10,000 cycles, 280 Ah"
       },
       {
         "icon": "Link",
@@ -733,7 +733,7 @@
           {
             "label": "Battery Lifetime (Cycles)",
             "values": [
-              "8,000"
+              "10,000"
             ]
           }
         ]
@@ -803,7 +803,7 @@
           {
             "label": "Scalability",
             "values": [
-              "Up to 12 systems in master/slave operation"
+              "In master/slave operation"
             ]
           }
         ]

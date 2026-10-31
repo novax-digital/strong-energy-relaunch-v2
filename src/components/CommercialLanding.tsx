@@ -306,12 +306,12 @@ export function CommercialLanding({ variant = "form" }: CommercialLandingProps) 
             name: starH.name,
             tagline: "Mehr Power. Mehr Speicher. Industriellevel.",
             description:
-              "Hochleistungs-Komplettsystem mit YUNT MARS Wechselrichter. CATL 280 Ah Module, integriertes Feuerlöschsystem, Outdoor-fähig. Skalierbar bis 12 Systeme.",
+              "Hochleistungs-Komplettsystem mit YUNT MARS Wechselrichter. CATL 280 Ah Module, integriertes Feuerlöschsystem, Outdoor-fähig. Skalierbar im Master/Slave-Betrieb.",
             images: starH.images,
             stats: [
               { label: "Leistung", value: "115 kW" },
               { label: "Kapazität", value: "232,5 kWh" },
-              { label: "Skalierbar", value: "x 12" },
+              { label: "Skalierbar", value: "Master/Slave" },
               { label: "Temp.", value: "-40 / +60°C" }
             ],
             highlights: starH.highlights.slice(0, 4),
@@ -570,7 +570,7 @@ export function CommercialLanding({ variant = "form" }: CommercialLandingProps) 
                     ["Kapazität", "109,7 kWh", "232,5 kWh", "261 kWh"],
                     ["Bauform", "All-in-One", "All-in-One", "All-in-One"],
                     ["Zellen", "CATL 306 Ah", "CATL 280 Ah", "REPT 314 Ah"],
-                    ["Skalierung", "bis 6 Systeme", "bis 12 Systeme", "bis 24 Systeme (Netz) / bis 6 (Insel)"],
+                    ["Skalierung", "bis 6 Systeme", "Master/Slave-Betrieb", "bis 24 Systeme (Netz) / bis 6 (Insel)"],
                     ["Schutz", "IP66 / IP67", "IP54 / IP65", "IP55"]
                   ].map((row) => (
                     <tr key={row[0]} className="border-b border-foreground/5">

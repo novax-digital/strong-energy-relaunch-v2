@@ -558,7 +558,7 @@
     "subtitle": "Gewerbespeicher",
     "tagline": "Gewerbespeicher Komplettsystem",
     "shortDescription": "115 kW | 232,5 kWh | Bodenmontage | Outdoor – skalierbare Gewerbespeicherlösung für Industrie und Gewerbe. 10 Jahre Garantie, individuell erweiterbar.",
-    "description": "Der Star H-232 ist ein leistungsstarkes Komplettsystem mit YUNT MARS-125KT Wechselrichter (reduziert auf 115 kW), entwickelt für Industrie- und Gewerbeanwendungen. Mit 5 CATL-Batteriemodulen (je 46,5 kWh, 280 Ah), integriertem Feuerlöschsystem und Schutzklassen IP20 (Wechselrichter), IP54 (Schaltschrank) sowie IP65 (Batteriefach) bietet er höchste Sicherheit und Zuverlässigkeit. Skalierbar bis 12 Systeme im Master/Slave-Betrieb. Strong Energy ist offizieller Vertriebspartner für CNTE und CATL Gewerbespeicher in Europa.\n\n10 Jahre Garantie, individuell erweiterbar.",
+    "description": "Der Star H-232 ist ein leistungsstarkes Komplettsystem mit YUNT MARS-125KT Wechselrichter (reduziert auf 115 kW), entwickelt für Industrie- und Gewerbeanwendungen. Mit 5 CATL-Batteriemodulen (je 46,5 kWh, 280 Ah), integriertem Feuerlöschsystem und Schutzklassen IP20 (Wechselrichter), IP54 (Schaltschrank) sowie IP65 (Batteriefach) bietet er höchste Sicherheit und Zuverlässigkeit. Skalierbar im Master/Slave-Betrieb. Strong Energy ist offizieller Vertriebspartner für CNTE und CATL Gewerbespeicher in Europa.\n\n10 Jahre Garantie, individuell erweiterbar.",
     "images": [
       "/assets/star-h-outside-nz-mxvlP.webp",
       "/assets/star-h-freisteller-DUgu-b_H.jpg",
@@ -576,12 +576,12 @@
       {
         "icon": "Zap",
         "title": "115 kW Leistung",
-        "text": "232,5 kWh Speicherkapazität, skalierbar bis 12 Systeme"
+        "text": "232,5 kWh Speicherkapazität, skalierbar im Master/Slave-Betrieb"
       },
       {
         "icon": "Battery",
         "title": "CATL Zellen / Module",
-        "text": "LFP-Technologie, 8.000 Zyklen, 280 Ah"
+        "text": "LFP-Technologie, 10.000 Zyklen, 280 Ah"
       },
       {
         "icon": "Link",
@@ -770,7 +770,7 @@
           {
             "label": "Batterie-Lebensdauer (Zyklen)",
             "values": [
-              "8.000"
+              "10.000"
             ]
           }
         ]
@@ -840,7 +840,7 @@
           {
             "label": "Skalierbarkeit",
             "values": [
-              "Bis 12 Systeme im Master/Slave-Betrieb"
+              "Im Master/Slave-Betrieb"
             ]
           }
         ]
