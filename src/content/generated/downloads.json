@@ -264,12 +264,12 @@
   {
     "id": "3e568e7f-a2e9-4fdb-88ae-886c7c9fb347",
     "title_de": "Star H Datenblatt",
-    "title_en": "",
+    "title_en": "Star H Datasheet",
     "description_de": null,
     "description_en": null,
     "category": "Datenblatt",
-    "file_url_de": "https://qyxshvsbovymfodqnvfq.supabase.co/storage/v1/object/public/downloads/de/Datenblatt_Star_H_1_Front_neu_300326.pdf",
-    "file_url_en": null,
+    "file_url_de": "/assets/downloads/Datenblatt_Star_H-232_GER.pdf",
+    "file_url_en": "/assets/downloads/Datasheet_Star_H-232_EN.pdf",
     "product_slugs": [
       "star-h"
     ],
@@ -277,8 +277,8 @@
     "sort_order": 0,
     "created_at": "2026-03-12T19:47:19.644463+00:00",
     "updated_at": "2026-03-30T11:48:32.157222+00:00",
-    "local_file_url_de": "/assets/downloads/datenblatt-star-h-1-front-neu-300326-62eba05e.pdf",
-    "local_file_url_en": null
+    "local_file_url_de": "/assets/downloads/Datenblatt_Star_H-232_GER.pdf",
+    "local_file_url_en": "/assets/downloads/Datasheet_Star_H-232_EN.pdf"
   },
   {
     "id": "e5698030-38c4-4696-a837-4e6163425859",
