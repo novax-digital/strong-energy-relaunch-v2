@@ -49,6 +49,8 @@ export interface Product {
   shortDescription: string;
   description: string;
   images: string[];
+  imageDetails?: Record<string, { alt: string; fit?: "contain" | "cover" }>;
+  recognition?: { image: string; alt: string };
   heroImage?: string;
   heroVideo?: string;
   heroVideoWebm?: string;

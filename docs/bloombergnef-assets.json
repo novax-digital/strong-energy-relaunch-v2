@@ -1,0 +1,25 @@
+{
+  "scope": [
+    "star-q",
+    "star-h"
+  ],
+  "period": "Q4 2026",
+  "assets": [
+    {
+      "path": "public/assets/bloombergnef-tier-1-q4-2026-transparent.png",
+      "source": "Freistellen.jpg",
+      "processing": "Built-in image_gen: transparent background extraction",
+      "prompt": "Use case: background-extraction. Asset type: transparent PNG cutout of an existing original BloombergNEF seal for product pages. Input image 1 is the edit target. Remove ONLY the blurred gray photographic/table background OUTSIDE the hexagonal blue outline. Keep the entire original seal inside the hexagonal outline unchanged, including its opaque white interior, blue border and small dark blue Q4 2026 flag. Preserve the exact geometry, typography, original colors and these original text elements verbatim: 'Q4', '2026', 'BloombergNEF', 'TIER 1', 'Energy Storage'. This is precise background removal, no redesign, no recreation, no extra elements, no shadow or glow. Tight framing around the existing seal with a small transparent margin. Outside the seal must be genuinely transparent alpha, not a checkerboard image."
+    },
+    {
+      "path": "public/assets/cnte-bloombergnef-tier-1-q4-2026.png",
+      "source": "image (18).png",
+      "processing": "Original file copied unchanged"
+    },
+    {
+      "path": "public/assets/bloombergnef-tier-1-list-q4-2026.jpg",
+      "source": "IMG_1672.jpg",
+      "processing": "Original file copied unchanged"
+    }
+  ]
+}

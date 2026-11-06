@@ -3,6 +3,7 @@ import productTranslationsEnJson from "@/content/generated/product-translations-
 import type { Product, ProductCategory } from "@/types/content";
 import { reverseCategorySlug, translateCategorySlug, type Language } from "@/lib/i18n";
 import { onovoProducts } from "@/content/onovo";
+import { withBloombergNefRecognition } from "@/content/bloombergNef";
 
 const productTranslationsEn = { ...productTranslationsEnJson, "onovo-kunstor": onovoProducts.en } as Record<string, Partial<Product>>;
 const productCategoryImages: Record<string, string> = {
@@ -20,13 +21,13 @@ function localizeProduct(product: Product, lang: Language): Product {
     ...asset,
     label: lang === "en" ? asset.label.replace("3D-Modell", "3D model") : asset.label
   }));
-  return {
+  return withBloombergNefRecognition({
     ...product,
     ...overrides,
     category: localizedCategory,
     categorySlug: translateCategorySlug(product.categorySlug, lang),
     modelAssets
-  };
+  }, lang);
 }
 
 function localizeCategory(category: ProductCategory, lang: Language): ProductCategory {

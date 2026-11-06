@@ -22,12 +22,14 @@ type GalleryItem =
 
 export function ProductImageGallery({
   images,
+  imageDetails,
   modelAssets = [],
   name,
   lang = "de",
   imageFit = "cover"
 }: {
   images: string[];
+  imageDetails?: Product["imageDetails"];
   modelAssets?: Product["modelAssets"];
   name: string;
   lang?: Language;
@@ -42,7 +44,7 @@ export function ProductImageGallery({
       ...images.map((image, index) => ({
         type: "image" as const,
         src: image,
-        alt: `${name} ${index + 1}`
+        alt: imageDetails?.[image]?.alt || `${name} ${index + 1}`
       })),
       ...modelAssets.map((model) => ({
         type: "model" as const,
@@ -50,7 +52,7 @@ export function ProductImageGallery({
         alt: model.label || `${name} 3D-Modell`
       }))
     ],
-    [images, modelAssets, name]
+    [images, imageDetails, modelAssets, name]
   );
   const activeItem = galleryItems[activeIndex] || galleryItems[0];
   const activeGalleryIndex = Math.max(0, galleryItems.indexOf(activeItem));
@@ -107,7 +109,7 @@ export function ProductImageGallery({
               onClick={() => setLightboxIndex(activeGalleryIndex)}
               type="button"
             >
-              <Image src={activeItem.src} unoptimized={activeItem.src.startsWith("/api/private-preview/")} alt={name} fill sizes="(min-width: 1024px) 45vw, 100vw" className={imageFit === "contain" || activeItem.src.startsWith("/api/private-preview/") ? "object-contain" : "object-cover"} priority />
+              <Image src={activeItem.src} unoptimized={activeItem.src.startsWith("/api/private-preview/")} alt={activeItem.alt} fill sizes="(min-width: 1024px) 45vw, 100vw" className={(imageDetails?.[activeItem.src]?.fit ?? imageFit) === "contain" || activeItem.src.startsWith("/api/private-preview/") ? "object-contain" : "object-cover"} priority />
             </button>
           ) : (
             <ProductModelViewer className="h-full w-full" model={activeItem.model} title={activeItem.alt} />
@@ -137,7 +139,7 @@ export function ProductImageGallery({
                 onClick={() => setActiveIndex(index)}
                 type="button"
               >
-                <Image src={image} unoptimized={image.startsWith("/api/private-preview/")} alt={`${name} ${index + 1}`} fill sizes="96px" className="object-cover" />
+                <Image src={image} unoptimized={image.startsWith("/api/private-preview/")} alt={imageDetails?.[image]?.alt || `${name} ${index + 1}`} fill sizes="96px" className={imageDetails?.[image]?.fit === "contain" ? "object-contain" : "object-cover"} />
               </button>
             );
           })}

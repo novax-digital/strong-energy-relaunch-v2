@@ -1,4 +1,4 @@
-import { Battery, Check, Clock, Headphones, Link as LinkIcon, Shield, Zap } from "lucide-react";
+import { Battery, Check, Clock, Headphones, Link as LinkIcon, Shield, Trophy, Zap } from "lucide-react";
 
 const iconMap = {
   Battery,
@@ -7,6 +7,7 @@ const iconMap = {
   HeadphonesIcon: Headphones,
   Link: LinkIcon,
   Shield,
+  Trophy,
   Zap
 };
 

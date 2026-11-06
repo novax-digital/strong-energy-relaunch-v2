@@ -6,6 +6,7 @@ import { ArrowLeft } from "lucide-react";
 import { ProductDetailHero } from "@/components/ProductDetailHero";
 import { ProductDetailTabs } from "@/components/ProductDetailTabs";
 import { ProductFeatureIcon } from "@/components/ProductFeatureIcon";
+import { ProductRecognitionBadge } from "@/components/ProductRecognitionBadge";
 import { ProductImageGallery } from "@/components/ProductImageGallery";
 import { ProductInquiryButton } from "@/components/ProductInquiryModal";
 import { ProductVideoButton } from "@/components/ProductVideoButton";
@@ -99,15 +100,16 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
         <section className="container-wide">
           <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] gap-12 lg:gap-16">
             <div className="space-y-4">
-              <ProductImageGallery images={product.images} modelAssets={product.modelAssets} name={product.name} />
+              <ProductImageGallery images={product.images} imageDetails={product.imageDetails} modelAssets={product.modelAssets} name={product.name} />
             </div>
             <div className="flex flex-col justify-center">
               <span className="text-sm font-semibold text-primary uppercase tracking-wider">{product.category}</span>
-              <div className="flex items-end justify-between gap-4 mt-2">
+              <div className={`flex justify-between gap-4 mt-2 ${product.recognition ? "items-center" : "items-end"}`}>
                 <div>
                   <h2 className="text-3xl font-bold text-foreground md:text-4xl lg:text-[2.5rem]">{product.name}</h2>
                   <p className="mt-2 text-lg font-medium text-muted-foreground">{product.subtitle}</p>
                 </div>
+                <ProductRecognitionBadge recognition={product.recognition} />
                 {product.slug === "alfred-10" ? (
                   <Image
                     src="/assets/reddot-winner-2024-DnnYkg0s.png"
@@ -121,8 +123,8 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
               </div>
               <p className="mt-6 whitespace-pre-line text-base leading-[1.625] text-muted-foreground">{product.shortDescription}</p>
               <div className="mt-7 grid grid-cols-1 gap-4 sm:grid-cols-2">
-                {product.highlights.slice(0, 4).map((item) => (
-                  <div key={item.title} className="grid min-w-0 grid-cols-[auto_minmax(0,1fr)] gap-3 overflow-hidden rounded-xl bg-secondary/60 p-3">
+                {product.highlights.slice(0, product.recognition ? 5 : 4).map((item) => (
+                  <div key={item.title} className={`grid min-w-0 grid-cols-[auto_minmax(0,1fr)] gap-3 overflow-hidden rounded-xl bg-secondary/60 p-3 ${item.icon === "Trophy" ? "sm:col-span-2" : ""}`}>
                     <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
                       <ProductFeatureIcon className="h-5 w-5" icon={item.icon} strokeWidth={1.8} />
                     </div>
