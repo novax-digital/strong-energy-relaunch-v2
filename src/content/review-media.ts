@@ -1,22 +1,32 @@
 import type { MediaCategory, MediaItem } from "@/types/content";
 
-const installationsCategoryId = "f4e0b8f9-97e1-48de-be2c-41fc84eb796f";
-const commercialInstallationsCategoryId = "review-commercial-storage-installations";
-const ediHohenloheCategoryId = "review-commercial-storage-edi-hohenlohe";
+export const installationCategoryIds = {
+  root: "f4e0b8f9-97e1-48de-be2c-41fc84eb796f",
+  commercial: "review-commercial-storage-installations",
+  alfred: "review-alfred-installations",
+  ediHohenlohe: "review-commercial-storage-edi-hohenlohe"
+} as const;
 
 export const reviewMediaCategories = [
   {
-    id: commercialInstallationsCategoryId,
-    name_de: "Gewerbespeicher Installationen",
-    name_en: "Commercial Storage Installations",
-    parent_id: installationsCategoryId,
-    sort_order: 20
+    id: installationCategoryIds.commercial,
+    name_de: "Gewerbespeicher",
+    name_en: "Commercial storage",
+    parent_id: installationCategoryIds.root,
+    sort_order: 0
   },
   {
-    id: ediHohenloheCategoryId,
+    id: installationCategoryIds.alfred,
+    name_de: "Alfred",
+    name_en: "Alfred",
+    parent_id: installationCategoryIds.root,
+    sort_order: 1
+  },
+  {
+    id: installationCategoryIds.ediHohenlohe,
     name_de: "Gewerbespeicher EDI Hohenlohe",
     name_en: "Commercial Storage EDI Hohenlohe",
-    parent_id: commercialInstallationsCategoryId,
+    parent_id: installationCategoryIds.commercial,
     sort_order: 0
   }
 ] satisfies MediaCategory[];
@@ -29,7 +39,7 @@ export const reviewMediaItems = Array.from({ length: 12 }, (_, index) => {
     title_en: `${number} · Commercial Storage EDI Hohenlohe`,
     description_de: "Installation von drei Star H Gewerbespeichern bei EDI Energy Direct.",
     description_en: "Installation of three Star H commercial battery systems at EDI Energy Direct.",
-    category_id: ediHohenloheCategoryId,
+    category_id: installationCategoryIds.ediHohenlohe,
     media_type: "image" as const,
     file_url: null,
     video_url: null,

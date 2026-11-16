@@ -86,6 +86,8 @@ Mit den drei Star H Systemen verfügt EDI Energy Direct nun über die technische
 
 Die tatsächlichen wirtschaftlichen Effekte werden im laufenden Betrieb sichtbar. Bereits heute schafft das Projekt die Voraussetzung für einen höheren Eigenverbrauch, weniger Netzbezug und eine besser integrierte Energieversorgung.
 
+Mehr Fotos und Eindrücke von der Umsetzung gibt es in der **[Gewerbespeicher-Galerie](/de/media?category=gewerbespeicher-edi-hohenlohe)**.
+
 ## Häufige Fragen zu Gewerbespeichern im Unternehmen
 
 ### Wann lohnt sich ein Gewerbespeicher bei bestehender Photovoltaik?
@@ -190,6 +192,8 @@ The project therefore does more than improve one company's energy infrastructure
 With three Star H systems installed, EDI Energy Direct now has the technical foundation to use more of its solar electricity at the time it is needed. The solution brings together existing rooftop PV, commercial battery storage, day-to-day business demand and charging for three electric lorries.
 
 The measured commercial impact will become visible during operation. The project already creates the conditions for higher self-consumption, lower grid dependence and a more integrated energy supply.
+
+Find more photos and impressions from the project in the **[commercial storage gallery](/en/media?category=commercial-storage-edi-hohenlohe)**.
 
 ---
 

@@ -24,6 +24,8 @@ const categoryColors: Record<string, string> = {
   Tips: "border-blue-500/20 bg-blue-500/10 text-blue-600"
 };
 
+const inquiryCtaPattern = /\[([^\]]+)\]\(([^)]*[?&]anfrage=true[^)]*)\)/i;
+
 const blogLabels = {
   de: {
     back: "Zurück zum Blog",
@@ -85,7 +87,7 @@ function isInternalHref(href: string) {
 function renderLink(href: string, children: React.ReactNode, key: string) {
   const isInquiryCta = href.includes("anfrage=true");
   const className = isInquiryCta
-    ? "inline-flex items-center gap-2 rounded-full bg-[linear-gradient(135deg,#d7d42f,#28a795)] px-6 py-3 font-semibold text-white no-underline shadow-lg transition-opacity hover:opacity-90"
+    ? "inline-flex items-center gap-2 rounded-full bg-[linear-gradient(135deg,#d7d42f,#28a795)] px-5 py-2.5 text-sm font-semibold text-white no-underline shadow-sm transition-opacity hover:opacity-90"
     : "text-primary underline transition-colors hover:text-primary/80";
 
   if (isInternalHref(href)) {
@@ -158,6 +160,21 @@ function renderInline(value: string, keyPrefix = "inline"): React.ReactNode[] {
   return nodes;
 }
 
+function ctaCopyWithoutLink(block: string, match: RegExpMatchArray) {
+  const start = match.index || 0;
+  const before = block
+    .slice(0, start)
+    .trim()
+    .replace(/\s+(?:oder|or)\s*$/i, "")
+    .replace(/[,;:]$/, "");
+  const after = block
+    .slice(start + match[0].length)
+    .trim()
+    .replace(/^[\s.,;:–—-]+/, "");
+
+  return [before, after].filter(Boolean).join(" ");
+}
+
 function MarkdownBlocks({ content }: { content: string }) {
   const blocks = content.split(/\n{2,}/).map((block) => block.trim()).filter(Boolean);
 
@@ -172,8 +189,8 @@ function MarkdownBlocks({ content }: { content: string }) {
         if (imageBlock) {
           const [, alt, src, caption] = imageBlock;
           return (
-            <figure className="my-10" key={index}>
-              <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-border bg-secondary/30 shadow-sm">
+            <figure className="my-8" key={index}>
+              <div className="relative aspect-video overflow-hidden rounded-2xl border border-border bg-secondary/30 shadow-sm">
                 <Image
                   alt={alt}
                   className="object-cover"
@@ -239,6 +256,20 @@ function MarkdownBlocks({ content }: { content: string }) {
           );
         }
 
+        const inquiryCta = block.match(inquiryCtaPattern);
+        if (inquiryCta) {
+          const copy = ctaCopyWithoutLink(block, inquiryCta);
+          const href = inquiryCta[2];
+          const label = inquiryCta[1];
+
+          return (
+            <aside key={index} className="my-8 flex flex-col items-start gap-3 rounded-xl border border-primary/15 bg-primary/[0.04] p-5">
+              {copy ? <p className="m-0 leading-relaxed text-muted-foreground">{renderInline(copy, `cta-copy-${index}`)}</p> : null}
+              {renderLink(href, renderInline(label, `cta-link-${index}`), `cta-link-${index}`)}
+            </aside>
+          );
+        }
+
         return (
           <p key={index} className="mb-5 leading-relaxed text-muted-foreground">
             {renderInline(block.replace(/\n/g, " "), `p-${index}`)}
@@ -294,29 +325,27 @@ export function BlogArticle({ post, lang = "de" }: { post: BlogPost; lang?: Loca
         </div>
 
         {image ? (
-          <div className="mb-10 overflow-hidden rounded-xl">
-            <Image src={image} alt={post.title} width={960} height={540} priority className="h-auto max-h-[500px] w-full object-cover" />
+          <div className="relative mb-10 aspect-video overflow-hidden rounded-xl">
+            <Image src={image} alt={post.title} fill priority sizes="(min-width: 768px) 768px, 100vw" className="object-cover" />
           </div>
         ) : null}
 
         {toc.length > 2 ? (
           <div className="mb-10 rounded-xl border border-border bg-card shadow-sm">
-            <div className="p-6">
-              <h2 className="mb-4 flex items-center gap-2 text-base font-semibold text-foreground">
+            <div className="p-5 sm:p-6">
+              <h2 className="mb-3 flex items-center gap-2 text-base font-semibold text-foreground">
                 <ListTree className="h-5 w-5 text-primary" />
                 {labels.toc}
               </h2>
-              <nav className="space-y-2">
+              <ol className="ml-5 list-decimal space-y-1.5 marker:font-semibold marker:text-primary">
                 {toc.map((item) => (
-                  <a
-                    key={item.id}
-                    href={`#${item.id}`}
-                    className={`block text-sm text-muted-foreground transition-colors hover:text-primary ${item.level === 1 ? "font-medium" : item.level === 2 ? "pl-4" : "pl-8"}`}
-                  >
-                    {item.text}
-                  </a>
+                  <li key={item.id} className={item.level === 3 ? "ml-5" : ""}>
+                    <a href={`#${item.id}`} className="text-sm leading-relaxed text-muted-foreground transition-colors hover:text-primary">
+                      {item.text}
+                    </a>
+                  </li>
                 ))}
-              </nav>
+              </ol>
             </div>
           </div>
         ) : null}

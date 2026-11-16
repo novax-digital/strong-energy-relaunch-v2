@@ -3,8 +3,9 @@
 import Image from "next/image";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
-import { ChevronLeft, ChevronRight, Play, Search, X } from "lucide-react";
+import { ChevronDown, ChevronLeft, ChevronRight, Play, Search, X } from "lucide-react";
 import { useLiveMedia } from "@/hooks/useLiveMedia";
+import { installationCategoryIds } from "@/content/review-media";
 import type { MediaCategory, MediaItem } from "@/types/content";
 import { translations, type Language } from "@/lib/i18n";
 
@@ -13,8 +14,16 @@ export function MediaGallery({ items, categories, lang = "de" }: { items: MediaI
   const liveMedia = useLiveMedia(items, categories);
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const rootCategories = useMemo(() => liveMedia.categories.filter((category) => !category.parent_id).sort((a, b) => a.sort_order - b.sort_order), [liveMedia.categories]);
-  const activeCategory = rootCategories.find((category) => mediaCategorySlug(category, lang) === searchParams.get("category"))?.id || "all";
+  const structuredCategories = useMemo(() => structureInstallationCategories(liveMedia.categories), [liveMedia.categories]);
+  const rootCategories = useMemo(() => structuredCategories.filter((category) => !category.parent_id).sort((a, b) => a.sort_order - b.sort_order), [structuredCategories]);
+  const installationSubcategories = useMemo(
+    () => structuredCategories.filter((category) => category.parent_id === installationCategoryIds.root).sort((a, b) => a.sort_order - b.sort_order),
+    [structuredCategories]
+  );
+  const requestedCategory = structuredCategories.find((category) => mediaCategorySlug(category, lang) === searchParams.get("category"));
+  const selectedCategory = requestedCategory?.id === installationCategoryIds.root ? installationSubcategories[0] : requestedCategory;
+  const activeCategory = selectedCategory?.id || "all";
+  const activeRootCategory = selectedCategory ? findRootCategory(selectedCategory, structuredCategories) : null;
   const [search, setSearch] = useState("");
   const orderedItems = useMemo(() => {
     const videoOrder = new Map([
@@ -45,7 +54,7 @@ export function MediaGallery({ items, categories, lang = "de" }: { items: MediaI
     let foundDescendant = true;
     while (foundDescendant) {
       foundDescendant = false;
-      liveMedia.categories.forEach((category) => {
+      structuredCategories.forEach((category) => {
         if (category.parent_id && categoryIds.has(category.parent_id) && !categoryIds.has(category.id)) {
           categoryIds.add(category.id);
           foundDescendant = true;
@@ -53,23 +62,23 @@ export function MediaGallery({ items, categories, lang = "de" }: { items: MediaI
       });
     }
     return bySearch.filter((item) => categoryIds.has(item.category_id || ""));
-  }, [activeCategory, lang, liveMedia.categories, orderedItems, search]);
+  }, [activeCategory, lang, orderedItems, search, structuredCategories]);
   const openableItems = useMemo(() => filtered.filter((item) => Boolean(mediaContentSource(item))), [filtered]);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const lightboxItem = lightboxIndex === null ? null : openableItems[lightboxIndex] || null;
   const lightboxOpen = Boolean(lightboxItem);
 
   const visibleGroups = useMemo(() => {
-    const selectedRoots = activeCategory === "all" ? rootCategories : rootCategories.filter((category) => category.id === activeCategory);
+    const selectedRoots = activeCategory === "all" ? rootCategories : rootCategories.filter((category) => category.id === activeRootCategory?.id);
     return selectedRoots
       .map((category) => {
-        const children = liveMedia.categories.filter((item) => item.parent_id === category.id).sort((a, b) => a.sort_order - b.sort_order);
+        const children = structuredCategories.filter((item) => item.parent_id === category.id).sort((a, b) => a.sort_order - b.sort_order);
         return {
           category,
           directItems: filtered.filter((item) => item.category_id === category.id),
           childGroups: children
             .map((child) => {
-              const grandchildren = liveMedia.categories.filter((item) => item.parent_id === child.id).sort((a, b) => a.sort_order - b.sort_order);
+              const grandchildren = structuredCategories.filter((item) => item.parent_id === child.id).sort((a, b) => a.sort_order - b.sort_order);
               return {
                 category: child,
                 items: filtered.filter((item) => item.category_id === child.id),
@@ -85,7 +94,9 @@ export function MediaGallery({ items, categories, lang = "de" }: { items: MediaI
         };
       })
       .filter((group) => group.directItems.length > 0 || group.childGroups.length > 0);
-  }, [activeCategory, filtered, liveMedia.categories, rootCategories]);
+  }, [activeCategory, activeRootCategory?.id, filtered, rootCategories, structuredCategories]);
+
+  const installationSectionActive = activeRootCategory?.id === installationCategoryIds.root;
 
   useEffect(() => {
     if (!lightboxOpen) return;
@@ -166,8 +177,8 @@ export function MediaGallery({ items, categories, lang = "de" }: { items: MediaI
 
   return (
     <div>
-      <div className="flex justify-center mb-8 px-0" role="list" aria-label="Medienkategorien">
-        <div className="inline-flex items-center gap-2 p-1.5 rounded-full bg-secondary/40 border border-border backdrop-blur-sm overflow-x-auto max-w-full no-scrollbar">
+      <div className="relative z-30 mb-8 flex justify-center px-0" role="list" aria-label={lang === "de" ? "Medienkategorien" : "Media categories"}>
+        <div className="inline-flex max-w-full items-center gap-2 overflow-x-auto rounded-full border border-border bg-secondary/40 p-1.5 backdrop-blur-sm no-scrollbar sm:overflow-visible">
         <button
           type="button"
           className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold whitespace-nowrap transition-all duration-300 ${activeCategory === "all" ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground hover:bg-card/50"}`}
@@ -175,20 +186,65 @@ export function MediaGallery({ items, categories, lang = "de" }: { items: MediaI
         >
           {t.all}
         </button>
-        {rootCategories.map((category) => (
-          <button
-            key={category.id}
-            type="button"
-            className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold whitespace-nowrap transition-all duration-300 ${activeCategory === category.id ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground hover:bg-card/50"}`}
-            onClick={() => selectCategory(category)}
-          >
-            {categoryName(category, lang)}
-          </button>
-        ))}
+        {rootCategories.map((category) => {
+          const childCategories = structuredCategories.filter((item) => item.parent_id === category.id).sort((a, b) => a.sort_order - b.sort_order);
+          const isActive = activeRootCategory?.id === category.id;
+
+          return (
+            <div className="group relative shrink-0" key={category.id} role="listitem">
+              <button
+                type="button"
+                aria-expanded={isActive}
+                aria-haspopup={childCategories.length ? "menu" : undefined}
+                className={`flex items-center gap-1 rounded-full px-4 py-2 text-xs font-semibold whitespace-nowrap transition-all duration-300 sm:px-5 sm:py-2.5 sm:text-sm ${isActive ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:bg-card/50 hover:text-foreground"}`}
+                onClick={() => selectCategory(category)}
+              >
+                {categoryName(category, lang)}
+                {childCategories.length ? <ChevronDown className="hidden h-3.5 w-3.5 sm:block" aria-hidden="true" /> : null}
+              </button>
+              {childCategories.length ? (
+                <div className="invisible absolute left-1/2 top-full z-40 hidden w-52 -translate-x-1/2 pt-2 opacity-0 transition sm:block sm:group-focus-within:visible sm:group-focus-within:opacity-100 sm:group-hover:visible sm:group-hover:opacity-100" role="menu">
+                  <div className="rounded-xl border border-border bg-card p-2 shadow-xl">
+                    {childCategories.map((child) => (
+                      <button
+                        className={`block w-full rounded-lg px-3 py-2 text-left text-sm transition-colors ${isWithinCategory(activeCategory, child.id, structuredCategories) ? "bg-primary/10 font-semibold text-primary" : "text-muted-foreground hover:bg-secondary hover:text-foreground"}`}
+                        key={child.id}
+                        onClick={() => selectCategory(child)}
+                        role="menuitem"
+                        type="button"
+                      >
+                        {categoryName(child, lang)}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+            </div>
+          );
+        })}
         </div>
       </div>
 
-      <div className="mb-20 flex justify-center">
+      {installationSectionActive ? (
+        <div className="mb-8 flex justify-center" aria-label={lang === "de" ? "Installationsbereiche" : "Installation sections"} role="tablist">
+          <div className="inline-flex rounded-xl border border-border bg-card p-1 shadow-sm">
+            {installationSubcategories.map((category) => (
+              <button
+                aria-selected={isWithinCategory(activeCategory, category.id, structuredCategories)}
+                className={`rounded-lg px-4 py-2 text-sm font-semibold transition-colors ${isWithinCategory(activeCategory, category.id, structuredCategories) ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-secondary hover:text-foreground"}`}
+                key={category.id}
+                onClick={() => selectCategory(category)}
+                role="tab"
+                type="button"
+              >
+                {categoryName(category, lang)}
+              </button>
+            ))}
+          </div>
+        </div>
+      ) : null}
+
+      <div className="mb-14 flex justify-center sm:mb-20">
         <div className="relative w-full max-w-md">
           <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <input
@@ -469,6 +525,43 @@ function getYouTubeId(source: string) {
 
 function isVideoFile(source: string) {
   return /\.(mp4|webm|ogg)(\?.*)?$/i.test(source);
+}
+
+function structureInstallationCategories(categories: MediaCategory[]) {
+  return categories.map((category) => {
+    const isExistingInstallationFolder =
+      category.parent_id === installationCategoryIds.root &&
+      category.id !== installationCategoryIds.commercial &&
+      category.id !== installationCategoryIds.alfred;
+
+    return isExistingInstallationFolder ? { ...category, parent_id: installationCategoryIds.alfred } : category;
+  });
+}
+
+function findRootCategory(category: MediaCategory, categories: MediaCategory[]) {
+  const categoriesById = new Map(categories.map((item) => [item.id, item]));
+  let current = category;
+
+  while (current.parent_id) {
+    const parent = categoriesById.get(current.parent_id);
+    if (!parent) break;
+    current = parent;
+  }
+
+  return current;
+}
+
+function isWithinCategory(categoryId: string, ancestorId: string, categories: MediaCategory[]) {
+  if (categoryId === "all") return false;
+  const categoriesById = new Map(categories.map((item) => [item.id, item]));
+  let current = categoriesById.get(categoryId);
+
+  while (current) {
+    if (current.id === ancestorId) return true;
+    current = current.parent_id ? categoriesById.get(current.parent_id) : undefined;
+  }
+
+  return false;
 }
 
 function categoryName(category: MediaCategory, lang: Language) {
