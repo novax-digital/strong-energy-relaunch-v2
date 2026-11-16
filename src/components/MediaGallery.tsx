@@ -41,8 +41,18 @@ export function MediaGallery({ items, categories, lang = "de" }: { items: MediaI
       return [mediaTitle(item, lang), mediaDescription(item, lang) || ""].some((value) => value.toLowerCase().includes(query));
     });
     if (activeCategory === "all") return bySearch;
-    const childIds = liveMedia.categories.filter((category) => category.parent_id === activeCategory).map((category) => category.id);
-    return bySearch.filter((item) => item.category_id === activeCategory || childIds.includes(item.category_id || ""));
+    const categoryIds = new Set([activeCategory]);
+    let foundDescendant = true;
+    while (foundDescendant) {
+      foundDescendant = false;
+      liveMedia.categories.forEach((category) => {
+        if (category.parent_id && categoryIds.has(category.parent_id) && !categoryIds.has(category.id)) {
+          categoryIds.add(category.id);
+          foundDescendant = true;
+        }
+      });
+    }
+    return bySearch.filter((item) => categoryIds.has(item.category_id || ""));
   }, [activeCategory, lang, liveMedia.categories, orderedItems, search]);
   const openableItems = useMemo(() => filtered.filter((item) => Boolean(mediaContentSource(item))), [filtered]);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
@@ -58,11 +68,20 @@ export function MediaGallery({ items, categories, lang = "de" }: { items: MediaI
           category,
           directItems: filtered.filter((item) => item.category_id === category.id),
           childGroups: children
-            .map((child) => ({
-              category: child,
-              items: filtered.filter((item) => item.category_id === child.id)
-            }))
-            .filter((group) => group.items.length > 0)
+            .map((child) => {
+              const grandchildren = liveMedia.categories.filter((item) => item.parent_id === child.id).sort((a, b) => a.sort_order - b.sort_order);
+              return {
+                category: child,
+                items: filtered.filter((item) => item.category_id === child.id),
+                nestedGroups: grandchildren
+                  .map((grandchild) => ({
+                    category: grandchild,
+                    items: filtered.filter((item) => item.category_id === grandchild.id)
+                  }))
+                  .filter((group) => group.items.length > 0)
+              };
+            })
+            .filter((group) => group.items.length > 0 || group.nestedGroups.length > 0)
         };
       })
       .filter((group) => group.directItems.length > 0 || group.childGroups.length > 0);
@@ -207,13 +226,30 @@ export function MediaGallery({ items, categories, lang = "de" }: { items: MediaI
                 <div key={childGroup.category.id}>
                   <div className="mb-5 flex items-center justify-between">
                     <h3 className="text-xl font-semibold text-foreground">{categoryName(childGroup.category, lang)}</h3>
-                    <span className="text-sm text-muted-foreground">{childGroup.items.length} {t.countLabel}</span>
+                    <span className="text-sm text-muted-foreground">
+                      {childGroup.items.length + childGroup.nestedGroups.reduce((total, nestedGroup) => total + nestedGroup.items.length, 0)} {t.countLabel}
+                    </span>
                   </div>
-                  <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-                    {childGroup.items.map((item) => (
-                      <MediaTile item={item} key={item.id} lang={lang} onOpen={() => openLightbox(item)} />
-                    ))}
-                  </div>
+                  {childGroup.items.length ? (
+                    <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+                      {childGroup.items.map((item) => (
+                        <MediaTile item={item} key={item.id} lang={lang} onOpen={() => openLightbox(item)} />
+                      ))}
+                    </div>
+                  ) : null}
+                  {childGroup.nestedGroups.map((nestedGroup) => (
+                    <div className="mt-8 border-l-2 border-primary/20 pl-5" key={nestedGroup.category.id}>
+                      <div className="mb-5 flex items-center justify-between gap-4">
+                        <h4 className="text-base font-semibold text-foreground">{categoryName(nestedGroup.category, lang)}</h4>
+                        <span className="text-sm text-muted-foreground">{nestedGroup.items.length} {t.countLabel}</span>
+                      </div>
+                      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+                        {nestedGroup.items.map((item) => (
+                          <MediaTile item={item} key={item.id} lang={lang} onOpen={() => openLightbox(item)} />
+                        ))}
+                      </div>
+                    </div>
+                  ))}
                 </div>
               ))}
             </div>

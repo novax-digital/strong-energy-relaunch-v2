@@ -168,6 +168,25 @@ function MarkdownBlocks({ content }: { content: string }) {
           return <hr key={index} className="my-10 border-border" />;
         }
 
+        const imageBlock = block.match(/^!\[([^\]]*)\]\((\S+?)(?:\s+"([^"]*)")?\)$/);
+        if (imageBlock) {
+          const [, alt, src, caption] = imageBlock;
+          return (
+            <figure className="my-10" key={index}>
+              <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-border bg-secondary/30 shadow-sm">
+                <Image
+                  alt={alt}
+                  className="object-cover"
+                  fill
+                  sizes="(min-width: 768px) 768px, 100vw"
+                  src={src}
+                />
+              </div>
+              {caption ? <figcaption className="mt-3 text-center text-sm leading-6 text-muted-foreground">{caption}</figcaption> : null}
+            </figure>
+          );
+        }
+
         const heading = block.match(/^(#{1,3})\s+(.+)$/);
         if (heading) {
           const level = heading[1].length;

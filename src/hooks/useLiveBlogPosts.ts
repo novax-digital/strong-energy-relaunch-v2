@@ -27,7 +27,10 @@ export function useLiveBlogPosts(initialPosts: BlogPost[], lang: Language = "de"
 
         if (error || !Array.isArray(data)) return;
 
-        const nextPosts = (data as BlogPostRow[]).map((row) => normalizeBlogPost(row, localPostsById.get(row.id)));
+        const cmsPosts = (data as BlogPostRow[]).map((row) => normalizeBlogPost(row, localPostsById.get(row.id)));
+        const cmsIds = new Set(cmsPosts.map((post) => post.id));
+        const bundledPosts = initialPosts.filter((post) => post.is_published && !cmsIds.has(post.id));
+        const nextPosts = [...cmsPosts, ...bundledPosts];
 
         if (active) {
           setLivePosts({ lang, posts: nextPosts });
@@ -42,7 +45,7 @@ export function useLiveBlogPosts(initialPosts: BlogPost[], lang: Language = "de"
     return () => {
       active = false;
     };
-  }, [lang, localPostsById]);
+  }, [initialPosts, lang, localPostsById]);
 
   return livePosts?.lang === lang ? livePosts.posts : initialPosts;
 }

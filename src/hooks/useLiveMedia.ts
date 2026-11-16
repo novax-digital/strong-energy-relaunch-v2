@@ -13,6 +13,7 @@ export function useLiveMedia(initialItems: MediaItem[], initialCategories: Media
   const [liveMedia, setLiveMedia] = useState<{ items: MediaItem[]; categories: MediaCategory[] } | null>(null);
 
   const localItemsById = useMemo(() => new Map(initialItems.map((item) => [item.id, item])), [initialItems]);
+  const localCategoriesById = useMemo(() => new Map(initialCategories.map((category) => [category.id, category])), [initialCategories]);
   const fallbackMedia = useMemo(() => ({ items: initialItems, categories: initialCategories }), [initialCategories, initialItems]);
 
   useEffect(() => {
@@ -33,7 +34,10 @@ export function useLiveMedia(initialItems: MediaItem[], initialCategories: Media
 
         if (categoriesResult.error || itemsResult.error || !Array.isArray(categoriesResult.data) || !Array.isArray(itemsResult.data)) return;
 
-        const nextCategories = categoriesResult.data as MediaCategory[];
+        const cmsCategories = categoriesResult.data as MediaCategory[];
+        const cmsCategoryIds = new Set(cmsCategories.map((category) => category.id));
+        const bundledCategories = Array.from(localCategoriesById.values()).filter((category) => !cmsCategoryIds.has(category.id));
+        const nextCategories = [...cmsCategories, ...bundledCategories];
         const cmsItems = (itemsResult.data as MediaItemRow[]).map((row) => normalizeMediaItem(row, localItemsById.get(row.id)));
         const cmsIds = new Set(cmsItems.map((item) => item.id));
         // Retain media bundled with the site when the live CMS refreshes the gallery.
@@ -56,7 +60,7 @@ export function useLiveMedia(initialItems: MediaItem[], initialCategories: Media
     return () => {
       active = false;
     };
-  }, [localItemsById]);
+  }, [localCategoriesById, localItemsById]);
 
   return liveMedia ?? fallbackMedia;
 }
