@@ -133,10 +133,15 @@ export interface BlogPost {
   tags: string[] | null;
   cover_image_url: string | null;
   local_cover_image_url: string | null;
+  cover_image_alt?: string | null;
+  seo_title?: string | null;
+  seo_description?: string | null;
+  focus_keyword?: string | null;
   is_published: boolean;
   is_featured: boolean;
   published_at: string | null;
   created_at?: string;
+  updated_at?: string;
   reading_time_minutes: number | null;
   language: string;
 }

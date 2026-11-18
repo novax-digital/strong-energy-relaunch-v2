@@ -77,7 +77,7 @@ export function BlogListing({ posts, lang = "de" }: { posts: BlogPost[]; lang?: 
                 <div className="relative aspect-[16/10] overflow-hidden bg-secondary">
                   <Image
                     src={post.local_cover_image_url || post.cover_image_url || "/assets/alfred-02-C1Z1mvvG.webp"}
-                    alt={post.title}
+                    alt={post.cover_image_alt || post.title}
                     fill
                     sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
                     className="object-cover transition-transform duration-500 group-hover:scale-105"

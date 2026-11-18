@@ -15,8 +15,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const post = (await getLiveBlogPostBySlug(slug, "de")) || getBlogPostBySlug(slug, "de");
   if (!post) return {};
   return createMetadata({
-    title: `${post.title} | Strong Energy Blog`,
-    description: post.excerpt || post.title,
+    title: post.seo_title || `${post.title} | Strong Energy Blog`,
+    description: post.seo_description || post.excerpt || post.title,
     path: `/de/blog/${post.slug}`,
     image: post.local_cover_image_url || post.cover_image_url || undefined
   });
@@ -31,10 +31,13 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     headline: post.title,
-    description: post.excerpt || post.title,
-    image: image ? absoluteUrl(image) : undefined,
+    description: post.seo_description || post.excerpt || post.title,
+    image: image ? { "@type": "ImageObject", url: absoluteUrl(image), caption: post.cover_image_alt || post.title } : undefined,
     datePublished: post.published_at || undefined,
+    dateModified: post.updated_at || post.published_at || undefined,
+    keywords: post.tags?.join(", ") || post.focus_keyword || undefined,
     author: { "@type": "Person", name: post.author || "Strong Energy" },
+    publisher: { "@type": "Organization", name: "Strong Energy" },
     url: absoluteUrl(`/de/blog/${post.slug}`)
   };
   return (

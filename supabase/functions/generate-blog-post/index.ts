@@ -11,6 +11,9 @@ type BlogPayload = {
   excerpt?: string;
   content?: string;
   tags?: string[];
+  seo_title?: string;
+  seo_description?: string;
+  focus_keyword?: string;
   reading_time_minutes?: number;
 };
 
@@ -61,6 +64,9 @@ function normalizeBlogPayload(payload: BlogPayload, fallbackTitle: string) {
     excerpt: payload.excerpt ? String(payload.excerpt).trim() : null,
     content,
     tags: Array.isArray(payload.tags) ? payload.tags.map((tag) => String(tag).trim()).filter(Boolean).slice(0, 6) : null,
+    seo_title: payload.seo_title ? String(payload.seo_title).trim().slice(0, 75) : title,
+    seo_description: payload.seo_description ? String(payload.seo_description).trim().slice(0, 180) : (payload.excerpt ? String(payload.excerpt).trim().slice(0, 180) : null),
+    focus_keyword: payload.focus_keyword ? String(payload.focus_keyword).trim() : null,
     reading_time_minutes: Number(payload.reading_time_minutes) || estimateReadingTime(content),
   };
 }
@@ -156,7 +162,8 @@ Deno.serve(async (req) => {
       "Du bist ein professioneller Blog-Autor fuer Strong Energy.",
       "Strong Energy verkauft Solaranlagen, Heim- und Gewerbespeicher, mobile Powerstations und Gewerbespeicherloesungen.",
       "Schreibe konkret, fachlich korrekt, SEO-tauglich und ohne leere Marketingfloskeln.",
-      "Nutze Markdown mit ## fuer Hauptabschnitte, kurzen Absätzen, praktischen Hinweisen und einem Fazit.",
+      "Nutze die feste Artikelstruktur: kurze Einleitung, ## Das Wichtigste auf einen Blick, zwei bis vier fachliche ## Hauptabschnitte und ## Fazit.",
+      "Schreibe kurze Absaetze und praktische Hinweise. Verwende kein H1 im Inhalt, weil der Seitentitel bereits als H1 ausgegeben wird.",
       "Antworte ausschliesslich als gueltiges JSON ohne Markdown-Codeblock.",
     ].join(" ");
 
@@ -169,6 +176,9 @@ JSON-Schema:
   "excerpt": "Kurze Vorschau in 2 bis 3 Saetzen",
   "content": "Einleitung als Absatz\\n\\n## Abschnitt\\n\\nInhalt...",
   "tags": ["Tag1", "Tag2", "Tag3"],
+  "seo_title": "SEO-Titel mit 30 bis 60 Zeichen",
+  "seo_description": "Konkrete Meta-Beschreibung mit 120 bis 160 Zeichen",
+  "focus_keyword": "Hauptsuchbegriff",
   "reading_time_minutes": 5
 }`;
 
@@ -181,6 +191,9 @@ JSON schema:
   "excerpt": "Short preview in 2 to 3 sentences",
   "content": "Intro paragraph\\n\\n## Section\\n\\nContent...",
   "tags": ["Tag1", "Tag2", "Tag3"],
+  "seo_title": "SEO title between 30 and 60 characters",
+  "seo_description": "Specific meta description between 120 and 160 characters",
+  "focus_keyword": "primary search phrase",
   "reading_time_minutes": 5
 }`;
 
@@ -233,6 +246,7 @@ JSON schema:
         category: categoryDe,
         author_id: authorId || null,
         cover_image_url: null,
+        cover_image_alt: null,
         is_published: false,
         is_featured: false,
         published_at: null,
@@ -246,6 +260,7 @@ JSON schema:
         category: categoryEn,
         author_id: authorId || null,
         cover_image_url: null,
+        cover_image_alt: null,
         is_published: false,
         is_featured: false,
         published_at: null,

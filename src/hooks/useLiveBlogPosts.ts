@@ -18,7 +18,7 @@ export function useLiveBlogPosts(initialPosts: BlogPost[], lang: Language = "de"
       try {
         const { data, error } = await getSupabaseBrowserClient()
           .from("blog_posts")
-          .select("id,title,slug,excerpt,content,category,author,tags,cover_image_url,is_published,is_featured,published_at,created_at,reading_time_minutes,language")
+          .select("id,title,slug,excerpt,content,category,author,tags,cover_image_url,cover_image_alt,seo_title,seo_description,focus_keyword,is_published,is_featured,published_at,created_at,updated_at,reading_time_minutes,language")
           .eq("is_published", true)
           .eq("language", lang)
           .order("published_at", { ascending: false })

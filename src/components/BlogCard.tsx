@@ -9,7 +9,7 @@ export function BlogCard({ post }: { post: BlogPost }) {
     <article className="group bg-card rounded-2xl border border-border overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1">
       <Link href={`/de/blog/${post.slug}`}>
         <div className="relative aspect-[16/10] bg-secondary overflow-hidden">
-          <Image src={image} alt={post.title} fill sizes="(min-width: 768px) 50vw, 100vw" className="object-cover group-hover:scale-105 transition-transform duration-500" />
+          <Image src={image} alt={post.cover_image_alt || post.title} fill sizes="(min-width: 768px) 50vw, 100vw" className="object-cover group-hover:scale-105 transition-transform duration-500" />
         </div>
         <div className="p-6">
           {post.category ? <p className="text-xs font-semibold uppercase tracking-wide text-primary mb-2">{post.category}</p> : null}

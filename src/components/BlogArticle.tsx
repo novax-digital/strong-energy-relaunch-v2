@@ -386,11 +386,11 @@ export function BlogArticle({ post, lang = "de" }: { post: BlogPost; lang?: Loca
 
         {image ? (
           <div className="relative mb-10 aspect-video overflow-hidden rounded-xl">
-            <Image src={image} alt={post.title} fill priority sizes="(min-width: 768px) 768px, 100vw" className="object-cover" />
+            <Image src={image} alt={post.cover_image_alt || post.title} fill priority sizes="(min-width: 768px) 768px, 100vw" className="object-cover" />
           </div>
         ) : null}
 
-        {toc.length > 2 ? (
+        {toc.length > 1 ? (
           <div className="mb-10 rounded-xl border border-border bg-card shadow-sm">
             <div className="p-5 sm:p-6">
               <h2 className="mb-3 flex items-center gap-2 text-base font-semibold text-foreground">

@@ -4,6 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
+  ArrowDown,
+  ArrowUp,
   Bell,
   Bot,
   Check,
@@ -12,6 +14,7 @@ import {
   Clock,
   Eye,
   EyeOff,
+  ExternalLink,
   FileDown,
   FolderOpen,
   Globe,
@@ -44,6 +47,14 @@ import { Fragment, FormEvent, ReactNode, useCallback, useEffect, useState } from
 import { site } from "@/content/site";
 import { products } from "@/content/products";
 import { getBlogAuthorProfile } from "@/content/blog-authors";
+import {
+  blogWordCount,
+  createBlogEditorSection,
+  createEmptyBlogEditorContent,
+  parseBlogContent,
+  serializeBlogContent,
+  type BlogEditorContent
+} from "@/lib/blogEditor";
 import { getSupabaseBrowserClient } from "@/lib/supabase/client";
 
 type Inquiry = {
@@ -111,6 +122,10 @@ type BlogPost = {
   author_id: string | null;
   tags: string[] | null;
   cover_image_url: string | null;
+  cover_image_alt: string | null;
+  seo_title: string | null;
+  seo_description: string | null;
+  focus_keyword: string | null;
   is_published: boolean;
   is_featured: boolean;
   published_at: string | null;
@@ -132,6 +147,10 @@ type GeneratedBlogPost = {
   author_id?: string | null;
   tags: string[] | null;
   cover_image_url?: string | null;
+  cover_image_alt?: string | null;
+  seo_title?: string | null;
+  seo_description?: string | null;
+  focus_keyword?: string | null;
   is_published?: boolean;
   is_featured?: boolean;
   published_at?: string | null;
@@ -1879,6 +1898,128 @@ function DownloadsSection() {
   );
 }
 
+function BlogContentBuilder({
+  value,
+  language,
+  onChange
+}: {
+  value: BlogEditorContent;
+  language: string;
+  onChange: (value: BlogEditorContent) => void;
+}) {
+  function updateSection(index: number, changes: Partial<{ heading: string; body: string }>) {
+    onChange({
+      ...value,
+      sections: value.sections.map((section, sectionIndex) => sectionIndex === index ? { ...section, ...changes } : section)
+    });
+  }
+
+  function moveSection(index: number, direction: -1 | 1) {
+    const target = index + direction;
+    if (target < 0 || target >= value.sections.length) return;
+    const sections = [...value.sections];
+    [sections[index], sections[target]] = [sections[target], sections[index]];
+    onChange({ ...value, sections });
+  }
+
+  function removeSection(index: number) {
+    onChange({ ...value, sections: value.sections.filter((_, sectionIndex) => sectionIndex !== index) });
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="rounded-xl border border-primary/20 bg-primary/[0.04] p-4">
+        <p className="font-semibold text-foreground">Das Layout steht bereits fest</p>
+        <p className="mt-1 text-sm leading-6 text-muted-foreground">
+          Du pflegst nur die Inhalte. Titelbereich, Autorenzeile, Inhaltsverzeichnis, Abstände, Lesedauer, Tags und der Abschluss werden automatisch gestaltet.
+        </p>
+      </div>
+
+      <label className="grid gap-2">
+        <span className={labelClass}>{language === "en" ? "Introduction" : "Einleitung"} *</span>
+        <textarea
+          className={textareaClass}
+          rows={5}
+          value={value.intro}
+          onChange={(event) => onChange({ ...value, intro: event.target.value })}
+          placeholder={language === "en" ? "Briefly introduce the topic and explain why it matters..." : "Führe kurz ins Thema ein und erkläre, warum es wichtig ist..."}
+        />
+        <span className="text-xs leading-5 text-muted-foreground">Kurze Absätze lassen sich durch eine Leerzeile trennen.</span>
+      </label>
+
+      <div className="space-y-3">
+        {value.sections.map((section, index) => (
+          <div className="rounded-xl border border-border bg-secondary/20 p-4" key={section.id}>
+            <div className="mb-3 flex items-center justify-between gap-3">
+              <span className="text-sm font-semibold text-foreground">Abschnitt {index + 1}</span>
+              <div className="flex items-center gap-1">
+                <IconButton label="Abschnitt nach oben" onClick={() => moveSection(index, -1)}>
+                  <ArrowUp className="h-4 w-4" />
+                </IconButton>
+                <IconButton label="Abschnitt nach unten" onClick={() => moveSection(index, 1)}>
+                  <ArrowDown className="h-4 w-4" />
+                </IconButton>
+                <IconButton destructive label="Abschnitt löschen" onClick={() => removeSection(index)}>
+                  <Trash2 className="h-4 w-4" />
+                </IconButton>
+              </div>
+            </div>
+            <div className="grid gap-3">
+              <input
+                className={inputClass}
+                value={section.heading}
+                onChange={(event) => updateSection(index, { heading: event.target.value })}
+                placeholder={language === "en" ? "Section heading" : "Zwischenüberschrift"}
+              />
+              <textarea
+                className={textareaClass}
+                rows={6}
+                value={section.body}
+                onChange={(event) => updateSection(index, { body: event.target.value })}
+                placeholder={language === "en" ? "Write the section content here..." : "Inhalt des Abschnitts..."}
+              />
+              <span className="text-xs leading-5 text-muted-foreground">
+                Tipp: Für eine Aufzählung jede Zeile mit <code className="rounded bg-white px-1">-</code> beginnen. Links: <code className="rounded bg-white px-1">[Linktext](https://...)</code>
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <button
+        className={buttonClass("outline")}
+        onClick={() => onChange({ ...value, sections: [...value.sections, createBlogEditorSection()] })}
+        type="button"
+      >
+        <Plus className="h-4 w-4" />
+        Abschnitt hinzufügen
+      </button>
+
+      <details className="rounded-xl border border-border bg-white p-4">
+        <summary className="cursor-pointer text-sm font-semibold text-foreground">Expertenmodus: Markdown-Quelltext</summary>
+        <p className="mb-3 mt-2 text-xs leading-5 text-muted-foreground">Nur nötig für Sonderformatierungen. Änderungen werden wieder in die Abschnitte oben übernommen.</p>
+        <textarea
+          className={cx(textareaClass, "font-mono")}
+          rows={14}
+          value={serializeBlogContent(value)}
+          onChange={(event) => onChange(parseBlogContent(event.target.value, language))}
+        />
+      </details>
+    </div>
+  );
+}
+
+function SeoCheck({ passed, children }: { passed: boolean; children: ReactNode }) {
+  return (
+    <li className="flex items-start gap-2 text-sm leading-5">
+      <span className={cx("mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full", passed ? "bg-green-100 text-green-700" : "bg-secondary text-muted-foreground")}>
+        {passed ? <Check className="h-3 w-3" /> : null}
+      </span>
+      <span className={passed ? "text-foreground" : "text-muted-foreground"}>{children}</span>
+    </li>
+  );
+}
+
 function BlogSection() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [authors, setAuthors] = useState<BlogAuthor[]>([]);
@@ -1887,6 +2028,9 @@ function BlogSection() {
   const [aiDialogOpen, setAiDialogOpen] = useState(false);
   const [editing, setEditing] = useState<BlogPost | null>(null);
   const [error, setError] = useState("");
+  const [contentDraft, setContentDraft] = useState<BlogEditorContent>(() => createEmptyBlogEditorContent("de"));
+  const [uploadingCover, setUploadingCover] = useState(false);
+  const [saving, setSaving] = useState(false);
   const emptyForm = {
     title: "",
     slug: "",
@@ -1897,6 +2041,10 @@ function BlogSection() {
     author_id: "",
     tags: "",
     cover_image_url: "",
+    cover_image_alt: "",
+    seo_title: "",
+    seo_description: "",
+    focus_keyword: "",
     is_published: false,
     is_featured: false,
     language: "de",
@@ -1945,6 +2093,9 @@ function BlogSection() {
   }
 
   function updateLanguage(language: string) {
+    if (!blogWordCount(serializeBlogContent(contentDraft))) {
+      setContentDraft(createEmptyBlogEditorContent(language));
+    }
     setForm((previous) => {
       const stillValid = posts.some((post) => post.id !== editing?.id && (post.language || "de") !== language && (post.translation_group_id || post.id) === previous.translation_group_id);
       return { ...previous, language, translation_group_id: stillValid ? previous.translation_group_id : crypto.randomUUID() };
@@ -1955,6 +2106,7 @@ function BlogSection() {
     const author = defaultAuthor();
     setEditing(null);
     setForm({ ...emptyForm, author: author?.name || "", author_id: author?.id || "", translation_group_id: crypto.randomUUID() });
+    setContentDraft(createEmptyBlogEditorContent("de"));
     setError("");
     setDialogOpen(true);
   }
@@ -1971,52 +2123,112 @@ function BlogSection() {
       author_id: post.author_id || "",
       tags: post.tags?.join(", ") || "",
       cover_image_url: post.cover_image_url || "",
+      cover_image_alt: post.cover_image_alt || "",
+      seo_title: post.seo_title || "",
+      seo_description: post.seo_description || "",
+      focus_keyword: post.focus_keyword || "",
       is_published: post.is_published,
       is_featured: post.is_featured,
       language: post.language || "de",
       translation_group_id: post.translation_group_id || crypto.randomUUID()
     });
+    setContentDraft(parseBlogContent(post.content || "", post.language || "de"));
     setError("");
     setDialogOpen(true);
   }
 
   function calculateReadingTime(content: string) {
-    const words = content.trim().split(/\s+/).filter(Boolean).length;
+    const words = blogWordCount(content);
     return Math.max(1, Math.ceil(words / 200));
   }
 
   async function save(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!form.title.trim() || !form.slug.trim() || !form.content.trim()) {
+    const content = serializeBlogContent(contentDraft);
+    const completedSections = contentDraft.sections.filter((section) => section.heading.trim() && section.body.trim()).length;
+    if (!form.title.trim() || !form.slug.trim() || blogWordCount(content) === 0) {
       setError("Titel, Slug und Inhalt sind erforderlich.");
       return;
     }
+    if (form.is_published && (!form.excerpt.trim() || !form.category || !contentDraft.intro.trim() || completedSections < 2)) {
+      setError("Zum Veröffentlichen fehlen noch Kurzbeschreibung, Kategorie, Einleitung oder mindestens zwei ausgefüllte Abschnitte.");
+      return;
+    }
+    if (form.cover_image_url.trim() && !form.cover_image_alt.trim()) {
+      setError("Bitte ergänze für das Titelbild eine kurze Bildbeschreibung (Alt-Text).");
+      return;
+    }
+    setSaving(true);
+    setError("");
     const payload: Record<string, string | boolean | number | string[] | null> = {
       title: form.title.trim(),
-      slug: form.slug.trim(),
+      slug: slugify(form.slug),
       excerpt: form.excerpt.trim() || null,
-      content: form.content,
+      content,
       category: form.category || null,
       author: form.author || null,
       author_id: form.author_id || null,
       tags: form.tags ? form.tags.split(",").map((tag) => tag.trim()).filter(Boolean) : null,
       cover_image_url: form.cover_image_url.trim() || null,
+      cover_image_alt: form.cover_image_alt.trim() || null,
+      seo_title: form.seo_title.trim() || null,
+      seo_description: form.seo_description.trim() || null,
+      focus_keyword: form.focus_keyword.trim() || null,
       is_published: form.is_published,
       is_featured: form.is_featured,
       published_at: form.is_published && !editing?.published_at ? new Date().toISOString() : editing?.published_at || null,
-      reading_time_minutes: calculateReadingTime(form.content),
+      reading_time_minutes: calculateReadingTime(content),
       language: form.language,
       updated_at: new Date().toISOString()
     };
     if (form.translation_group_id) payload.translation_group_id = form.translation_group_id;
-    const supabase = getSupabaseBrowserClient();
-    const result = editing ? await supabase.from("blog_posts").update(payload).eq("id", editing.id) : await supabase.from("blog_posts").insert(payload);
-    if (result.error) {
-      setError(result.error.message);
+    try {
+      const supabase = getSupabaseBrowserClient();
+      const result = editing ? await supabase.from("blog_posts").update(payload).eq("id", editing.id) : await supabase.from("blog_posts").insert(payload);
+      if (result.error) {
+        setError(result.error.message);
+        return;
+      }
+      setDialogOpen(false);
+      await load();
+    } catch (saveError) {
+      setError(saveError instanceof Error ? saveError.message : "Der Beitrag konnte nicht gespeichert werden.");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function uploadCoverImage(file: File) {
+    if (!file.type.startsWith("image/")) {
+      setError("Bitte wähle eine Bilddatei aus.");
       return;
     }
-    setDialogOpen(false);
-    await load();
+    if (file.size > 8 * 1024 * 1024) {
+      setError("Das Titelbild darf maximal 8 MB groß sein.");
+      return;
+    }
+
+    setUploadingCover(true);
+    setError("");
+    const sanitizedName = file.name.replace(/[^a-zA-Z0-9._-]/g, "-").toLowerCase();
+    const path = `blog/${Date.now()}-${Math.random().toString(36).slice(2, 9)}-${sanitizedName}`;
+    const supabase = getSupabaseBrowserClient();
+    const { error: uploadError } = await supabase.storage.from("media").upload(path, file, {
+      contentType: file.type,
+      upsert: false
+    });
+    setUploadingCover(false);
+    if (uploadError) {
+      setError(uploadError.message);
+      return;
+    }
+
+    const { data } = supabase.storage.from("media").getPublicUrl(path);
+    setForm((previous) => ({
+      ...previous,
+      cover_image_url: data.publicUrl,
+      cover_image_alt: previous.cover_image_alt || previous.title
+    }));
   }
 
   async function remove(id: string) {
@@ -2053,6 +2265,10 @@ function BlogSection() {
       author_id: post.author_id || author?.id || null,
       tags: post.tags,
       cover_image_url: post.cover_image_url || null,
+      cover_image_alt: post.cover_image_alt || null,
+      seo_title: post.seo_title || null,
+      seo_description: post.seo_description || null,
+      focus_keyword: post.focus_keyword || null,
       is_published: post.is_published || false,
       is_featured: post.is_featured || false,
       published_at: post.published_at || null,
@@ -2085,6 +2301,23 @@ function BlogSection() {
     setAiDialogOpen(false);
     await load();
   }
+
+  const articleContent = serializeBlogContent(contentDraft);
+  const wordCount = blogWordCount(articleContent);
+  const effectiveSeoTitle = (form.seo_title || form.title || "Neuer Blog-Beitrag").trim();
+  const effectiveSeoDescription = (form.seo_description || form.excerpt || "Eine kurze Beschreibung des Blog-Beitrags.").trim();
+  const normalizedKeyword = form.focus_keyword.trim().toLocaleLowerCase(form.language === "en" ? "en" : "de");
+  const keywordText = `${form.title} ${form.excerpt} ${articleContent}`.toLocaleLowerCase(form.language === "en" ? "en" : "de");
+  const filledSections = contentDraft.sections.filter((section) => section.heading.trim() && section.body.trim()).length;
+  const seoChecks = [
+    effectiveSeoTitle.length >= 30 && effectiveSeoTitle.length <= 60,
+    effectiveSeoDescription.length >= 120 && effectiveSeoDescription.length <= 160,
+    Boolean(normalizedKeyword && keywordText.includes(normalizedKeyword)),
+    wordCount >= 300,
+    filledSections >= 2,
+    Boolean(form.cover_image_url && form.cover_image_alt.trim())
+  ];
+  const seoScore = Math.round((seoChecks.filter(Boolean).length / seoChecks.length) * 100);
 
   return (
     <SectionCard className="p-6">
@@ -2161,58 +2394,211 @@ function BlogSection() {
       </div>
 
       {dialogOpen ? (
-        <FormDialog title={editing ? "Beitrag bearbeiten" : "Neuer Beitrag"} onClose={() => setDialogOpen(false)}>
-          <form className="space-y-4" onSubmit={save}>
-            <p className="text-sm text-muted-foreground">{editing ? "Bearbeite den Blog-Beitrag." : "Erstelle einen neuen Blog-Beitrag."}</p>
-            <div className="grid gap-4 md:grid-cols-2">
-              <TextField label="Titel" required value={form.title} onChange={(value) => setForm((previous) => ({ ...previous, title: value, slug: previous.slug || slugify(value) }))} placeholder="Beitragstitel" />
-              <TextField label="Slug" required value={form.slug} onChange={(value) => setForm((previous) => ({ ...previous, slug: value }))} placeholder="url-freundlicher-slug" />
+        <FormDialog size="wide" title={editing ? "Blog-Beitrag bearbeiten" : "Neuen Blog-Beitrag erstellen"} onClose={() => setDialogOpen(false)}>
+          <form className="space-y-6" onSubmit={save}>
+            <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border bg-secondary/30 px-4 py-3">
+              <div>
+                <p className="font-semibold text-foreground">Geführte SEO-Vorlage</p>
+                <p className="text-sm text-muted-foreground">Inhalte eintragen, Vorschau prüfen und veröffentlichen – das Seitenlayout bleibt automatisch einheitlich.</p>
+              </div>
+              {editing?.is_published ? (
+                <Link className={buttonClass("outline", "sm")} href={languagePath(editing)} target="_blank">
+                  <ExternalLink className="h-4 w-4" />
+                  Beitrag ansehen
+                </Link>
+              ) : null}
             </div>
-            <TextAreaField label="Kurzbeschreibung" value={form.excerpt} onChange={(value) => setForm((previous) => ({ ...previous, excerpt: value }))} placeholder="Kurze Zusammenfassung für die Vorschau..." rows={2} />
-            <TextAreaField label="Inhalt (Markdown)" value={form.content} onChange={(value) => setForm((previous) => ({ ...previous, content: value }))} placeholder={"# Überschrift\n\nDein Inhalt hier...\n\n- Listenpunkt 1\n- Listenpunkt 2"} rows={12} mono />
-            <div className="grid gap-4 md:grid-cols-2">
-              <SelectField label="Kategorie" value={form.category} onChange={(value) => setForm((previous) => ({ ...previous, category: value }))} placeholder="Kategorie wählen" options={blogCategoryOptions.map((value) => ({ label: value, value }))} />
-              <SelectField label="Sprache" value={form.language} onChange={updateLanguage} options={blogLanguageOptions} />
+
+            <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
+              <div className="min-w-0 space-y-6">
+                <section className="space-y-4 rounded-xl border border-border bg-white p-5">
+                  <div>
+                    <h3 className="font-semibold text-foreground">Titel und Vorschautext</h3>
+                    <p className="mt-1 text-sm text-muted-foreground">Diese Angaben erscheinen im Blog und auf der Übersichtsseite.</p>
+                  </div>
+                  <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_260px]">
+                    <label className="grid gap-2">
+                      <span className={labelClass}>Beitragstitel *</span>
+                      <input
+                        className={inputClass}
+                        value={form.title}
+                        onChange={(event) => {
+                          const value = event.target.value;
+                          setForm((previous) => ({
+                            ...previous,
+                            title: value,
+                            slug: previous.slug || slugify(value),
+                            cover_image_alt: previous.cover_image_alt || value
+                          }));
+                        }}
+                        placeholder="Worum geht es in diesem Beitrag?"
+                        required
+                      />
+                    </label>
+                    <label className="grid gap-2">
+                      <span className={labelClass}>URL *</span>
+                      <input className={inputClass} value={form.slug} onChange={(event) => setForm((previous) => ({ ...previous, slug: slugify(event.target.value) }))} placeholder="mein-blog-beitrag" required />
+                    </label>
+                  </div>
+                  <label className="grid gap-2">
+                    <span className="flex items-center justify-between gap-3">
+                      <span className={labelClass}>Kurzbeschreibung *</span>
+                      <span className={cx("text-xs", form.excerpt.length > 180 ? "text-destructive" : "text-muted-foreground")}>{form.excerpt.length}/180</span>
+                    </span>
+                    <textarea
+                      className={textareaClass}
+                      rows={3}
+                      value={form.excerpt}
+                      onChange={(event) => setForm((previous) => ({ ...previous, excerpt: event.target.value }))}
+                      placeholder="Fasse den Nutzen des Beitrags in zwei kurzen Sätzen zusammen."
+                      maxLength={220}
+                    />
+                  </label>
+                </section>
+
+                <section className="space-y-4 rounded-xl border border-border bg-white p-5">
+                  <div className="flex flex-wrap items-end justify-between gap-3">
+                    <div>
+                      <h3 className="font-semibold text-foreground">Artikelinhalt</h3>
+                      <p className="mt-1 text-sm text-muted-foreground">{wordCount} Wörter · ca. {calculateReadingTime(articleContent)} Min. Lesezeit</p>
+                    </div>
+                  </div>
+                  <BlogContentBuilder value={contentDraft} language={form.language} onChange={setContentDraft} />
+                </section>
+
+                <section className="space-y-4 rounded-xl border border-border bg-white p-5">
+                  <div>
+                    <h3 className="font-semibold text-foreground">Titelbild</h3>
+                    <p className="mt-1 text-sm text-muted-foreground">Empfohlen: Querformat 16:9, mindestens 1.200 × 675 Pixel, maximal 8 MB.</p>
+                  </div>
+                  {form.cover_image_url ? (
+                    <div
+                      aria-label={form.cover_image_alt || form.title || "Titelbild-Vorschau"}
+                      className="aspect-video w-full rounded-xl border border-border bg-secondary bg-cover bg-center"
+                      role="img"
+                      style={{ backgroundImage: `url(${form.cover_image_url})` }}
+                    />
+                  ) : null}
+                  <div className="flex flex-wrap items-center gap-3">
+                    <label className={cx(buttonClass("outline"), "cursor-pointer")}>
+                      {uploadingCover ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
+                      {uploadingCover ? "Bild wird hochgeladen..." : "Titelbild hochladen"}
+                      <input
+                        accept="image/jpeg,image/png,image/webp,image/avif"
+                        className="hidden"
+                        disabled={uploadingCover}
+                        onChange={(event) => event.target.files?.[0] && void uploadCoverImage(event.target.files[0])}
+                        type="file"
+                      />
+                    </label>
+                    {form.cover_image_url ? (
+                      <button className={buttonClass("ghost", "sm")} onClick={() => setForm((previous) => ({ ...previous, cover_image_url: "" }))} type="button">
+                        Bild entfernen
+                      </button>
+                    ) : null}
+                  </div>
+                  <details>
+                    <summary className="cursor-pointer text-sm font-medium text-muted-foreground">Alternativ eine Bild-URL eintragen</summary>
+                    <input className={cx(inputClass, "mt-2")} value={form.cover_image_url} onChange={(event) => setForm((previous) => ({ ...previous, cover_image_url: event.target.value }))} placeholder="https://..." />
+                  </details>
+                  <TextField
+                    label="Bildbeschreibung (Alt-Text)"
+                    value={form.cover_image_alt}
+                    onChange={(value) => setForm((previous) => ({ ...previous, cover_image_alt: value }))}
+                    placeholder="Beschreibe kurz, was auf dem Bild zu sehen ist"
+                  />
+                </section>
+              </div>
+
+              <aside className="space-y-4 lg:sticky lg:top-0">
+                <section className="rounded-xl border border-border bg-white p-5">
+                  <div className="mb-4 flex items-center justify-between gap-3">
+                    <div>
+                      <h3 className="font-semibold text-foreground">SEO-Check</h3>
+                      <p className="text-sm text-muted-foreground">{seoScore}% erfüllt</p>
+                    </div>
+                    <span className={cx("rounded-full px-3 py-1 text-sm font-bold", seoScore >= 80 ? "bg-green-100 text-green-700" : seoScore >= 50 ? "bg-amber-100 text-amber-700" : "bg-secondary text-muted-foreground")}>{seoScore}%</span>
+                  </div>
+                  <ul className="space-y-2.5">
+                    <SeoCheck passed={seoChecks[0]}>SEO-Titel hat 30–60 Zeichen</SeoCheck>
+                    <SeoCheck passed={seoChecks[1]}>Meta-Beschreibung hat 120–160 Zeichen</SeoCheck>
+                    <SeoCheck passed={seoChecks[2]}>Fokus-Suchbegriff kommt im Text vor</SeoCheck>
+                    <SeoCheck passed={seoChecks[3]}>Beitrag hat mindestens 300 Wörter</SeoCheck>
+                    <SeoCheck passed={seoChecks[4]}>Mindestens zwei gefüllte Abschnitte</SeoCheck>
+                    <SeoCheck passed={seoChecks[5]}>Titelbild mit Bildbeschreibung</SeoCheck>
+                  </ul>
+                </section>
+
+                <section className="space-y-4 rounded-xl border border-border bg-white p-5">
+                  <h3 className="font-semibold text-foreground">Suchmaschinen</h3>
+                  <TextField label="Fokus-Suchbegriff" value={form.focus_keyword} onChange={(value) => setForm((previous) => ({ ...previous, focus_keyword: value }))} placeholder="z.B. Stromspeicher Gewerbe" />
+                  <label className="grid gap-2">
+                    <span className="flex items-center justify-between gap-2">
+                      <span className={labelClass}>SEO-Titel</span>
+                      <span className={cx("text-xs", effectiveSeoTitle.length > 60 ? "text-destructive" : "text-muted-foreground")}>{effectiveSeoTitle.length}/60</span>
+                    </span>
+                    <input className={inputClass} value={form.seo_title} onChange={(event) => setForm((previous) => ({ ...previous, seo_title: event.target.value }))} placeholder={form.title || "SEO-Titel"} maxLength={75} />
+                  </label>
+                  <label className="grid gap-2">
+                    <span className="flex items-center justify-between gap-2">
+                      <span className={labelClass}>Meta-Beschreibung</span>
+                      <span className={cx("text-xs", effectiveSeoDescription.length > 160 ? "text-destructive" : "text-muted-foreground")}>{effectiveSeoDescription.length}/160</span>
+                    </span>
+                    <textarea className={textareaClass} rows={4} value={form.seo_description} onChange={(event) => setForm((previous) => ({ ...previous, seo_description: event.target.value }))} placeholder={form.excerpt || "Beschreibung für Google"} maxLength={180} />
+                  </label>
+                  <div className="rounded-lg border border-border bg-white p-3 shadow-sm">
+                    <p className="truncate text-xs text-[#188038]">strong-energy.eu/{form.language}/blog/{form.slug || "beitrag"}</p>
+                    <p className="mt-1 line-clamp-2 text-lg leading-6 text-[#1a0dab]">{effectiveSeoTitle}</p>
+                    <p className="mt-1 line-clamp-3 text-sm leading-5 text-[#4d5156]">{effectiveSeoDescription}</p>
+                  </div>
+                </section>
+
+                <section className="space-y-4 rounded-xl border border-border bg-white p-5">
+                  <h3 className="font-semibold text-foreground">Einordnung</h3>
+                  <SelectField label="Kategorie" value={form.category} onChange={(value) => setForm((previous) => ({ ...previous, category: value }))} placeholder="Kategorie wählen" options={blogCategoryOptions.map((value) => ({ label: value, value }))} />
+                  <SelectField label="Sprache" value={form.language} onChange={updateLanguage} options={blogLanguageOptions} />
+                  <SelectField
+                    label="Autor"
+                    value={form.author_id}
+                    onChange={(value) => {
+                      const author = authors.find((entry) => entry.id === value);
+                      setForm((previous) => ({ ...previous, author_id: value, author: author?.name || "" }));
+                    }}
+                    placeholder="Autor wählen"
+                    options={authors.map((author) => ({ label: `${author.name}${author.is_default ? " (Standard)" : ""}`, value: author.id }))}
+                  />
+                  <TextField label="Tags (kommagetrennt)" value={form.tags} onChange={(value) => setForm((previous) => ({ ...previous, tags: value }))} placeholder="Solar, Energie, Tipps" />
+                  <details className="rounded-lg border border-border p-3">
+                    <summary className="cursor-pointer text-sm font-medium text-foreground">Sprachversion verknüpfen</summary>
+                    <label className="mt-3 grid gap-2 text-sm font-medium text-foreground">
+                      Übersetzung von
+                      <select
+                        className={inputClass}
+                        value={selectedTranslationValue()}
+                        onChange={(event) => setForm((previous) => ({ ...previous, translation_group_id: event.target.value || crypto.randomUUID() }))}
+                      >
+                        <option value="">Eigenständiger Beitrag</option>
+                        {translationCandidates().map((post) => (
+                          <option key={post.id} value={post.translation_group_id || post.id}>{languageLabel(post.language)}: {post.title}</option>
+                        ))}
+                      </select>
+                    </label>
+                  </details>
+                  <div className="space-y-3 border-t border-border pt-4">
+                    <label className="flex items-center justify-between gap-3"><span className={labelClass}>Veröffentlichen</span><SwitchControl checked={form.is_published} onChange={(value) => setForm((previous) => ({ ...previous, is_published: value }))} /></label>
+                    <label className="flex items-center justify-between gap-3"><span className={labelClass}>Hervorheben</span><SwitchControl checked={form.is_featured} onChange={(value) => setForm((previous) => ({ ...previous, is_featured: value }))} /></label>
+                  </div>
+                </section>
+              </aside>
             </div>
-            <label className="grid gap-2 text-sm font-medium text-foreground">
-              Sprachversion
-              <select
-                className={inputClass}
-                value={selectedTranslationValue()}
-                onChange={(event) => setForm((previous) => ({ ...previous, translation_group_id: event.target.value || crypto.randomUUID() }))}
-              >
-                <option value="">Eigenständiger Beitrag / neues Übersetzungspaar</option>
-                {translationCandidates().map((post) => (
-                  <option key={post.id} value={post.translation_group_id || post.id}>
-                    Als Übersetzung von {languageLabel(post.language)}: {post.title}
-                  </option>
-                ))}
-              </select>
-              <span className="text-xs font-normal leading-5 text-muted-foreground">
-                Verknüpft deutsche und englische Versionen miteinander. Für einen neuen einzelnen Beitrag einfach auf „Eigenständiger Beitrag“ lassen.
-              </span>
-            </label>
-            <SelectField
-              label="Autor"
-              value={form.author_id}
-              onChange={(value) => {
-                const author = authors.find((entry) => entry.id === value);
-                setForm((previous) => ({ ...previous, author_id: value, author: author?.name || "" }));
-              }}
-              placeholder="Autor wählen"
-              options={authors.map((author) => ({ label: `${author.name}${author.is_default ? " (Standard)" : ""}`, value: author.id }))}
-            />
-            <div className="grid gap-4 md:grid-cols-2">
-              <TextField label="Tags (kommagetrennt)" value={form.tags} onChange={(value) => setForm((previous) => ({ ...previous, tags: value }))} placeholder="Solar, Energie, Tipps" />
-              <TextField label="Titelbild URL" value={form.cover_image_url} onChange={(value) => setForm((previous) => ({ ...previous, cover_image_url: value }))} placeholder="https://..." />
-            </div>
-            <div className="flex items-center gap-6 pt-2">
-              <label className="flex items-center gap-2"><SwitchControl checked={form.is_published} onChange={(value) => setForm((previous) => ({ ...previous, is_published: value }))} /><span className={labelClass}>Veröffentlichen</span></label>
-              <label className="flex items-center gap-2"><SwitchControl checked={form.is_featured} onChange={(value) => setForm((previous) => ({ ...previous, is_featured: value }))} /><span className={labelClass}>Hervorgehoben</span></label>
-            </div>
-            <div className="flex justify-end gap-2 border-t border-border pt-4">
-              <button className={buttonClass("outline")} onClick={() => setDialogOpen(false)} type="button">Abbrechen</button>
-              <button className={buttonClass()} disabled={!form.title || !form.slug || !form.content} type="submit">{editing ? "Speichern" : "Erstellen"}</button>
+
+            {error ? <p className="rounded-lg border border-destructive/20 bg-destructive/5 px-4 py-3 text-sm text-destructive">{error}</p> : null}
+            <div className="sticky bottom-0 flex flex-wrap justify-end gap-2 border-t border-border bg-white py-4">
+              <button className={buttonClass("outline")} disabled={saving} onClick={() => setDialogOpen(false)} type="button">Abbrechen</button>
+              <button className={buttonClass()} disabled={!form.title || !form.slug || !articleContent || saving || uploadingCover} type="submit">
+                {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+                {saving ? "Speichert..." : form.is_published ? "Speichern & veröffentlichen" : "Als Entwurf speichern"}
+              </button>
             </div>
           </form>
         </FormDialog>
@@ -3215,14 +3601,24 @@ function DetailDialog({ title, children, onClose, onDelete }: { title: string; c
   );
 }
 
-function FormDialog({ title, children, onClose }: { title: string; children: ReactNode; onClose: () => void }) {
+function FormDialog({
+  title,
+  children,
+  onClose,
+  size = "default"
+}: {
+  title: string;
+  children: ReactNode;
+  onClose: () => void;
+  size?: "default" | "wide";
+}) {
   const compact = ["Neue Kategorie", "Kategorie bearbeiten"].includes(title);
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-4" onMouseDown={onClose}>
       <div
         className={cx(
           "max-h-[90vh] w-full overflow-y-auto rounded-lg border border-border bg-white p-6 shadow-2xl",
-          compact ? "max-w-md" : "max-w-2xl"
+          compact ? "max-w-md" : size === "wide" ? "max-w-6xl" : "max-w-2xl"
         )}
         onMouseDown={(event) => event.stopPropagation()}
       >
