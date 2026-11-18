@@ -1,8 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, Calendar, Clock, ListTree, Tag } from "lucide-react";
+import { ArrowLeft, ArrowRight, Calendar, Clock, ListTree, Tag } from "lucide-react";
 import { BlogAuthorInline } from "@/components/BlogAuthorInline";
 import { BlogShareButton } from "@/components/BlogShareButton";
+import { ProductInquiryButton, type ProductInquiryTarget } from "@/components/ProductInquiryModal";
+import { getProductBySlug } from "@/lib/content/getProductBySlug";
 import type { BlogPost, Locale } from "@/types/content";
 
 type TocItem = {
@@ -34,7 +36,8 @@ const blogLabels = {
     toc: "Inhaltsverzeichnis",
     readTime: "Min. Lesezeit",
     morePosts: "Weitere spannende Beiträge warten auf dich.",
-    allPosts: "Alle Beiträge"
+    allPosts: "Alle Beiträge",
+    learnMore: "Mehr erfahren"
   },
   en: {
     back: "Back to blog",
@@ -43,7 +46,8 @@ const blogLabels = {
     toc: "Table of contents",
     readTime: "min read",
     morePosts: "More posts are waiting for you.",
-    allPosts: "All posts"
+    allPosts: "All posts",
+    learnMore: "Learn more"
   }
 } satisfies Record<Locale, Record<string, string>>;
 
@@ -55,20 +59,23 @@ function slugify(value: string) {
 }
 
 function stripInlineMarkdown(value: string) {
-  return value.replace(/\*\*/g, "").replace(/\[([^\]]+)\]\([^)]+\)/g, "$1");
+  return value
+    .replace(/\*\*/g, "")
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+    .replace(/<br\s*\/?\s*>/gi, " ")
+    .replace(/\s*\n\s*/g, " ");
 }
 
 function generateToc(content: string): TocItem[] {
-  const headingRegex = /^(#{1,3})\s+(.+)$/gm;
-  const headings: TocItem[] = [];
-  let match: RegExpExecArray | null;
-
-  while ((match = headingRegex.exec(content)) !== null) {
-    const text = stripInlineMarkdown(match[2]);
-    headings.push({ level: match[1].length, text, id: slugify(text) });
-  }
-
-  return headings;
+  return content
+    .split(/\n{2,}/)
+    .map((block) => block.trim())
+    .map((block) => block.match(/^(#{1,3})\s+([\s\S]+)$/))
+    .filter((match): match is RegExpMatchArray => Boolean(match))
+    .map((match) => {
+      const text = stripInlineMarkdown(match[2]);
+      return { level: match[1].length, text, id: slugify(text) };
+    });
 }
 
 function formatDate(value: string | null | undefined, lang: Locale) {
@@ -160,6 +167,14 @@ function renderInline(value: string, keyPrefix = "inline"): React.ReactNode[] {
   return nodes;
 }
 
+function renderHeadingInline(value: string, keyPrefix: string) {
+  const lines = value.split(/\s{2,}\n|<br\s*\/?\s*>/gi);
+  return lines.flatMap((line, index) => [
+    ...(index ? [<br key={`${keyPrefix}-break-${index}`} />] : []),
+    ...renderInline(line.trim(), `${keyPrefix}-line-${index}`)
+  ]);
+}
+
 function ctaCopyWithoutLink(block: string, match: RegExpMatchArray) {
   const start = match.index || 0;
   const before = block
@@ -175,8 +190,32 @@ function ctaCopyWithoutLink(block: string, match: RegExpMatchArray) {
   return [before, after].filter(Boolean).join(" ");
 }
 
-function MarkdownBlocks({ content }: { content: string }) {
+function productCtaDetails(block: string, inquiryHref: string, lang: Locale) {
+  const productPath = inquiryHref.split(/[?#]/, 1)[0];
+  const segments = productPath.split("/").filter(Boolean);
+  const collectionIndex = segments.findIndex((segment) => segment === "produkte" || segment === "products");
+  const categorySlug = segments[collectionIndex + 1];
+  const slug = segments[collectionIndex + 2];
+
+  if (collectionIndex < 0 || !categorySlug || !slug) return null;
+
+  const linkedProduct = [...block.matchAll(/\[([^\]]+)\]\(([^)]+)\)/g)].find((match) => {
+    const href = match[2];
+    return !href.includes("anfrage=true") && href.split(/[?#]/, 1)[0] === productPath;
+  });
+  const product = getProductBySlug(slug, lang);
+  const target: ProductInquiryTarget = {
+    name: product?.name || linkedProduct?.[1] || slug,
+    slug,
+    categorySlug: product?.categorySlug || categorySlug
+  };
+
+  return { href: linkedProduct?.[2] || productPath, target };
+}
+
+function MarkdownBlocks({ content, lang }: { content: string; lang: Locale }) {
   const blocks = content.split(/\n{2,}/).map((block) => block.trim()).filter(Boolean);
+  const labels = blogLabels[lang];
 
   return (
     <div className="prose prose-lg max-w-none">
@@ -204,28 +243,28 @@ function MarkdownBlocks({ content }: { content: string }) {
           );
         }
 
-        const heading = block.match(/^(#{1,3})\s+(.+)$/);
+        const heading = block.match(/^(#{1,3})\s+([\s\S]+)$/);
         if (heading) {
           const level = heading[1].length;
           const text = stripInlineMarkdown(heading[2]);
           const id = slugify(text);
           if (level === 1) {
             return (
-              <h1 key={index} id={id} className="mt-10 scroll-mt-24 text-3xl font-bold text-foreground">
-                {renderInline(heading[2], `h1-${index}`)}
+              <h1 key={index} id={id} className="mb-5 mt-12 scroll-mt-24 text-3xl font-bold leading-tight text-foreground">
+                {renderHeadingInline(heading[2], `h1-${index}`)}
               </h1>
             );
           }
           if (level === 2) {
             return (
-              <h2 key={index} id={id} className="mt-10 scroll-mt-24 border-b border-border pb-2 text-2xl font-bold text-foreground">
-                {renderInline(heading[2], `h2-${index}`)}
+              <h2 key={index} id={id} className="mb-5 mt-12 scroll-mt-24 border-b border-border pb-3 text-2xl font-bold leading-[1.18] text-foreground md:text-[1.65rem]">
+                {renderHeadingInline(heading[2], `h2-${index}`)}
               </h2>
             );
           }
           return (
-            <h3 key={index} id={id} className="mt-8 scroll-mt-24 text-xl font-semibold text-foreground">
-              {renderInline(heading[2], `h3-${index}`)}
+            <h3 key={index} id={id} className="mb-3 mt-9 scroll-mt-24 text-xl font-semibold leading-snug text-foreground">
+              {renderHeadingInline(heading[2], `h3-${index}`)}
             </h3>
           );
         }
@@ -233,9 +272,9 @@ function MarkdownBlocks({ content }: { content: string }) {
         const lines = block.split("\n").map((line) => line.trim()).filter(Boolean);
         if (lines.every((line) => /^[-*]\s+/.test(line))) {
           return (
-            <ul key={index} className="my-6 space-y-2 pl-0">
+            <ul key={index} className="mb-7 mt-4 space-y-2.5 pl-0">
               {lines.map((line, lineIndex) => (
-                <li key={lineIndex} className="flex gap-2 leading-relaxed text-muted-foreground">
+                <li key={lineIndex} className="flex gap-2 text-[1.05rem] leading-[1.65] text-muted-foreground">
                   <span className="font-bold text-primary">•</span>
                   <span>{renderInline(line.replace(/^[-*]\s+/, ""), `ul-${index}-${lineIndex}`)}</span>
                 </li>
@@ -246,9 +285,9 @@ function MarkdownBlocks({ content }: { content: string }) {
 
         if (lines.every((line) => /^\d+\.\s+/.test(line))) {
           return (
-            <ol key={index} className="my-6 list-decimal space-y-2 pl-6">
+            <ol key={index} className="mb-7 mt-4 list-decimal space-y-2.5 pl-6">
               {lines.map((line, lineIndex) => (
-                <li key={lineIndex} className="leading-relaxed text-muted-foreground">
+                <li key={lineIndex} className="text-[1.05rem] leading-[1.65] text-muted-foreground">
                   {renderInline(line.replace(/^\d+\.\s+/, ""), `ol-${index}-${lineIndex}`)}
                 </li>
               ))}
@@ -261,17 +300,38 @@ function MarkdownBlocks({ content }: { content: string }) {
           const copy = ctaCopyWithoutLink(block, inquiryCta);
           const href = inquiryCta[2];
           const label = inquiryCta[1];
+          const productCta = productCtaDetails(block, href, lang);
 
           return (
-            <aside key={index} className="my-8 flex flex-col items-start gap-3 rounded-xl border border-primary/15 bg-primary/[0.04] p-5">
-              {copy ? <p className="m-0 leading-relaxed text-muted-foreground">{renderInline(copy, `cta-copy-${index}`)}</p> : null}
-              {renderLink(href, renderInline(label, `cta-link-${index}`), `cta-link-${index}`)}
+            <aside key={index} className="my-10 rounded-xl border border-primary/20 bg-primary/[0.04] p-5 sm:p-6">
+              {copy ? <p className="m-0 text-base leading-[1.65] text-muted-foreground">{renderInline(copy, `cta-copy-${index}`)}</p> : null}
+              <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                {productCta ? (
+                  <ProductInquiryButton
+                    product={productCta.target}
+                    lang={lang}
+                    label={label}
+                    className="btn-gradient inline-flex min-h-11 items-center justify-center rounded-full px-6 py-2.5 text-center text-sm font-semibold shadow-sm"
+                  />
+                ) : (
+                  renderLink(href, renderInline(label, `cta-link-${index}`), `cta-link-${index}`)
+                )}
+                {productCta ? (
+                  <Link
+                    href={productCta.href}
+                    className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border-2 border-foreground/15 bg-foreground/[0.03] px-6 py-2.5 text-sm font-semibold text-foreground no-underline transition-colors hover:border-primary/40 hover:bg-primary/[0.06]"
+                  >
+                    {labels.learnMore}
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                ) : null}
+              </div>
             </aside>
           );
         }
 
         return (
-          <p key={index} className="mb-5 leading-relaxed text-muted-foreground">
+          <p key={index} className="mb-6 text-[1.05rem] leading-[1.7] text-muted-foreground">
             {renderInline(block.replace(/\n/g, " "), `p-${index}`)}
           </p>
         );
@@ -350,7 +410,7 @@ export function BlogArticle({ post, lang = "de" }: { post: BlogPost; lang?: Loca
           </div>
         ) : null}
 
-        <MarkdownBlocks content={post.content} />
+        <MarkdownBlocks content={post.content} lang={lang} />
 
         {post.tags && post.tags.length > 0 ? (
           <div className="mt-10 flex flex-wrap items-center gap-2 border-t border-border pt-6">

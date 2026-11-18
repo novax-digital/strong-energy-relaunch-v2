@@ -20,14 +20,18 @@ export function BlogListing({ posts, lang = "de" }: { posts: BlogPost[]; lang?: 
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState(t.all);
   const categories = useMemo(() => [...new Set([...t.categories, ...(livePosts.map((post) => post.category).filter(Boolean) as string[])])], [livePosts, t.categories]);
-  const orderedPosts = useMemo(
-    () =>
-      [...livePosts].sort((a, b) => {
-        if (a.is_featured !== b.is_featured) return a.is_featured ? -1 : 1;
-        return new Date(b.published_at || b.created_at || 0).getTime() - new Date(a.published_at || a.created_at || 0).getTime();
-      }),
-    [livePosts]
-  );
+  const orderedPosts = useMemo(() => {
+    const postTimestamp = (post: BlogPost) => new Date(post.published_at || post.created_at || 0).getTime();
+    const [newest, ...remaining] = [...livePosts].sort((a, b) => postTimestamp(b) - postTimestamp(a));
+    if (!newest) return [];
+
+    remaining.sort((a, b) => {
+      if (a.is_featured !== b.is_featured) return a.is_featured ? -1 : 1;
+      return postTimestamp(b) - postTimestamp(a);
+    });
+
+    return [newest, ...remaining];
+  }, [livePosts]);
   const filtered = useMemo(() => {
     const query = search.trim().toLowerCase();
     return orderedPosts.filter((post) => {
@@ -36,8 +40,6 @@ export function BlogListing({ posts, lang = "de" }: { posts: BlogPost[]; lang?: 
       return [post.title, post.excerpt || "", post.content || ""].some((value) => value.toLowerCase().includes(query));
     });
   }, [activeCategory, orderedPosts, search, t.all]);
-
-  const [featured, ...rest] = filtered;
 
   return (
     <section className="pb-20 md:pb-28">
@@ -68,37 +70,10 @@ export function BlogListing({ posts, lang = "de" }: { posts: BlogPost[]; lang?: 
           </div>
         </div>
 
-        {featured ? (
-          <Link href={localizedPath(`/blog/${featured.slug}`, lang)} className="group mb-12 grid overflow-hidden rounded-2xl border border-border bg-card transition-all duration-500 hover:-translate-y-1 hover:shadow-xl lg:grid-cols-2">
-            <div className="relative min-h-[320px] overflow-hidden bg-secondary">
-              <Image
-                src={featured.local_cover_image_url || featured.cover_image_url || "/assets/alfred-02-C1Z1mvvG.webp"}
-                alt={featured.title}
-                fill
-                sizes="(min-width: 1024px) 50vw, 100vw"
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
-              />
-            </div>
-            <div className="flex flex-col justify-center p-8 lg:p-12">
-              <div className="mb-5 flex flex-wrap gap-2">
-                <span className="rounded-full bg-secondary px-3 py-1 text-xs font-semibold text-muted-foreground">{t.featured}</span>
-                {featured.category ? <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">{featured.category}</span> : null}
-              </div>
-              <h2 className="text-2xl md:text-3xl font-bold leading-tight text-foreground">{featured.title}</h2>
-              {featured.excerpt ? <p className="mt-5 text-base leading-relaxed text-muted-foreground">{featured.excerpt}</p> : null}
-              <div className="mt-6 flex flex-wrap items-center gap-5 text-sm text-muted-foreground">
-                <BlogAuthorInline author={featured.author} />
-                {featured.published_at ? <span className="inline-flex items-center gap-1.5"><Calendar className="h-4 w-4" /> {formatDate(featured.published_at, lang)}</span> : null}
-                <span className="inline-flex items-center gap-1.5"><Clock className="h-4 w-4" /> {featured.reading_time_minutes || 1} {t.readTime}</span>
-              </div>
-            </div>
-          </Link>
-        ) : null}
-
-        {rest.length ? (
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {rest.map((post) => (
-              <Link href={localizedPath(`/blog/${post.slug}`, lang)} className="group overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all duration-500 hover:-translate-y-1 hover:shadow-xl" key={post.id}>
+        {filtered.length ? (
+          <div className="grid grid-cols-1 items-stretch gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {filtered.map((post, index) => (
+              <Link href={localizedPath(`/blog/${post.slug}`, lang)} className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all duration-500 hover:-translate-y-1 hover:shadow-xl" key={post.id}>
                 <div className="relative aspect-[16/10] overflow-hidden bg-secondary">
                   <Image
                     src={post.local_cover_image_url || post.cover_image_url || "/assets/alfred-02-C1Z1mvvG.webp"}
@@ -108,13 +83,29 @@ export function BlogListing({ posts, lang = "de" }: { posts: BlogPost[]; lang?: 
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                 </div>
-                <div className="p-6">
-                  {post.category ? <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-primary">{post.category}</p> : null}
+                <div className="flex flex-1 flex-col p-6">
+                  {index === 0 && post.is_featured ? (
+                    <div className="mb-3 flex flex-wrap gap-2">
+                      <span className="rounded-full bg-secondary px-2.5 py-1 text-[11px] font-semibold text-muted-foreground">{t.featured}</span>
+                      {post.category ? <span className="rounded-full bg-primary/10 px-2.5 py-1 text-[11px] font-semibold text-primary">{post.category}</span> : null}
+                    </div>
+                  ) : post.category ? (
+                    <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-primary">{post.category}</p>
+                  ) : null}
                   <h2 className="mb-3 text-xl font-bold leading-tight text-foreground">{post.title}</h2>
                   {post.excerpt ? <p className="line-clamp-3 text-sm leading-relaxed text-muted-foreground">{post.excerpt}</p> : null}
-                  <div className="mt-5 flex items-center justify-between gap-3 text-xs font-medium text-muted-foreground">
+                  <div className="mt-auto flex flex-wrap items-center gap-x-4 gap-y-2 pt-5 text-xs font-medium text-muted-foreground">
                     <BlogAuthorInline author={post.author} />
-                    <span className="shrink-0">{post.reading_time_minutes || 1} {t.readTime}</span>
+                    {index === 0 && post.published_at ? (
+                      <span className="inline-flex items-center gap-1.5">
+                        <Calendar className="h-3.5 w-3.5" />
+                        {formatDate(post.published_at, lang)}
+                      </span>
+                    ) : null}
+                    <span className="ml-auto inline-flex shrink-0 items-center gap-1.5">
+                      <Clock className="h-3.5 w-3.5" />
+                      {post.reading_time_minutes || 1} {t.readTime}
+                    </span>
                   </div>
                 </div>
               </Link>
@@ -122,7 +113,7 @@ export function BlogListing({ posts, lang = "de" }: { posts: BlogPost[]; lang?: 
           </div>
         ) : null}
 
-        {!featured ? (
+        {!filtered.length ? (
           <div className="rounded-2xl border border-dashed border-border bg-card px-6 py-14 text-center text-muted-foreground">
             {t.noPosts}
           </div>

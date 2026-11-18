@@ -22,7 +22,7 @@ Gemeinsam mit dem Installationsunternehmen **Klarmodul GmbH** begleitete Strong 
 - **Installation:** innerhalb von zwei Tagen
 - **Anwendung:** Photovoltaik, betrieblicher Energiebedarf und Ladung von drei Elektro-Lkw
 
-## Die Ausgangslage: Solarstrom war vorhanden, Speicher fehlte
+## Die Ausgangslage:<br>Solarstrom war vorhanden, Speicher fehlte
 
 Auf den Dachflächen von EDI Energy Direct waren bereits Photovoltaikanlagen installiert. Damit erzeugte das Unternehmen einen Teil seines Stroms selbst. Ohne Batteriespeicher ließ sich überschüssige Energie jedoch nur eingeschränkt zeitversetzt nutzen.
 
@@ -104,7 +104,7 @@ Das hängt von Standort, Leistung, Netzanschluss und vorhandener Infrastruktur a
 
 ---
 
-**Sie möchten vorhandenen Solarstrom besser im Unternehmen nutzen?** Entdecken Sie den [Star H Gewerbespeicher](/de/produkte/gewerbespeicher-aio/star-h) oder [fragen Sie direkt ein passendes Speicherkonzept an](/de/produkte/gewerbespeicher-aio/star-h?anfrage=true).`,
+**Sie möchten Solarstrom ebenfalls effizient in ihrem Unternehmen nutzen?** Entdecken Sie den [Star H Gewerbespeicher](/de/produkte/gewerbespeicher-aio/star-h) [Angebot anfragen](/de/produkte/gewerbespeicher-aio/star-h?anfrage=true).`,
     category: "Referenzprojekte",
     author: "Strong Energy",
     tags: ["Gewerbespeicher", "Star H", "Photovoltaik", "Elektromobilität", "Referenzprojekt"],

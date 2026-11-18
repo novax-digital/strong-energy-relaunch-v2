@@ -21,7 +21,6 @@ export function useLiveBlogPosts(initialPosts: BlogPost[], lang: Language = "de"
           .select("id,title,slug,excerpt,content,category,author,tags,cover_image_url,is_published,is_featured,published_at,created_at,reading_time_minutes,language")
           .eq("is_published", true)
           .eq("language", lang)
-          .order("is_featured", { ascending: false })
           .order("published_at", { ascending: false })
           .order("created_at", { ascending: false });
 
