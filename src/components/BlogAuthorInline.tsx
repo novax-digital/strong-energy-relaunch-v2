@@ -1,9 +1,10 @@
 import Image from "next/image";
-import { UserCircle } from "lucide-react";
 import { getBlogAuthorProfile } from "@/content/blog-authors";
+import { site } from "@/content/site";
 
 type BlogAuthorInlineProps = {
   author: string | null | undefined;
+  avatar?: string | null;
   className?: string;
   size?: "sm" | "md";
 };
@@ -17,24 +18,22 @@ const avatarSizeClasses = {
   md: "h-8 w-8"
 };
 
-const fallbackIconSizeClasses = {
-  sm: "h-4 w-4",
-  md: "h-5 w-5"
-};
-
-export function BlogAuthorInline({ author, className, size = "sm" }: BlogAuthorInlineProps) {
+export function BlogAuthorInline({ author, avatar, className, size = "sm" }: BlogAuthorInlineProps) {
   const authorName = author?.trim() || "Strong Energy";
   const profile = getBlogAuthorProfile(authorName);
-  const avatar = profile?.avatar;
+  const profileImage = avatar?.trim() || profile?.avatar || null;
+  const image = profileImage || site.logo;
 
   return (
     <span className={cx("inline-flex min-w-0 items-center gap-2", className)}>
-      <span className={cx("relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full border border-border bg-secondary", avatarSizeClasses[size])}>
-        {avatar ? (
-          <Image src={avatar} alt={`Profilbild von ${profile.name}`} fill sizes={size === "sm" ? "28px" : "32px"} className="object-cover" />
-        ) : (
-          <UserCircle className={cx("text-muted-foreground", fallbackIconSizeClasses[size])} />
-        )}
+      <span className={cx("relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full border border-border bg-white", avatarSizeClasses[size])}>
+        <Image
+          src={image}
+          alt={profileImage ? `Profilbild von ${authorName}` : "Strong Energy Logo"}
+          fill
+          sizes={size === "sm" ? "28px" : "32px"}
+          className={profileImage ? "object-cover" : "object-contain p-1"}
+        />
       </span>
       <span className="truncate">{authorName}</span>
     </span>

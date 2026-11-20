@@ -1,7 +1,11 @@
 import type { BlogPost } from "@/types/content";
 
-export type BlogPostRow = Omit<BlogPost, "local_cover_image_url" | "tags"> & {
+export type BlogPostRow = Omit<BlogPost, "local_cover_image_url" | "tags" | "author_avatar_url"> & {
   tags: string[] | null;
+  blog_authors?: {
+    name: string;
+    avatar_url: string | null;
+  } | null;
 };
 
 export function normalizeBlogPost(row: BlogPostRow, fallback?: BlogPost): BlogPost {
@@ -12,7 +16,9 @@ export function normalizeBlogPost(row: BlogPostRow, fallback?: BlogPost): BlogPo
     excerpt: row.excerpt || null,
     content: row.content || "",
     category: row.category || null,
-    author: row.author || null,
+    author: row.author || row.blog_authors?.name || null,
+    author_id: row.author_id || null,
+    author_avatar_url: row.blog_authors?.avatar_url || fallback?.author_avatar_url || null,
     tags: Array.isArray(row.tags) ? row.tags : null,
     cover_image_url: row.cover_image_url || null,
     local_cover_image_url: fallback?.local_cover_image_url || null,

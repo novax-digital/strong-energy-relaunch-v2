@@ -398,17 +398,14 @@ function StatusBadge({ active, activeText = "Aktiv", inactiveText = "Entwurf" }:
 
 function AuthorAvatarPreview({ name, src, showName }: { name: string; src?: string | null; showName?: boolean }) {
   const profile = getBlogAuthorProfile(name);
-  const imageSrc = src || profile?.avatar || "";
-  const displayName = name || profile?.name || "Autor";
+  const imageSrc = src || profile?.avatar || site.logo;
+  const displayName = name || profile?.name || "Strong Energy";
+  const usesLogo = imageSrc === site.logo;
 
   return (
     <span className={cx("inline-flex min-w-0 items-center gap-3", !showName && "justify-center")}>
       <span className="relative inline-flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full border border-border bg-secondary">
-        {imageSrc ? (
-          <Image src={imageSrc} alt={`Profilbild von ${displayName}`} fill sizes="40px" className="object-cover" unoptimized />
-        ) : (
-          <UserCircle className="h-5 w-5 text-muted-foreground" />
-        )}
+        <Image src={imageSrc} alt={usesLogo ? "Strong Energy Logo" : `Profilbild von ${displayName}`} fill sizes="40px" className={usesLogo ? "object-contain p-1.5" : "object-cover"} unoptimized />
       </span>
       {showName ? <span className="truncate font-medium text-foreground">{displayName}</span> : null}
     </span>
@@ -2069,16 +2066,12 @@ function BlogSection() {
     void Promise.resolve().then(load);
   }, [load]);
 
-  function defaultAuthor() {
-    return authors.find((author) => author.is_default) || authors[0];
-  }
-
   function authorForPost(post: BlogPost) {
     const author = authors.find((entry) => entry.id === post.author_id) || authors.find((entry) => entry.name === post.author);
     const fallbackProfile = getBlogAuthorProfile(post.author);
     return {
       name: author?.name || post.author || fallbackProfile?.name || "Strong Energy",
-      avatar: author?.avatar_url || fallbackProfile?.avatar || null
+      avatar: author?.avatar_url || fallbackProfile?.avatar || site.logo
     };
   }
 
@@ -2103,9 +2096,8 @@ function BlogSection() {
   }
 
   function openCreate() {
-    const author = defaultAuthor();
     setEditing(null);
-    setForm({ ...emptyForm, author: author?.name || "", author_id: author?.id || "", translation_group_id: crypto.randomUUID() });
+    setForm({ ...emptyForm, translation_group_id: crypto.randomUUID() });
     setContentDraft(createEmptyBlogEditorContent("de"));
     setError("");
     setDialogOpen(true);
@@ -2253,7 +2245,7 @@ function BlogSection() {
 
   async function saveGeneratedPosts(data: GeneratedBlogResponse) {
     setError("");
-    const author = authors.find((entry) => entry.id === (data.postDe.author_id || data.postEn.author_id)) || defaultAuthor();
+    const author = authors.find((entry) => entry.id === (data.postDe.author_id || data.postEn.author_id));
     const now = new Date().toISOString();
     const rows = [data.postDe, data.postEn].map((post) => ({
       title: post.title,
@@ -2564,7 +2556,7 @@ function BlogSection() {
                       const author = authors.find((entry) => entry.id === value);
                       setForm((previous) => ({ ...previous, author_id: value, author: author?.name || "" }));
                     }}
-                    placeholder="Autor wählen"
+                    placeholder="Kein Autor (Strong Energy Logo)"
                     options={authors.map((author) => ({ label: `${author.name}${author.is_default ? " (Standard)" : ""}`, value: author.id }))}
                   />
                   <TextField label="Tags (kommagetrennt)" value={form.tags} onChange={(value) => setForm((previous) => ({ ...previous, tags: value }))} placeholder="Solar, Energie, Tipps" />
@@ -2634,7 +2626,7 @@ function BlogAIGeneratorDialog({
   const [topic, setTopic] = useState("");
   const [selectedTopicId, setSelectedTopicId] = useState("");
   const [category, setCategory] = useState("Neuigkeiten");
-  const [authorId, setAuthorId] = useState(authors.find((author) => author.is_default)?.id || authors[0]?.id || "");
+  const [authorId, setAuthorId] = useState("");
   const [generating, setGenerating] = useState(false);
   const [localError, setLocalError] = useState("");
   const unusedTopics = topics.filter((entry) => !entry.used_at);
@@ -2730,7 +2722,7 @@ function BlogAIGeneratorDialog({
             value={authorId}
             onChange={setAuthorId}
             options={authors.map((author) => ({ label: `${author.name}${author.is_default ? " (Standard)" : ""}`, value: author.id }))}
-            placeholder="Autor wählen"
+            placeholder="Kein Autor (Strong Energy Logo)"
           />
         </div>
 

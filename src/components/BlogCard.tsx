@@ -16,7 +16,7 @@ export function BlogCard({ post }: { post: BlogPost }) {
           <h2 className="text-xl font-bold text-foreground mb-3 leading-tight">{post.title}</h2>
           {post.excerpt ? <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3">{post.excerpt}</p> : null}
           <div className="mt-5 flex items-center justify-between gap-3 text-xs font-medium text-muted-foreground">
-            <BlogAuthorInline author={post.author} />
+            <BlogAuthorInline author={post.author} avatar={post.author_avatar_url} />
             <span className="shrink-0">{post.reading_time_minutes || 1} Min. Lesezeit</span>
           </div>
         </div>

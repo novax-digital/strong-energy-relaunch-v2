@@ -130,6 +130,8 @@ export interface BlogPost {
   content: string;
   category: string | null;
   author: string | null;
+  author_id?: string | null;
+  author_avatar_url?: string | null;
   tags: string[] | null;
   cover_image_url: string | null;
   local_cover_image_url: string | null;

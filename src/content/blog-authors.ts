@@ -11,8 +11,7 @@ export const blogAuthorProfiles: BlogAuthorProfile[] = [
     name: "David Norris",
     avatar: "/assets/david-norris-B7MVbvOm.jpg",
     bio: "Deputy GM of Strong Energy D/A/CH",
-    isDefault: true,
-    aliases: ["Strong Energy"]
+    isDefault: true
   },
   {
     name: "Farideh M. Nezamabadi",
@@ -42,8 +41,6 @@ export const blogAuthorProfiles: BlogAuthorProfile[] = [
   }
 ];
 
-const defaultBlogAuthor = blogAuthorProfiles.find((author) => author.isDefault) || blogAuthorProfiles[0];
-
 function normalizeAuthorName(value: string) {
   return value
     .normalize("NFD")
@@ -55,7 +52,7 @@ function normalizeAuthorName(value: string) {
 
 export function getBlogAuthorProfile(authorName: string | null | undefined) {
   const normalized = normalizeAuthorName(authorName || "");
-  if (!normalized) return defaultBlogAuthor;
+  if (!normalized || normalized === "strong energy") return null;
 
   const profile = blogAuthorProfiles.find((author) => {
     const names = [author.name, ...(author.aliases || [])].map(normalizeAuthorName);

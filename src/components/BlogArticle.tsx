@@ -371,7 +371,7 @@ export function BlogArticle({ post, lang = "de" }: { post: BlogPost; lang?: Loca
         {post.excerpt ? <p className="mb-6 text-lg leading-relaxed text-muted-foreground">{post.excerpt}</p> : null}
 
         <div className="mb-8 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-          <BlogAuthorInline author={post.author} size="md" />
+          <BlogAuthorInline author={post.author} avatar={post.author_avatar_url} size="md" />
           {publishedDate ? (
             <span className="flex items-center gap-1">
               <Calendar className="h-4 w-4" />

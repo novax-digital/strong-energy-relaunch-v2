@@ -46,7 +46,7 @@ export async function getLiveBlogPostBySlug(slug: string, lang: Language = "de")
 
     const { data, error } = await supabase
       .from("blog_posts")
-      .select("id,title,slug,excerpt,content,category,author,tags,cover_image_url,cover_image_alt,seo_title,seo_description,focus_keyword,is_published,is_featured,published_at,created_at,updated_at,reading_time_minutes,language")
+      .select("id,title,slug,excerpt,content,category,author,author_id,blog_authors(name,avatar_url),tags,cover_image_url,cover_image_alt,seo_title,seo_description,focus_keyword,is_published,is_featured,published_at,created_at,updated_at,reading_time_minutes,language")
       .eq("is_published", true)
       .eq("language", lang)
       .eq("slug", slug)

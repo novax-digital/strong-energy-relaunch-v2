@@ -95,7 +95,7 @@ export function BlogListing({ posts, lang = "de" }: { posts: BlogPost[]; lang?: 
                   <h2 className="mb-3 text-xl font-bold leading-tight text-foreground">{post.title}</h2>
                   {post.excerpt ? <p className="line-clamp-3 text-sm leading-relaxed text-muted-foreground">{post.excerpt}</p> : null}
                   <div className="mt-auto flex flex-wrap items-center gap-x-4 gap-y-2 pt-5 text-xs font-medium text-muted-foreground">
-                    <BlogAuthorInline author={post.author} />
+                    <BlogAuthorInline author={post.author} avatar={post.author_avatar_url} />
                     {index === 0 && post.published_at ? (
                       <span className="inline-flex items-center gap-1.5">
                         <Calendar className="h-3.5 w-3.5" />
