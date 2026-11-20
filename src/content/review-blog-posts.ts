@@ -94,9 +94,9 @@ Der Kunde bestellte den zweiten Star Q bereits drei Monate nach der ersten Insta
 
 ---
 
-**Sie möchten Ihren Solarstrom ebenfalls besser im Unternehmen nutzen?** Entdecken Sie den [Star Q Gewerbespeicher](/de/produkte/gewerbespeicher-aio/star-q) oder [fordern Sie ein passendes Speicherkonzept an](/de/produkte/gewerbespeicher-aio/star-q?anfrage=true).`,
+**Sie möchten Solarstrom ebenfalls effizient in ihrem Unternehmen nutzen?** Entdecken Sie den [Star Q Gewerbespeicher](/de/produkte/gewerbespeicher-aio/star-q) [Angebot anfragen](/de/produkte/gewerbespeicher-aio/star-q?anfrage=true).`,
     category: "Referenzprojekte",
-    author: "David Norris",
+    author: "Strong Energy",
     tags: ["Gewerbespeicher", "Star Q", "Photovoltaik", "Eigenverbrauch", "Referenzprojekt"],
     cover_image_url: null,
     local_cover_image_url: hofquartierCoverImage,
@@ -204,7 +204,7 @@ The customer ordered the second Star Q just three months after the first install
 
 **Want to make better use of solar power at your business?** Explore the [Star Q commercial battery system](/en/products/commercial-storage-aio/star-q) or [request a tailored storage concept](/en/products/commercial-storage-aio/star-q?anfrage=true).`,
     category: "Case Studies",
-    author: "David Norris",
+    author: "Strong Energy",
     tags: ["Commercial battery storage", "Star Q", "Solar PV", "Self-consumption", "Case study"],
     cover_image_url: null,
     local_cover_image_url: hofquartierCoverImage,
